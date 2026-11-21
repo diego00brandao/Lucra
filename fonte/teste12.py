@@ -161,6 +161,17 @@ async def main():
         await a.evaluate("S.anamneses.push({clienteId:'cx',data:hojeISO(),resp:{alerg:{sim:true,det:'dipirona'}},queixa:'',obs:''});S.prontuario.push({id:'pr1',clienteId:'cx',agId:'',data:hojeISO(),servicoId:'',regiao:'36',feito:'canal',mat:'',prox:''});salvar()")
         await espera(a,f"syncEst==='ok'&&!pendente()"); await a.wait_for_timeout(300)
         assert DB['clinico'][cid]['estado']['prontuario'][0]['feito']=='canal' and 'prontuario' not in DB['dados'][cid]['estado']
+        # taxas, meta e imposto sobrevivem a sair e entrar de novo (não voltam ao padrão)
+        await a.evaluate("S.taxas.debito=1.99;S.taxas.cred1=4.25;S.meta=12345;S.imposto=11;S.perfil={nome:'Dra. Rafa',doc:'',profissao:'Dentista'};salvar()")
+        await espera(a,"syncEst==='ok'&&!pendente()"); await a.wait_for_timeout(300)
+        assert DB['dados'][cid]['estado']['taxas']['debito']==1.99
+        await a.evaluate("sairDaConta(true)"); await a.wait_for_timeout(300)
+        await a.fill('#pt-email','rafa@teste.com'); await a.fill('#pt-senha','senha123'); await a.click('#pt-ok'); await a.wait_for_timeout(1800)
+        await espera(a,"syncEst==='ok'")
+        r=await a.evaluate("[S.taxas.debito,S.taxas.cred1,S.meta,S.imposto,S.perfil.nome]")
+        assert r==[1.99,4.25,12345,11,'Dra. Rafa'], ('voltou ao padrão', r)
+        assert DB['dados'][cid]['estado']['taxas']['debito']==1.99 and DB['dados'][cid]['estado']['meta']==12345, 'a nuvem foi sobrescrita'
+        assert await a.evaluate("S.clientes.some(c=>c.nome==='Paciente Antigo')") and await a.evaluate("S.prontuario.length")==1
         # convida a recepção
         await a.evaluate("ir('usuarios')"); await a.wait_for_timeout(600)
         assert await a.locator('#menu button[data-t=usuarios]').is_hidden()==False or True
@@ -176,6 +187,7 @@ async def main():
         assert await b.locator('#porta').count()==0, await b.inner_text('#porta')
         assert await b.evaluate("CONTA.papel")=='recepcao' and await b.evaluate("CONTA.cid")==cid
         await espera(b,"syncEst==='ok'")
+        assert await b.evaluate("S.taxas.debito")==1.99 and DB['dados'][cid]['estado']['taxas']['debito']==1.99, 'aparelho novo apagou as taxas'
         assert await b.evaluate("S.clientes.some(c=>c.nome==='Paciente Antigo')") and await b.evaluate("S.prontuario.length===0&&S.anamneses.length===0"), 'recepção recebeu dados de saúde'
         assert await b.evaluate("tela")=='agenda'
         assert await b.locator('#menu button[data-t=painel]').is_hidden() and await b.locator('#menu button[data-t=lucro]').is_hidden() and await b.locator('#menu button[data-t=caixa]').count()==1

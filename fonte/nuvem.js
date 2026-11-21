@@ -229,7 +229,10 @@ async function sincParte(p,tent){
   if(!rem||!CONTA||CONTA.cid!==cid)return;
   const base=BASE[p]||{estado:{},versao:-1}, local=parteDe(S,p);
   let fim=local;
-  if(rem.versao!==base.versao){ fim=merge3(base.versao<0?{}:base.estado,local,rem.estado||{}); if(!igual(fim,local))aplicaParte(p,fim) }
+  if(base.versao<0){
+    /* aparelho sem histórico (acabou de entrar): o que está na nuvem manda. Os valores padrão daqui não são mudanças de ninguém */
+    if(rem.versao>0){ fim=JSON.parse(JSON.stringify(rem.estado||{})); aplicaParte(p,fim) }
+  }else if(rem.versao!==base.versao){ fim=merge3(base.estado,local,rem.estado||{}); if(!igual(fim,local))aplicaParte(p,fim) }
   BASE[p]={estado:rem.estado||{},versao:rem.versao}; gravarJ(CHAVE+':base',BASE);
   if(igual(fim,rem.estado||{}))return;
   try{ const nova=await rpc('salvar',{p_cid:cid,p_parte:p,p_estado:fim,p_versao:rem.versao});
