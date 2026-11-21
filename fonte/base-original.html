@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E1016">
+<title>Lucra · Financeiro para clínicas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F7FB; --surf:#FFFFFF; --surf2:#F0F2F8; --line:rgba(17,20,31,.10); --line2:rgba(17,20,31,.20);
+  --tx:#11141F; --tx2:#4B5265; --tx3:#858BA0;
+  --ac:#2F6BFF; --ac-soft:rgba(47,107,255,.10);
+  --ok:#0E9F6E; --ok-soft:rgba(14,159,110,.12);
+  --war:#C2740A; --war-soft:rgba(194,116,10,.12);
+  --bad:#D64545; --bad-soft:rgba(214,69,69,.12);
+  --r:16px; --r-s:11px; --lado:16px; --max:960px;
+  --sh:0 1px 2px rgba(17,20,31,.05),0 10px 28px -18px rgba(17,20,31,.35);
+}
+[data-t="escuro"]{
+  --bg:#0E1016; --surf:#171A23; --surf2:#1E222D; --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.18);
+  --tx:#EEF0F6; --tx2:#B2B8C8; --tx3:#7B8295;
+  --ac:#6D97FF; --ac-soft:rgba(109,151,255,.14);
+  --ok:#3DD39E; --ok-soft:rgba(61,211,158,.14);
+  --war:#F0B45E; --war-soft:rgba(240,180,94,.14);
+  --bad:#FF7A7A; --bad-soft:rgba(255,122,122,.14);
+  --sh:0 1px 2px rgba(0,0,0,.4),0 10px 28px -18px rgba(0,0,0,.7);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--bg);color:var(--tx);font-size:15px;line-height:1.55;min-height:100dvh;
+  -webkit-font-smoothing:antialiased;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+button,input,select,textarea{font-family:inherit;font-size:15px;color:inherit}
+button{background:none;border:none;cursor:pointer;font-weight:600}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--lado)}
+
+/* topo */
+header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(14px) saturate(170%);
+  -webkit-backdrop-filter:blur(14px) saturate(170%);padding-top:env(safe-area-inset-top,0px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;height:56px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:-.03em;font-size:17px}
+.logo i{width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,var(--ac),var(--ok));display:block}
+.logo small{font-weight:600;font-size:12px;color:var(--tx3);letter-spacing:0}
+.ibtn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;color:var(--tx2)}
+.ibtn:active{background:var(--surf2)}
+
+main{padding:18px 0 32px;animation:up .3s ease both}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.2}
+h2{font-size:16px;font-weight:700;letter-spacing:-.02em}
+.sub{color:var(--tx3);font-size:13px;margin-top:3px;font-weight:500;line-height:1.45}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3)}
+.sec{margin-top:22px}
+.sec-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.sel-mes{max-width:230px}
+@media (max-width:620px){.sel-mes{max-width:none;margin-top:4px}}
+
+.card{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:15px;box-shadow:var(--sh)}
+.card+.card{margin-top:10px}
+
+/* botoes */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:0 14px;
+  border-radius:var(--r-s);border:1px solid var(--line2);font-weight:700;font-size:14.5px;letter-spacing:-.01em;
+  transition:transform .1s,background .15s}
+.btn:active{transform:scale(.985)}
+.btn.pri{background:var(--ac);color:#fff;border-color:transparent}
+.btn.soft{background:var(--surf);color:var(--tx2)}
+.btn.full{width:100%}
+.btn.sm{min-height:36px;padding:0 10px;font-size:13px;border-radius:9px;font-weight:600}
+.btn.danger{color:var(--bad);border-color:var(--line)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* campos */
+label{display:block;font-size:12px;font-weight:600;color:var(--tx3);margin-bottom:5px;letter-spacing:.005em}
+input,select{width:100%;background:var(--surf2);border:1px solid var(--line);border-radius:var(--r-s);
+  padding:10px 11px;font-size:16px;font-weight:500;line-height:1.4;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-soft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.field{margin-bottom:10px}
+@media (max-width:520px){.grid3{grid-template-columns:1fr 1fr}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:10px}
+@media (max-width:379px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:15px;box-shadow:var(--sh)}
+.stat .lb{font-size:11.5px;font-weight:600;color:var(--tx3);display:flex;align-items:center;gap:6px;line-height:1.3}
+.stat .vl{display:block;font-size:21px;font-weight:800;letter-spacing:-.035em;margin-top:6px;line-height:1.2;
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.stat .ex{display:block;font-size:11.5px;font-weight:500;color:var(--tx3);margin-top:4px;line-height:1.35}
+.v-ok{color:var(--ok)} .v-bad{color:var(--bad)} .v-war{color:var(--war)} .v-ac{color:var(--ac)}
+
+.bar{height:8px;border-radius:99px;background:var(--surf2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok));transition:width .5s ease}
+
+/* listas */
+.item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.item:last-child{border-bottom:none}
+.item .mn{flex:1 1 auto;min-width:0}
+.item .mn>b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.015em;line-height:1.3}
+.item .mn small{display:block;font-size:12px;color:var(--tx3);font-weight:500;margin-top:2px;line-height:1.45}
+.item .mn small b{font-weight:700;color:var(--tx2)}
+.item .vr{text-align:right;font-weight:700;font-size:14.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.item .vr small{display:block;font-size:11.5px;color:var(--tx3);font-weight:500;margin-top:1px}
+.item .acts{display:flex;gap:6px;margin-left:auto;flex:none}
+.item .acts .btn{white-space:nowrap}
+@media (max-width:620px){
+  .item{align-items:flex-start}
+  .item .mn{flex:1 1 100%}
+  .item .vr{flex:1 1 100%;text-align:left;display:flex;align-items:baseline;gap:8px;margin-top:4px}
+  .item .vr small{margin-top:0}
+  .item .acts{width:100%;margin-left:0;margin-top:9px}
+  .item .acts .btn{flex:1;padding:0 6px}
+  .item .acts .btn.ic{flex:0 0 42px}
+}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;
+  border-radius:99px;background:var(--surf2);color:var(--tx2);border:1px solid var(--line)}
+.pill.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.pill.bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.pill.war{background:var(--war-soft);color:var(--war);border-color:transparent}
+.pill.ac{background:var(--ac-soft);color:var(--ac);border-color:transparent}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11.5px;font-weight:700;color:var(--tx3);text-transform:uppercase;
+  letter-spacing:.06em;padding:0 8px 9px 0;white-space:nowrap}
+td{padding:10px 8px 10px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+th:last-child,td:last-child{text-align:right;padding-right:0}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.vazio{text-align:center;padding:30px 12px;color:var(--tx3)}
+.vazio b{display:block;color:var(--tx2);font-size:14.5px;margin-bottom:5px}
+.vazio p{font-size:13px;line-height:1.5}
+
+/* nav */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  border-top:1px solid var(--line);backdrop-filter:blur(14px) saturate(170%);
+  -webkit-backdrop-filter:blur(14px) saturate(170%);padding-bottom:max(8px,env(safe-area-inset-bottom,0px))}
+nav ul{display:flex;max-width:var(--max);margin:0 auto;list-style:none;padding:8px 6px 6px;gap:1px}
+nav li{flex:1 1 0;min-width:0;display:flex}
+nav button{width:100%;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;
+  font-weight:600;color:var(--tx3);padding:0 1px;min-width:0}
+nav button .ico{width:42px;height:28px;border-radius:99px;display:grid;place-items:center;transition:.15s}
+nav svg{width:19px;height:19px}
+nav button[aria-current="true"]{color:var(--tx)}
+nav button[aria-current="true"] .ico{background:var(--ac-soft);color:var(--ac)}
+nav .rot{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* folha deslizante */
+.sheet-bg{position:fixed;inset:0;z-index:70;background:rgba(8,10,16,.55);display:flex;align-items:flex-end;
+  justify-content:center;opacity:0;transition:opacity .2s;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sheet-bg.on{opacity:1}
+.sheet{width:100%;max-width:520px;background:var(--surf);border:1px solid var(--line);border-bottom:none;
+  border-radius:22px 22px 0 0;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));
+  max-height:92dvh;overflow-y:auto;transform:translateY(16px);transition:transform .24s cubic-bezier(.2,.8,.2,1)}
+.sheet-bg.on .sheet{transform:none}
+.sheet .alca{width:38px;height:4px;border-radius:99px;background:var(--line2);margin:0 auto 14px}
+.sheet h2{margin-bottom:3px}
+.sheet .cab{margin-bottom:14px}
+@media (min-width:720px){
+  .sheet-bg{align-items:center;padding:20px}
+  .sheet{border:1px solid var(--line);border-radius:var(--r);padding:20px;transform:translateY(10px) scale(.985)}
+}
+.toast{position:fixed;left:50%;bottom:98px;transform:translate(-50%,10px);background:var(--tx);color:var(--bg);
+  padding:10px 17px;border-radius:99px;font-size:13.5px;font-weight:700;opacity:0;pointer-events:none;
+  transition:.22s;z-index:60;max-width:88vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* linhas do simulador */
+.simrow{padding:12px 0;border-bottom:1px solid var(--line)}
+.simrow:last-child{border-bottom:none}
+.simtop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.simtop>b:first-child{font-size:14.5px;font-weight:700;letter-spacing:-.015em}
+.simtop .val{margin-left:auto;font-size:15.5px;font-weight:800;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.simsub{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  font-size:11.5px;color:var(--tx3);font-weight:500;margin:4px 0 9px}
+
+/* opções com caixa de marcar */
+.ck-l{padding:11px 0;border-bottom:1px solid var(--line)}
+.ck-l:last-child{border-bottom:none}
+.ck-l .sw{display:flex;align-items:center;gap:10px;cursor:pointer;margin:0;font-size:14px;
+  font-weight:600;color:var(--tx);letter-spacing:-.01em}
+.ck-l input[type=checkbox]{width:20px;height:20px;flex:none;accent-color:var(--ac);margin:0}
+.ck-l small{display:block;font-size:11.5px;color:var(--tx3);line-height:1.4;margin:4px 0 0 30px}
+.nota{background:var(--ac-soft);border:1px solid transparent;border-radius:var(--r-s);padding:11px 12px;
+  font-size:12.5px;color:var(--tx2);line-height:1.5}
+.nota b{color:var(--tx)}
+
+@media (min-width:860px){
+  :root{--lado:28px;--max:1080px}
+  body{padding-bottom:40px;padding-left:216px;font-size:15.5px}
+  h1{font-size:30px}
+  main{padding:30px 0 48px}
+  .sec{margin-top:30px}
+  .card{padding:20px}
+  .grid3{grid-template-columns:repeat(3,1fr)}
+  .stats{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+  .stat{padding:18px}
+  .stat .vl{font-size:26px}
+  nav{width:216px}
+  nav{top:0;bottom:auto;right:auto;width:206px;height:100dvh;border-top:none;border-right:1px solid var(--line);
+    background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none;padding-bottom:0}
+  nav ul{flex-direction:column;padding:76px 12px 0;gap:3px}
+  nav li{flex:0 0 auto}
+  nav button{flex-direction:row;justify-content:flex-start;gap:11px;padding:10px 11px;border-radius:11px;font-size:14px}
+  nav button .ico{width:26px;height:26px;border-radius:8px}
+  nav button[aria-current="true"]{background:var(--surf)}
+  .toast{bottom:30px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap top">
+  <div class="logo"><i></i>Lucra <small>financeiro da clínica</small></div>
+  <div class="row" style="gap:6px">
+    <button class="ibtn" id="b-tema" aria-label="Tema">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></button>
+    <button class="ibtn" id="b-cfg" aria-label="Ajustes">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H1a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 2.6 7a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H7a1.7 1.7 0 0 0 1-1.5V1a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V7a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" transform="scale(.86) translate(1.9 1.9)"/></svg></button>
+  </div>
+</div></header>
+
+<main><div class="wrap" id="view"></div></main>
+
+<nav><ul>
+  <li><button data-t="painel" aria-current="true"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 19h16"/><path d="M7 19v-6m5 6V6m5 13v-9"/></svg></span><span class="rot">Painel</span></button></li>
+  <li><button data-t="agenda"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4m8-4v4M3 10h18"/></svg></span><span class="rot">Agenda</span></button></li>
+  <li><button data-t="clientes"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span><span class="rot">Clientes</span></button></li>
+  <li><button data-t="vendas"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18l-1.6 9.4a2 2 0 0 1-2 1.6H6.6a2 2 0 0 1-2-1.6Z"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg></span><span class="rot">Caixa</span></button></li>
+  <li><button data-t="servicos"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 9h10M7 13h6"/></svg></span><span class="rot">Serviços</span></button></li>
+  <li><button data-t="sim"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 7h8M8 12h3m3 0h2M8 16h3m3 0h2"/></svg></span><span class="rot">Simular</span></button></li>
+</ul></nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   LUCRA — financeiro para clínicas de estética · versão 1
+   Arquivo único, dados só no navegador de quem usa.
+   Partes: serviços com custo · taxas · movimento · reservas · meta
+═══════════════════════════════════════════════════════════════ */
+const CHAVE='lucra:v1';
+
+const PAD={
+  tema:'claro', meta:0, imposto:6, custoDomicilio:0,
+  taxas:{pix:0, dinheiro:0, debito:1.37, cred1:3.15, parc:5.39, parcExtra:0.70},
+  servicos:[], vendas:[], despesas:[], retiradas:[], clientes:[], agenda:[]
+};
+let S=JSON.parse(JSON.stringify(PAD));
+
+/* ── persistência ── */
+function carregar(){
+  try{const r=localStorage.getItem(CHAVE); if(r){const d=JSON.parse(r); if(d&&typeof d==='object')S=Object.assign(JSON.parse(JSON.stringify(PAD)),d)}}catch(e){}
+  normalizar();
+}
+function salvar(){ try{localStorage.setItem(CHAVE,JSON.stringify(S))}catch(e){} }
+function normalizar(){
+  S.taxas=Object.assign({},PAD.taxas,S.taxas||{});
+  ['servicos','vendas','despesas','retiradas','clientes','agenda'].forEach(k=>{ if(!Array.isArray(S[k]))S[k]=[] });
+  S.agenda.forEach(a=>{ if(!a.status)a.status='marcado' });
+  S.meta=num(S.meta); S.imposto=num(S.imposto); S.custoDomicilio=num(S.custoDomicilio);
+  S.tema=S.tema==='escuro'?'escuro':'claro';
+  S.servicos.forEach(s=>{ s.preco=num(s.preco); s.custo=num(s.custo); s.comissao=num(s.comissao);
+    s.precoMax=num(s.precoMax); if(s.precoMax<=s.preco)s.precoMax=0 });
+  S.vendas.forEach(v=>{ v.valor=num(v.valor); v.parcelas=Math.max(1,parseInt(v.parcelas)||1);
+    v.sessoes=Math.max(1,parseInt(v.sessoes)||1); v.desloc=num(v.desloc);
+    if(!Array.isArray(v.usadas))v.usadas=[]; if(v.usadas.length>v.sessoes)v.usadas.length=v.sessoes });
+  S.despesas.forEach(d=>{ d.valor=num(d.valor) });
+  S.vendas.forEach(v=>{ if(v.estorno){ if(typeof v.estorno!=='object'||Array.isArray(v.estorno))delete v.estorno;
+    else v.estorno.valor=num(v.estorno.valor) } });
+}
+
+/* ── utilidades ── */
+const $=s=>document.querySelector(s);
+const uid=()=>Math.random().toString(36).slice(2,10);
+const num=v=>{const n=Number(String(v==null?0:v).replace(',','.'));return isFinite(n)?n:0};
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const brl=v=>{ if(!isFinite(v)||Math.abs(v)<0.005)v=0;
+  return (v<0?'-':'')+'R$ '+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) };
+const pct=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:2})+'%';
+const hojeISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const mesDe=iso=>String(iso||'').slice(0,7);
+const mesAtual=()=>mesDe(hojeISO());
+const dataBR=iso=>{const[a,m,d]=String(iso||'').split('-');return d?`${d}/${m}`:''};
+const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const mesNome=mes=>{const[a,m]=String(mes).split('-');return `${MESES[(+m||1)-1]} de ${a}`};
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800)}
+
+/* folha deslizante: substitui prompt do navegador */
+let fecharSheet=()=>{};
+function abrirSheet(titulo,sub,corpo,aoAbrir){
+  const bg=document.createElement('div'); bg.className='sheet-bg';
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"><div class="alca"></div>
+    <div class="cab"><h2>${esc(titulo)}</h2>${sub?`<p class="sub">${sub}</p>`:''}</div>${corpo}</div>`;
+  document.body.appendChild(bg);
+  document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>bg.classList.add('on'));
+  const fechar=()=>{ bg.classList.remove('on'); document.body.style.overflow='';
+    setTimeout(()=>bg.remove(),220); document.removeEventListener('keydown',esc2); fecharSheet=()=>{} };
+  const esc2=e=>{ if(e.key==='Escape')fechar() };
+  document.addEventListener('keydown',esc2);
+  bg.onclick=e=>{ if(e.target===bg)fechar() };
+  fecharSheet=fechar;
+  if(aoAbrir)aoAbrir(fechar);
+  return fechar;
+}
+const serv=id=>S.servicos.find(s=>s.id===id)||null;
+const cli=id=>S.clientes.find(c=>c.id===id)||null;
+const nomeCli=v=>{const c=cli(v.clienteId);return c?c.nome:(v.cliente||'')};
+const soNum=t=>String(t||'').replace(/\D/g,'');
+const zap=(tel,msg)=>{const n=soNum(tel);if(!n)return'';
+  const full=n.length<=11?'55'+n:n; return `https://wa.me/${full}?text=${encodeURIComponent(msg||'')}`};
+const diasEntre=(a,b)=>Math.round((new Date(b+'T12:00')-new Date(a+'T12:00'))/864e5);
+const somaDias=(iso,n)=>{const d=new Date(iso+'T12:00');d.setDate(d.getDate()+n);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const DSEM=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const diaSemana=iso=>DSEM[new Date(iso+'T12:00').getDay()];
+/* último atendimento do cliente num serviço, e quando ele deveria voltar */
+function retornos(){
+  const fora=[];
+  S.clientes.forEach(c=>{
+    const vs=S.vendas.filter(v=>v.clienteId===c.id);
+    const porServ={};
+    vs.forEach(v=>{ if(!porServ[v.servicoId]||v.data>porServ[v.servicoId])porServ[v.servicoId]=v.data });
+    Object.keys(porServ).forEach(sid=>{
+      const s=serv(sid); if(!s||!s.retorno)return;
+      const prev=somaDias(porServ[sid],s.retorno);
+      const atraso=diasEntre(prev,hojeISO());
+      const jaMarcado=S.agenda.some(a=>a.clienteId===c.id&&a.servicoId===sid&&a.status==='marcado'&&a.data>=hojeISO());
+      if(atraso>=0&&!jaMarcado)fora.push({cliente:c,servico:s,ultimo:porServ[sid],previsto:prev,atraso});
+    });
+  });
+  return fora.sort((a,b)=>b.atraso-a.atraso);
+}
+
+/* ── cálculo central: quanto sobra de uma venda ── */
+const FORMAS=[
+  {k:'pix',n:'Pix'},{k:'dinheiro',n:'Dinheiro'},{k:'debito',n:'Débito'},
+  {k:'cred1',n:'Crédito à vista'},{k:'parc',n:'Crédito parcelado'}
+];
+function taxaDe(forma,parcelas){
+  const t=S.taxas;
+  if(forma==='pix')return num(t.pix);
+  if(forma==='dinheiro')return num(t.dinheiro);
+  if(forma==='debito')return num(t.debito);
+  if(forma==='cred1')return num(t.cred1);
+  const p=Math.max(2,parseInt(parcelas)||2);
+  return num(t.parc)+num(t.parcExtra)*(p-2);
+}
+function conta(venda){
+  const s=serv(venda.servicoId);
+  const bruto=num(venda.valor);
+  const tx=taxaDe(venda.forma,venda.parcelas);
+  const taxa=bruto*tx/100;
+  const liquido=bruto-taxa;
+  const sessoes=Math.max(1,parseInt(venda.sessoes)||1);
+  const custo=(s?num(s.custo):0)*sessoes;      /* pacote: o produto sai em toda sessão */
+  const desloc=num(venda.desloc)*sessoes;      /* domicílio: deslocamento por visita */
+  const cp=s?num(s.comissao):0;
+  const comissao=bruto*cp/100;
+  const imposto=bruto*num(S.imposto)/100;
+  let lucro=liquido-custo-desloc-comissao-imposto;
+
+  /* estorno: o que volta e o que a clínica perde de verdade */
+  const e=venda.estorno;
+  let devolvido=0, recuperado=0;
+  if(e){
+    devolvido=Math.min(num(e.valor),bruto);
+    const prop=bruto?devolvido/bruto:0;
+    if(e.taxaVolta)recuperado+=taxa*prop;
+    if(!e.produtoUsado)recuperado+=custo*prop;
+    if(!e.comissaoPaga)recuperado+=comissao*prop;
+    if(e.impostoVolta)recuperado+=imposto*prop;
+    lucro=lucro-devolvido+recuperado;
+  }
+  const usadas=Array.isArray(venda.usadas)?venda.usadas.length:0;
+  return {bruto,tx,taxa,liquido,custo,desloc,comissao,cp,imposto,lucro,devolvido,recuperado,
+    sessoes,usadas,restam:Math.max(0,sessoes-usadas),porSessao:sessoes?bruto/sessoes:bruto,
+    estornado:!!e,margem:bruto?lucro/bruto*100:0,nome:s?s.nome:'Serviço removido'};
+}
+
+/* ── agregados do mês ── */
+function resumo(mes){
+  const vs=S.vendas.filter(v=>mesDe(v.data)===mes);
+  const ds=S.despesas.filter(d=>mesDe(d.data)===mes);
+  const r={bruto:0,taxa:0,custo:0,desloc:0,comissao:0,imposto:0,liquido:0,lucroBruto:0,despesas:0,
+    devolvido:0,qtdEstorno:0,qtd:vs.length,porServico:{},porDia:{}};
+  vs.forEach(v=>{
+    const c=conta(v);
+    if(c.estornado){ r.devolvido+=c.devolvido; r.qtdEstorno++ }
+    r.desloc+=c.desloc;
+    r.bruto+=c.bruto; r.taxa+=c.taxa; r.custo+=c.custo; r.liquido+=c.liquido; r.lucroBruto+=c.lucro;
+    r.comissao+=c.comissao; r.imposto+=c.imposto;
+    const k=v.servicoId||'x';
+    const a=r.porServico[k]||(r.porServico[k]={nome:c.nome,qtd:0,bruto:0,lucro:0});
+    a.qtd++; a.bruto+=c.bruto; a.lucro+=c.lucro;
+    r.porDia[v.data]=(r.porDia[v.data]||0)+c.lucro;
+  });
+  ds.forEach(d=>r.despesas+=num(d.valor));
+  r.lucro=r.lucroBruto-r.despesas;
+  r.ticket=r.qtd?r.bruto/r.qtd:0;
+  return r;
+}
+/* reserva de insumo: custo das vendas do mês menos o que já foi comprado */
+function reservas(mes){
+  const vs=S.vendas.filter(v=>mesDe(v.data)===mes);
+  const mapa={};
+  vs.forEach(v=>{
+    const s=serv(v.servicoId); if(!s)return;
+    const a=mapa[s.id]||(mapa[s.id]={nome:s.nome,qtd:0,reservar:0,gasto:0});
+    const n=Math.max(1,parseInt(v.sessoes)||1);
+    a.qtd+=n; a.reservar+=num(s.custo)*n;
+  });
+  S.despesas.filter(d=>mesDe(d.data)===mes&&d.servicoId).forEach(d=>{
+    const s=serv(d.servicoId); if(!s)return;
+    const a=mapa[s.id]||(mapa[s.id]={nome:s.nome,qtd:0,reservar:0,gasto:0});
+    a.gasto+=num(d.valor);
+  });
+  return Object.values(mapa).map(a=>Object.assign(a,{falta:Math.max(0,a.reservar-a.gasto)}));
+}
+
+/* ── roteador ── */
+let tela='painel', mesSel=mesAtual();
+let edit={t:'',id:''};
+const E=(t,id)=>edit.t===t&&edit.id===id;
+const emEdicao=t=>edit.t===t?edit.id:'';
+function abrirEdicao(t,id){ edit={t,id}; render(); window.scrollTo({top:0,behavior:'smooth'}) }
+function fecharEdicao(){ edit={t:'',id:''}; render() }
+const T={};
+function ir(t){ tela=t; edit={t:'',id:''}; document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.t===t))); render(); window.scrollTo(0,0) }
+function render(){ const el=$('#view'); el.innerHTML=''; (T[tela]||T.painel)(el) }
+function tema(){ document.documentElement.dataset.t=S.tema; const m=document.querySelector('meta[name=theme-color]'); if(m)m.setAttribute('content',S.tema==='escuro'?'#0E1016':'#F6F7FB') }
+
+function seletorMes(){
+  const meses=new Set([mesAtual(),mesSel]);
+  S.vendas.forEach(v=>meses.add(mesDe(v.data)));
+  S.despesas.forEach(d=>meses.add(mesDe(d.data)));
+  const lista=[...meses].filter(Boolean).sort().reverse();
+  return `<select id="sel-mes" class="sel-mes">${lista.map(m=>
+    `<option value="${m}" ${m===mesSel?'selected':''}>${mesNome(m)}</option>`).join('')}</select>`;
+}
+function ligarMes(){ const s=$('#sel-mes'); if(s)s.onchange=()=>{mesSel=s.value;render()} }
+
+/* ══════════ PAINEL ══════════ */
+T.painel=function(el){
+  const r=resumo(mesSel), res=reservas(mesSel);
+  const faltaReserva=res.reduce((a,b)=>a+b.falta,0);
+  const metaPct=S.meta>0?Math.min(100,r.bruto/S.meta*100):0;
+  const margem=r.bruto?r.lucro/r.bruto*100:0;
+
+  let x=`<div class="sec-top"><div><h1>Painel</h1>
+    <p class="sub">Como está o mês da clínica</p></div>${seletorMes()}</div>`;
+
+  if(!S.servicos.length){
+    x+=`<div class="card" style="margin-top:14px"><div class="vazio">
+      <b>Comece cadastrando os seus serviços</b>
+      <p>Coloque o preço que você cobra e quanto gasta de produto em cada um.<br>É a partir daí que o sistema calcula o seu lucro.</p>
+      <button class="btn pri" id="ir-serv" style="margin-top:16px">Cadastrar serviços</button>
+      <button class="btn soft" id="ir-demo" style="margin-top:8px">Carregar exemplo pronto</button>
+    </div></div>`;
+    el.innerHTML=x; ligarMes();
+    $('#ir-serv').onclick=()=>ir('servicos');
+    $('#ir-demo').onclick=()=>{demo();toast('Exemplo carregado');render()};
+    return;
+  }
+
+  x+=`<div class="stats" style="margin-top:14px">
+    <div class="stat"><span class="lb">Entrou no mês</span><span class="vl">${brl(r.bruto)}</span>
+      <span class="ex">${r.qtd} atendimento(s) · ticket ${brl(r.ticket)}</span></div>
+    <div class="stat"><span class="lb">Sobrou de verdade</span>
+      <span class="vl ${r.lucro>=0?'v-ok':'v-bad'}">${brl(r.lucro)}</span>
+      <span class="ex">margem de ${pct(margem)}</span></div>
+    <div class="stat"><span class="lb">Ficou com a maquininha</span><span class="vl v-war">${brl(r.taxa)}</span>
+      <span class="ex">taxas de pagamento</span></div>
+    <div class="stat"><span class="lb">Produto usado</span><span class="vl">${brl(r.custo)}</span>
+      <span class="ex">insumo dos atendimentos</span></div>
+    ${r.desloc?`<div class="stat"><span class="lb">Deslocamento</span><span class="vl">${brl(r.desloc)}</span>
+      <span class="ex">atendimentos em domicílio</span></div>`:''}
+    <div class="stat"><span class="lb">Comissões</span><span class="vl">${brl(r.comissao)}</span>
+      <span class="ex">da equipe, por atendimento</span></div>
+    <div class="stat"><span class="lb">Impostos</span><span class="vl">${brl(r.imposto)}</span>
+      <span class="ex">${pct(num(S.imposto))} sobre o faturamento</span></div>
+    <div class="stat"><span class="lb">Despesas do mês</span><span class="vl">${brl(r.despesas)}</span>
+      <span class="ex">aluguel, contas, compras</span></div>
+    ${r.qtdEstorno?`<div class="stat"><span class="lb">Estornos</span><span class="vl v-bad">${brl(r.devolvido)}</span>
+      <span class="ex">${r.qtdEstorno} devolvido(s) ao cliente</span></div>`:''}
+    <div class="stat"><span class="lb">A separar para repor</span>
+      <span class="vl ${faltaReserva>0?'v-ac':'v-ok'}">${brl(faltaReserva)}</span>
+      <span class="ex">${faltaReserva>0?'ainda não comprado':'estoque em dia'}</span></div>
+  </div>`;
+
+  x+=`<div class="sec"><div class="card">
+    <div class="sec-top" style="margin-bottom:12px">
+      <div><h2>Meta do mês</h2><p class="sub">${S.meta>0?`${pct(metaPct)} de ${brl(S.meta)}`:'Defina uma meta de faturamento'}</p></div>
+      <button class="btn soft sm" id="ed-meta">${S.meta>0?'Alterar':'Definir'}</button></div>
+    <div class="bar"><i style="width:${metaPct}%"></i></div>
+    ${S.meta>0?`<p class="sub" style="margin-top:9px">${r.bruto>=S.meta?'Meta batida. Parabéns!':`Faltam ${brl(S.meta-r.bruto)} para bater a meta.`}</p>`:''}
+  </div></div>`;
+
+  const hoje=hojeISO();
+  const agHoje=S.agenda.filter(a=>a.status==='marcado'&&a.data===hoje).sort((a,b)=>(a.hora||'').localeCompare(b.hora||''));
+  const ret=retornos();
+  x+=`<div class="sec"><div class="grid2" style="gap:10px">
+    <button class="card" style="text-align:left;cursor:pointer" id="ir-agenda">
+      <span class="eyebrow">Hoje na agenda</span>
+      <div style="font-size:21px;font-weight:800;letter-spacing:-.03em;margin-top:6px">${agHoje.length} atendimento(s)</div>
+      <div class="sub" style="margin-top:2px">${agHoje.length?`primeiro às ${agHoje[0].hora||'--:--'}`:'nenhum marcado para hoje'}</div></button>
+    <button class="card" style="text-align:left;cursor:pointer" id="ir-ret">
+      <span class="eyebrow">Para chamar de volta</span>
+      <div style="font-size:21px;font-weight:800;letter-spacing:-.03em;margin-top:6px" class="${ret.length?'v-ac':''}">${ret.length} cliente(s)</div>
+      <div class="sub" style="margin-top:2px">${ret.length?'passaram do intervalo de retorno':'ninguém em atraso'}</div></button>
+  </div></div>`;
+  x+=`<div class="sec"><button class="btn soft full" id="ir-res">Ver reservas de produto · ${brl(faltaReserva)} a separar</button></div>`;
+
+  const pacs=pacotesAbertos();
+  if(pacs.length){
+    const aEntregar=pacs.reduce((a,p)=>a+p.c.porSessao*p.c.restam,0);
+    x+=`<div class="sec"><div class="sec-top"><h2>Pacotes em aberto</h2>
+      <span class="pill">${pacs.length}</span></div><div class="card">`;
+    pacs.forEach(p=>{
+      x+=`<div class="item"><div class="mn"><b>${esc(p.cliente?p.cliente.nome:'Sem cadastro')}</b>
+        <small>${esc(p.c.nome)} · vendido em ${dataBR(p.venda.data)} · ${brl(p.c.porSessao)} por sessão</small></div>
+        <div class="vr">${p.c.restam} de ${p.c.sessoes}<small>ainda por fazer</small></div>
+        <div class="acts"><button class="btn sm pri" data-pac="${p.venda.id}">Usar sessão</button></div></div>`});
+    x+=`<p class="sub" style="margin-top:12px">Já recebido, mas ainda por entregar: <b>${brl(aEntregar)}</b>.
+      Esse dinheiro está no caixa, só que o trabalho ainda vem.</p></div></div>`;
+  }
+
+  const ps=Object.values(r.porServico).sort((a,b)=>b.lucro-a.lucro);
+  x+=`<div class="sec"><div class="sec-top"><h2>Lucro por procedimento</h2></div><div class="card">`;
+  if(!ps.length){ x+=`<div class="vazio"><b>Nenhum atendimento neste mês</b><p>Registre uma venda em Movimento para ver os números.</p></div>` }
+  else{
+    const maxL=Math.max(...ps.map(a=>Math.abs(a.lucro)))||1;
+    ps.forEach(a=>{ const mg=a.bruto?a.lucro/a.bruto*100:0;
+      x+=`<div style="padding:12px 0;border-bottom:1px solid var(--line)">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+          <b style="font-size:14.5px;letter-spacing:-.015em">${esc(a.nome)}</b>
+          <b style="font-size:14.5px;white-space:nowrap" class="${a.lucro>=0?'v-ok':'v-bad'}">${brl(a.lucro)}</b></div>
+        <div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--tx3);font-weight:600;margin:3px 0 8px">
+          <span>${a.qtd} atendimento(s) · entrou ${brl(a.bruto)}</span><span>${pct(mg)}</span></div>
+        <div class="bar"><i style="width:${Math.abs(a.lucro)/maxL*100}%"></i></div></div>`});
+  }
+  x+=`</div></div>`;
+
+  const dias=Object.keys(r.porDia).sort();
+  if(dias.length){
+    const max=Math.max(...dias.map(d=>Math.abs(r.porDia[d])))||1;
+    const melhorD=dias.reduce((a,d)=>r.porDia[d]>r.porDia[a]?d:a,dias[0]);
+    const piorD=dias.reduce((a,d)=>r.porDia[d]<r.porDia[a]?d:a,dias[0]);
+    const media=dias.reduce((a,d)=>a+r.porDia[d],0)/dias.length;
+    x+=`<div class="sec"><div class="sec-top"><h2>Lucro por dia</h2></div><div class="card">
+      <div id="dia-info" class="nota" style="margin-bottom:12px">Melhor dia: <b>${dataBR(melhorD)}</b> com <b class="v-ok">${brl(r.porDia[melhorD])}</b>.
+        Média de <b>${brl(media)}</b> por dia. Toque numa barra para ver o valor.</div>
+      <div style="display:flex;align-items:flex-end;gap:3px;height:96px">`;
+    dias.forEach(d=>{ const v=r.porDia[d], h=Math.max(4,Math.abs(v)/max*86);
+      x+=`<button data-dia="${d}" data-val="${v}" title="${dataBR(d)}: ${brl(v)}"
+        style="flex:1;min-width:0;padding:0;height:${h}px;border:none;border-radius:5px 5px 2px 2px;cursor:pointer;
+        background:${v>=0?'linear-gradient(180deg,var(--ac),var(--ok))':'var(--bad)'}"></button>`});
+    x+=`</div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);font-weight:600;margin-top:6px">
+        <span>${dataBR(dias[0])}</span><span>${dataBR(dias[dias.length-1])}</span></div>
+      <p class="sub" style="margin-top:8px">Pior dia: ${dataBR(piorD)} com ${brl(r.porDia[piorD])}.</p></div></div>`;
+  }
+
+  el.innerHTML=x; ligarMes();
+  document.querySelectorAll('[data-dia]').forEach(b=>b.onclick=()=>{
+    const d=b.dataset.dia, v=num(b.dataset.val);
+    $('#dia-info').innerHTML=`<b>${dataBR(d)}</b> · ${diaSemana(d)}: sobrou
+      <b class="${v>=0?'v-ok':'v-bad'}">${brl(v)}</b>.`;
+  });
+  document.querySelectorAll('[data-pac]').forEach(b=>b.onclick=()=>usarSessao(b.dataset.pac));
+  $('#ir-agenda').onclick=()=>ir('agenda');
+  $('#ir-ret').onclick=()=>ir('agenda');
+  $('#ir-res').onclick=()=>{tela='reserva';document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-current','false'));render();window.scrollTo(0,0)};
+  $('#ed-meta').onclick=()=>{
+    abrirSheet('Meta do mês','Quanto você quer faturar em '+mesNome(mesSel),
+      `<div class="field"><label>Meta de faturamento (R$)</label>
+         <input id="m-valor" inputmode="decimal" value="${S.meta||''}" placeholder="0,00"></div>
+       <div class="row" style="margin-top:4px">
+         <button class="btn pri" id="m-ok" style="flex:1">Salvar meta</button>
+         <button class="btn soft" id="m-no">Cancelar</button></div>`,
+      fechar=>{
+        const i=$('#m-valor'); i.focus(); i.select();
+        $('#m-no').onclick=fechar;
+        $('#m-ok').onclick=()=>{ S.meta=num(i.value); salvar(); fechar(); toast('Meta atualizada'); render() };
+        i.addEventListener('keydown',e=>{if(e.key==='Enter')$('#m-ok').click()});
+      });
+  };
+};
+
+/* ══════════ MOVIMENTO (vendas + despesas) ══════════ */
+let buscaCx='';
+T.vendas=function(el){
+  const qx=buscaCx.trim().toLowerCase();
+  const casaV=v=>{ if(!qx)return true; const c=conta(v);
+    return (c.nome||'').toLowerCase().includes(qx)||(nomeCli(v)||'').toLowerCase().includes(qx)
+      ||dataBR(v.data).includes(qx)||String(v.valor).includes(qx) };
+  const casaD=d=>!qx||(d.desc||'').toLowerCase().includes(qx)||dataBR(d.data).includes(qx)||String(d.valor).includes(qx);
+  const todasV=S.vendas.filter(v=>mesDe(v.data)===mesSel);
+  const todasD=S.despesas.filter(d=>mesDe(d.data)===mesSel);
+  const vs=todasV.filter(casaV).sort((a,b)=>b.data.localeCompare(a.data)||b.id.localeCompare(a.id));
+  const ds=todasD.filter(casaD).sort((a,b)=>b.data.localeCompare(a.data));
+
+  let x=`<div class="sec-top"><div><h1>Movimento</h1>
+    <p class="sub">O que entrou e o que saiu</p></div>${seletorMes()}</div>`;
+
+  if(!S.servicos.length){
+    x+=`<div class="card" style="margin-top:14px"><div class="vazio"><b>Cadastre um serviço primeiro</b>
+      <p>Sem serviço cadastrado não dá para registrar atendimento.</p>
+      <button class="btn pri" id="ir-serv" style="margin-top:16px">Ir para Serviços</button></div></div>`;
+    el.innerHTML=x; ligarMes(); $('#ir-serv').onclick=()=>ir('servicos'); return;
+  }
+
+  const edV=S.vendas.find(v=>v.id===emEdicao('venda'));
+  x+=`<div class="sec"><div class="card" ${edV?'style="border-color:var(--ac)"':''}>
+    <h2 style="margin-bottom:12px">${edV?'Editar atendimento':'Registrar atendimento'}</h2>
+    <div class="field"><label>Procedimento</label>
+      <select id="f-serv">${S.servicos.map(s=>`<option value="${s.id}" ${edV&&edV.servicoId===s.id?'selected':''}>${esc(s.nome)} · ${s.precoMax?brl(s.preco)+' a '+brl(s.precoMax):brl(s.preco)}</option>`).join('')}</select></div>
+    <div class="grid2">
+      <div class="field"><label>Valor cobrado</label><input id="f-valor" inputmode="decimal" placeholder="0,00" value="${edV?edV.valor:''}"></div>
+      <div class="field"><label>Data</label><input id="f-data" type="date" value="${edV?edV.data:hojeISO()}"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Forma de pagamento</label>
+        <select id="f-forma">${FORMAS.map(f=>`<option value="${f.k}" ${edV&&edV.forma===f.k?'selected':''}>${f.n}</option>`).join('')}</select></div>
+      <div class="field" id="box-parc" style="display:${edV&&edV.forma==='parc'?'':'none'}"><label>Parcelas</label>
+        <select id="f-parc">${Array.from({length:11},(_,i)=>i+2).map(n=>`<option value="${n}" ${edV&&edV.parcelas===n?'selected':''}>${n}x</option>`).join('')}</select></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Pacote de sessões</label>
+        <select id="f-sess">${Array.from({length:12},(_,i)=>i+1).map(n=>
+          `<option value="${n}" ${edV&&(edV.sessoes||1)===n?'selected':''}>${n===1?'Sessão avulsa':n+' sessões'}</option>`).join('')}</select></div>
+      <div class="field"><label>Ir até o cliente (R$ por visita)</label>
+        <input id="f-desloc" inputmode="decimal" placeholder="0,00 = na sala" value="${edV&&edV.desloc?edV.desloc:''}"></div>
+    </div>
+    <div class="field"><label>Cliente</label>
+      <select id="f-cli"><option value="">Sem cadastro</option>
+      ${S.clientes.slice().sort((a,b)=>a.nome.localeCompare(b.nome)).map(c=>`<option value="${c.id}" ${edV&&edV.clienteId===c.id?'selected':''}>${esc(c.nome)}</option>`).join('')}</select></div>
+    <div class="nota" id="previa">Escolha o procedimento e o valor para ver quanto sobra.</div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn pri" id="f-add" style="flex:1">${edV?'Salvar alterações':'Registrar atendimento'}</button>
+      ${edV?'<button class="btn soft" id="f-cancel">Cancelar</button>':''}</div>
+  </div></div>`;
+
+  if(todasV.length+todasD.length>4)
+    x+=`<div class="sec"><input id="x-busca" type="search" placeholder="buscar por procedimento, cliente, descrição, data ou valor" value="${esc(buscaCx)}"></div>`;
+
+  x+=`<div class="sec"><div class="sec-top"><h2>Atendimentos do mês</h2>
+    <span class="pill">${vs.length}${qx&&todasV.length!==vs.length?' de '+todasV.length:''}</span></div><div class="card">`;
+  if(!vs.length){ x+=`<div class="vazio"><b>${qx?'Nada encontrado':'Nenhum atendimento ainda'}</b>
+    <p>${qx?'Tente outro termo.':'Registre o primeiro acima.'}</p></div>` }
+  else vs.forEach(v=>{ const c=conta(v);
+    x+=`<div class="item"><div class="mn"><b>${esc(c.nome)} ${c.sessoes>1?`<span class="pill">pacote ${c.usadas}/${c.sessoes}</span>`:''} ${c.estornado?'<span class="pill bad">estornado</span>':''}</b>
+      <small>${dataBR(v.data)} · ${FORMAS.find(f=>f.k===v.forma)?.n||v.forma}${v.forma==='parc'?' '+v.parcelas+'x':''}${nomeCli(v)?' · '+esc(nomeCli(v)):''}${c.desloc?' · domicílio':''}${c.estornado?' · devolvido '+brl(c.devolvido):''}</small></div>
+      <div class="vr">${brl(c.bruto)}<small class="${c.lucro>=0?'v-ok':'v-bad'}">${c.estornado?'resultado':'sobra'} ${brl(c.lucro)}</small></div>
+      <div class="acts">
+      ${c.restam&&!c.estornado?`<button class="btn sm pri" data-ses-v="${v.id}">Usar sessão</button>`:''}
+      <button class="btn sm soft" data-ed-v="${v.id}">Editar</button>
+      <button class="btn sm danger ic" data-del-v="${v.id}">×</button></div></div>`});
+  x+=`</div></div>`;
+
+  const edD=S.despesas.find(d=>d.id===emEdicao('desp'));
+  x+=`<div class="sec"><div class="card" ${edD?'style="border-color:var(--ac)"':''}>
+    <h2 style="margin-bottom:12px">${edD?'Editar saída':'Registrar saída'}</h2>
+    <div class="grid2">
+      <div class="field"><label>Descrição</label><input id="d-desc" placeholder="aluguel, compra de toxina..." value="${edD?esc(edD.desc||''):''}"></div>
+      <div class="field"><label>Valor</label><input id="d-valor" inputmode="decimal" placeholder="0,00" value="${edD?edD.valor:''}"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Data</label><input id="d-data" type="date" value="${edD?edD.data:hojeISO()}"></div>
+      <div class="field"><label>É compra de produto de qual serviço?</label>
+        <select id="d-serv"><option value="">Não é produto (despesa geral)</option>
+        ${S.servicos.map(s=>`<option value="${s.id}" ${edD&&edD.servicoId===s.id?'selected':''}>${esc(s.nome)}</option>`).join('')}</select></div>
+    </div>
+    <div class="row">
+      <button class="btn ${edD?'pri':'soft'}" id="d-add" style="flex:1">${edD?'Salvar alterações':'Registrar saída'}</button>
+      ${edD?'<button class="btn soft" id="d-cancel">Cancelar</button>':''}</div>
+  </div></div>`;
+
+  x+=`<div class="sec"><div class="sec-top"><h2>Saídas do mês</h2>
+    <span class="pill">${ds.length}${qx&&todasD.length!==ds.length?' de '+todasD.length:''}</span></div><div class="card">`;
+  if(!ds.length){ x+=`<div class="vazio"><b>${qx?'Nada encontrado':'Nenhuma saída registrada'}</b>
+    <p>${qx?'Tente outro termo.':'Aluguel, luz, compra de produto, tudo entra aqui.'}</p></div>` }
+  else ds.forEach(d=>{ const s=serv(d.servicoId);
+    x+=`<div class="item"><div class="mn"><b>${esc(d.desc||'Saída')}</b>
+      <small>${dataBR(d.data)}${s?' · produto de '+esc(s.nome):''}</small></div>
+      <div class="vr v-bad">${brl(-num(d.valor))}</div>
+      <div class="acts"><button class="btn sm soft" data-ed-d="${d.id}">Editar</button>
+      <button class="btn sm danger ic" data-del-d="${d.id}">×</button></div></div>`});
+  x+=`</div></div>`;
+
+  el.innerHTML=x; ligarMes();
+  const bx=$('#x-busca');
+  if(bx)bx.addEventListener('input',()=>{buscaCx=bx.value;const pz=bx.selectionStart;render();
+    const n=$('#x-busca');if(n){n.focus();try{n.setSelectionRange(pz,pz)}catch(e){}}});
+
+  const fs=$('#f-serv'), fv=$('#f-valor'), ff=$('#f-forma'), fp=$('#f-parc'),
+        fn=$('#f-sess'), fd=$('#f-desloc');
+  const sincronizar=()=>{
+    $('#box-parc').style.display = ff.value==='parc'?'':'none';
+    const s=serv(fs.value); if(s&&!fv.value)fv.placeholder=String(s.preco).replace('.',',');
+    const n=parseInt(fn.value)||1;
+    const valor=num(fv.value)||(s?s.preco*n:0);
+    const c=conta({servicoId:fs.value,valor,forma:ff.value,parcelas:fp.value,sessoes:n,desloc:num(fd.value)});
+    $('#previa').innerHTML=`Cobrando <b>${brl(c.bruto)}</b>${n>1?` pelas ${n} sessões (<b>${brl(c.porSessao)}</b> cada)`:''}:
+      maquininha <b>${brl(c.taxa)}</b> (${pct(c.tx)}),
+      produto <b>${brl(c.custo)}</b>${n>1?` (${n}×)`:''}${c.desloc?`, deslocamento <b>${brl(c.desloc)}</b>`:''}${c.comissao?`, comissão <b>${brl(c.comissao)}</b> (${pct(c.cp)})`:''}${c.imposto?`, imposto <b>${brl(c.imposto)}</b>`:''}.
+      Sobra <b class="${c.lucro>=0?'v-ok':'v-bad'}">${brl(c.lucro)}</b> (${pct(c.margem)}).`;
+  };
+  [fs,fv,ff,fp,fn,fd].forEach(e=>{e.addEventListener('input',sincronizar);e.addEventListener('change',sincronizar)});
+  sincronizar();
+
+  $('#f-add').onclick=()=>{
+    const s=serv(fs.value); if(!s)return toast('Escolha um procedimento');
+    const n=parseInt(fn.value)||1;
+    const valor=num(fv.value)||s.preco*n;
+    if(valor<=0)return toast('Informe o valor cobrado');
+    const cid=$('#f-cli').value;
+    const dados={data:$('#f-data').value||hojeISO(),servicoId:s.id,valor,
+      forma:ff.value,parcelas:ff.value==='parc'?parseInt(fp.value):1,
+      sessoes:n,desloc:num(fd.value),
+      clienteId:cid,cliente:cid?(cli(cid)||{}).nome:''};
+    if(edV&&Array.isArray(edV.usadas)&&edV.usadas.length>n)edV.usadas.length=n;
+    mesSel=mesDe(dados.data);
+    if(edV){ Object.assign(edV,dados); salvar(); toast('Atendimento atualizado'); fecharEdicao() }
+    else { S.vendas.push(Object.assign({id:uid(),usadas:n>1?[dados.data]:[]},dados));
+      salvar(); toast(n>1?'Pacote registrado · 1ª sessão marcada':'Atendimento registrado'); render() }
+  };
+  if($('#f-cancel'))$('#f-cancel').onclick=fecharEdicao;
+  document.querySelectorAll('[data-ed-v]').forEach(b=>b.onclick=()=>abrirEdicao('venda',b.dataset.edV));
+  document.querySelectorAll('[data-ses-v]').forEach(b=>b.onclick=()=>usarSessao(b.dataset.sesV));
+  document.querySelectorAll('[data-desfaz-v]').forEach(b=>b.onclick=()=>{
+    const v=S.vendas.find(z=>z.id===b.dataset.desfazV); if(!v)return;
+    if(!confirm('Desfazer o estorno e voltar a contar este atendimento normalmente?'))return;
+    delete v.estorno; salvar(); toast('Estorno desfeito'); render();
+  });
+  document.querySelectorAll('[data-est-v]').forEach(b=>b.onclick=()=>estornar(b.dataset.estV));
+  $('#d-add').onclick=()=>{
+    const v=num($('#d-valor').value); if(v<=0)return toast('Informe o valor da saída');
+    const dados={data:$('#d-data').value||hojeISO(),desc:$('#d-desc').value.trim(),
+      valor:v,servicoId:$('#d-serv').value||''};
+    if(edD){ Object.assign(edD,dados); salvar(); toast('Saída atualizada'); fecharEdicao() }
+    else { S.despesas.push(Object.assign({id:uid()},dados)); salvar(); toast('Saída registrada'); render() }
+  };
+  if($('#d-cancel'))$('#d-cancel').onclick=fecharEdicao;
+  document.querySelectorAll('[data-ed-d]').forEach(b=>b.onclick=()=>abrirEdicao('desp',b.dataset.edD));
+  document.querySelectorAll('[data-del-v]').forEach(b=>b.onclick=()=>{
+    if(!confirm('Excluir este atendimento?'))return;
+    S.vendas=S.vendas.filter(v=>v.id!==b.dataset.delV); salvar(); render(); toast('Excluído')});
+  document.querySelectorAll('[data-del-d]').forEach(b=>b.onclick=()=>{
+    if(!confirm('Excluir esta saída?'))return;
+    S.despesas=S.despesas.filter(d=>d.id!==b.dataset.delD); salvar(); render(); toast('Excluída')});
+};
+
+/* ── pacotes: marcar uma sessão como usada ── */
+function pacotesAbertos(){
+  return S.vendas.filter(v=>!v.estorno&&(parseInt(v.sessoes)||1)>1)
+    .map(v=>({venda:v,c:conta(v),cliente:cli(v.clienteId)}))
+    .filter(p=>p.c.restam>0)
+    .sort((a,b)=>a.venda.data.localeCompare(b.venda.data));
+}
+function usarSessao(id,aoTerminar){
+  const v=S.vendas.find(z=>z.id===id); if(!v)return;
+  const c=conta(v), q=cli(v.clienteId);
+  if(!Array.isArray(v.usadas))v.usadas=[];
+  abrirSheet('Marcar sessão do pacote',
+    `${q?esc(q.nome)+' · ':''}${esc(c.nome)} · ${c.usadas} de ${c.sessoes} já feitas`,
+    `<div class="field"><label>Dia da sessão</label><input id="ps-data" type="date" value="${hojeISO()}"></div>
+     <div class="nota">O pacote já foi pago em ${dataBR(v.data)}, então esta sessão não entra como novo faturamento.
+       Ela só desconta do saldo: ficam <b>${c.restam-1}</b> depois desta.</div>
+     ${c.usadas?`<button class="btn soft full" id="ps-undo" style="margin-top:12px">Desfazer a última sessão marcada</button>`:''}
+     <div class="row" style="margin-top:12px">
+       <button class="btn pri" id="ps-ok" style="flex:1">Marcar sessão</button>
+       <button class="btn soft" id="ps-no">Cancelar</button></div>`,
+    fechar=>{
+      $('#ps-no').onclick=fechar;
+      if($('#ps-undo'))$('#ps-undo').onclick=()=>{
+        v.usadas.pop(); salvar(); fechar(); toast('Sessão desfeita'); render();
+        if(aoTerminar)setTimeout(aoTerminar,240);
+      };
+      $('#ps-ok').onclick=()=>{
+        v.usadas.push($('#ps-data').value||hojeISO());
+        if(v.usadas.length>c.sessoes)v.usadas.length=c.sessoes;
+        salvar(); fechar();
+        toast(c.restam-1<=0?'Pacote concluído':`Sessão marcada · faltam ${c.restam-1}`);
+        render(); if(aoTerminar)setTimeout(aoTerminar,240);
+      };
+    });
+}
+
+/* ── estorno de um atendimento ── */
+function estornar(id,aoTerminar){
+  const v=S.vendas.find(z=>z.id===id); if(!v)return;
+  const base=conta(v), c=cli(v.clienteId);
+  abrirSheet('Cancelar e estornar',`${c?esc(c.nome)+' · ':''}${esc(base.nome)} · ${brl(base.bruto)}`,
+    `<div class="field"><label>Valor devolvido ao cliente</label>
+       <input id="e-valor" inputmode="decimal" value="${base.bruto}"></div>
+     <p class="sub" style="margin:-4px 0 12px">Devolveu só parte? Coloque o valor devolvido. O que ficou retido conta como multa de cancelamento.</p>
+     <div class="card" style="padding:4px 14px;margin-bottom:12px">
+       <div class="ck-l"><label class="sw"><input type="checkbox" id="e-tx"> <span>A maquininha devolveu a taxa</span></label>
+         <small>Na maioria das maquininhas a taxa <b>não</b> volta num estorno.</small></div>
+       <div class="ck-l"><label class="sw"><input type="checkbox" id="e-prod" checked> <span>O produto já tinha sido usado</span></label>
+         <small>Se o procedimento foi feito, o insumo não volta para o estoque.</small></div>
+       <div class="ck-l"><label class="sw"><input type="checkbox" id="e-com"> <span>A comissão já foi paga</span></label>
+         <small>Se já caiu para quem atendeu, não dá para recuperar.</small></div>
+       <div class="ck-l"><label class="sw"><input type="checkbox" id="e-imp" checked> <span>O imposto é recuperável</span></label>
+         <small>Costuma ser, quando o estorno acontece no mesmo mês.</small></div>
+     </div>
+     <div class="field"><label>Motivo (opcional)</label>
+       <input id="e-motivo" placeholder="desistiu, reação alérgica, remarcou..."></div>
+     <div class="nota" id="e-previa"></div>
+     <div class="row" style="margin-top:14px">
+       <button class="btn pri" id="e-ok" style="flex:1">Confirmar estorno</button>
+       <button class="btn soft" id="e-no">Cancelar</button></div>`,
+    fechar=>{
+      const campos=['#e-valor','#e-tx','#e-prod','#e-com','#e-imp'].map(s=>$(s));
+      const monta=()=>({valor:num($('#e-valor').value),taxaVolta:$('#e-tx').checked,
+        produtoUsado:$('#e-prod').checked,comissaoPaga:$('#e-com').checked,impostoVolta:$('#e-imp').checked});
+      const atualiza=()=>{
+        const k=conta(Object.assign({},v,{estorno:monta()}));
+        const perda=base.lucro-k.lucro;
+        $('#e-previa').innerHTML=`Você devolve <b>${brl(k.devolvido)}</b> e recupera <b>${brl(k.recuperado)}</b>
+          de taxa, produto, comissão ou imposto.<br>
+          Este atendimento, que ia deixar <b>${brl(base.lucro)}</b>, passa a deixar
+          <b class="${k.lucro>=0?'v-ok':'v-bad'}">${brl(k.lucro)}</b>
+          — uma perda de <b class="v-bad">${brl(perda)}</b>.`;
+      };
+      campos.forEach(e=>{e.addEventListener('input',atualiza);e.addEventListener('change',atualiza)});
+      atualiza();
+      $('#e-no').onclick=fechar;
+      $('#e-ok').onclick=()=>{
+        const d=monta(); if(d.valor<=0)return toast('Informe o valor devolvido');
+        v.estorno=Object.assign(d,{data:hojeISO(),motivo:$('#e-motivo').value.trim()});
+        salvar(); fechar(); toast('Estorno registrado'); render();
+        if(aoTerminar)setTimeout(aoTerminar,240);
+      };
+    });
+}
+
+/* ══════════ SERVIÇOS + TAXAS ══════════ */
+let buscaServ='';
+T.servicos=function(el){
+  let x=`<h1>Serviços</h1><p class="sub">Preço, custo de produto e as taxas da maquininha</p>`;
+
+  const ed=serv(emEdicao('serv'));
+  x+=`<div class="sec"><div class="card" ${ed?'style="border-color:var(--ac)"':''}>
+    <h2 style="margin-bottom:12px">${ed?'Editar serviço':'Novo serviço'}</h2>
+    <div class="field"><label>Nome</label><input id="s-nome" placeholder="Botox, limpeza de pele, laser..." value="${ed?esc(ed.nome):''}"></div>
+    <div class="grid3">
+      <div class="field"><label>Preço a partir de</label><input id="s-preco" inputmode="decimal" placeholder="0,00" value="${ed?ed.preco:''}"></div>
+      <div class="field"><label>Até (opcional)</label><input id="s-precomax" inputmode="decimal" placeholder="mesmo preço" value="${ed&&ed.precoMax?ed.precoMax:''}"></div>
+      <div class="field"><label>Custo de produto</label><input id="s-custo" inputmode="decimal" placeholder="0,00" value="${ed?ed.custo:''}"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Comissão da equipe (%)</label><input id="s-com" inputmode="decimal" placeholder="0" value="${ed?ed.comissao:''}"></div>
+      <div class="field"><label>Retorno em (dias)</label><input id="s-ret" inputmode="numeric" placeholder="60" value="${ed?(ed.retorno||''):''}"></div>
+    </div>
+    ${ed?'':`<div class="nota">Se o preço varia conforme o protocolo, preencha os dois campos: o sistema sugere o menor na hora do atendimento e você ajusta.<br><br>
+      O <b>custo de produto</b> é o que sai do seu bolso por atendimento: toxina, agulha, descartável, creme.
+      É ele que permite saber o lucro real e separar o dinheiro da reposição.</div>`}
+    <div class="row" style="margin-top:12px">
+      <button class="btn pri" id="s-add" style="flex:1">${ed?'Salvar alterações':'Adicionar serviço'}</button>
+      ${ed?'<button class="btn soft" id="s-cancel">Cancelar</button>':''}</div>
+  </div></div>`;
+
+  const qs=buscaServ.trim().toLowerCase();
+  const listaS=S.servicos.filter(s=>!qs||s.nome.toLowerCase().includes(qs));
+  x+=`<div class="sec"><div class="sec-top"><h2>Cadastrados</h2><span class="pill">${listaS.length}${qs?' de '+S.servicos.length:''}</span></div>`;
+  if(S.servicos.length>4)x+=`<input id="s-busca" type="search" placeholder="buscar procedimento" value="${esc(buscaServ)}" style="margin-bottom:10px">`;
+  x+=`<div class="card">`;
+  if(!S.servicos.length){ x+=`<div class="vazio"><b>Nenhum serviço ainda</b><p>Cadastre o primeiro acima, ou carregue o exemplo no Painel.</p></div>` }
+  else if(!listaS.length){ x+=`<div class="vazio"><b>Nenhum procedimento encontrado</b><p>Tente outro nome.</p></div>` }
+  else{
+    listaS.forEach(s=>{ const c=conta({servicoId:s.id,valor:s.preco,forma:'pix',parcelas:1});
+      x+=`<div class="item"><div class="mn"><b>${esc(s.nome)}</b>
+        <small>${s.precoMax?brl(s.preco)+' a '+brl(s.precoMax):brl(s.preco)} · produto ${brl(s.custo)}${s.comissao?' · comissão '+pct(s.comissao):''}${s.retorno?' · retorno em '+s.retorno+' dias':''}</small></div>
+        <div class="vr"><span class="${c.lucro>=0?'v-ok':'v-bad'}">${brl(c.lucro)}</span><small>sobra no Pix · ${pct(c.margem)}</small></div>
+        <div class="acts"><button class="btn sm soft" data-ed-s="${s.id}">Editar</button>
+          <button class="btn sm danger ic" data-del-s="${s.id}">×</button></div></div>`});
+    x+=`<p class="sub" style="margin-top:12px">A sobra já desconta produto, comissão e imposto, no melhor cenário de pagamento (Pix). No cartão ela cai.</p>`;
+  }
+  x+=`</div></div>`;
+
+  const t=S.taxas;
+  x+=`<div class="sec"><div class="card">
+    <h2 style="margin-bottom:4px">Taxas e encargos</h2>
+    <p class="sub" style="margin-bottom:12px">As taxas da sua maquininha e o imposto sobre o faturamento. São usados em toda venda e no simulador.</p>
+    <div class="grid2">
+      <div class="field"><label>Imposto sobre faturamento (%)</label>
+        <input id="t-imp" inputmode="decimal" value="${S.imposto}"></div>
+      <div class="field"><label>Custo de ir até o cliente (R$)</label>
+        <input id="t-dom" inputmode="decimal" placeholder="0,00" value="${S.custoDomicilio||''}"></div>
+    </div>
+    <p class="sub" style="margin:-4px 0 12px">No atendimento em domicílio, some o que você gasta por visita: combustível, aplicativo, estacionamento, pedágio. Entra como custo e vira o valor sugerido na hora de registrar.</p>
+    <div class="grid3">
+      <div class="field"><label>Pix (%)</label><input id="t-pix" inputmode="decimal" value="${t.pix}"></div>
+      <div class="field"><label>Dinheiro (%)</label><input id="t-din" inputmode="decimal" value="${t.dinheiro}"></div>
+      <div class="field"><label>Débito (%)</label><input id="t-deb" inputmode="decimal" value="${t.debito}"></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label>Crédito à vista (%)</label><input id="t-c1" inputmode="decimal" value="${t.cred1}"></div>
+      <div class="field"><label>Crédito 2x (%)</label><input id="t-parc" inputmode="decimal" value="${t.parc}"></div>
+      <div class="field"><label>Acréscimo por parcela (%)</label><input id="t-extra" inputmode="decimal" value="${t.parcExtra}"></div>
+    </div>
+    <div class="nota">Exemplo: 2x custa ${pct(num(t.parc))} e cada parcela a mais soma ${pct(num(t.parcExtra))}.
+      Então 10x fica em <b>${pct(num(t.parc)+num(t.parcExtra)*8)}</b>.</div>
+    <button class="btn pri full" id="t-save" style="margin-top:12px">Salvar taxas e encargos</button>
+  </div></div>`;
+
+  el.innerHTML=x;
+  $('#s-add').onclick=()=>{
+    const n=$('#s-nome').value.trim(); if(!n)return toast('Dê um nome ao serviço');
+    const p=num($('#s-preco').value); if(p<=0)return toast('Informe o preço');
+    const pmax=num($('#s-precomax').value);
+    const dados={nome:n,preco:p,precoMax:pmax>p?pmax:0,custo:num($('#s-custo').value),
+      comissao:num($('#s-com').value),retorno:parseInt($('#s-ret').value)||0};
+    if(ed){ Object.assign(ed,dados); salvar(); toast('Serviço atualizado'); fecharEdicao() }
+    else { S.servicos.push(Object.assign({id:uid()},dados)); salvar(); toast('Serviço adicionado'); render() }
+  };
+  if($('#s-cancel'))$('#s-cancel').onclick=fecharEdicao;
+  document.querySelectorAll('[data-ed-s]').forEach(b=>b.onclick=()=>abrirEdicao('serv',b.dataset.edS));
+  const bsv=$('#s-busca');
+  if(bsv)bsv.addEventListener('input',()=>{buscaServ=bsv.value;const p=bsv.selectionStart;render();
+    const n=$('#s-busca');if(n){n.focus();try{n.setSelectionRange(p,p)}catch(e){}}});
+  document.querySelectorAll('[data-del-s]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.delS;
+    const usado=S.vendas.some(v=>v.servicoId===id);
+    if(!confirm(usado?'Esse serviço já tem atendimentos registrados. Excluir mesmo assim? O histórico continua, mas sem o nome.':'Excluir este serviço?'))return;
+    S.servicos=S.servicos.filter(s=>s.id!==id); salvar(); render(); toast('Serviço excluído')});
+  $('#t-save').onclick=()=>{
+    S.imposto=num($('#t-imp').value);
+    S.custoDomicilio=num($('#t-dom').value);
+    S.taxas={pix:num($('#t-pix').value),dinheiro:num($('#t-din').value),debito:num($('#t-deb').value),
+      cred1:num($('#t-c1').value),parc:num($('#t-parc').value),parcExtra:num($('#t-extra').value)};
+    salvar(); toast('Taxas e encargos salvos'); render();
+  };
+};
+
+/* ══════════ SIMULADOR ══════════ */
+T.sim=function(el){
+  let x=`<h1>Simulador</h1><p class="sub">Antes de fechar o pacote, veja quanto sobra em cada forma de pagamento</p>`;
+  if(!S.servicos.length){
+    x+=`<div class="card" style="margin-top:14px"><div class="vazio"><b>Cadastre um serviço primeiro</b>
+      <p>O simulador usa o custo de produto para calcular o lucro.</p></div></div>`;
+    el.innerHTML=x; return;
+  }
+  x+=`<div class="sec"><div class="card">
+    <div class="grid2">
+      <div class="field"><label>Procedimento</label>
+        <select id="x-serv">${S.servicos.map(s=>`<option value="${s.id}">${esc(s.nome)}${s.precoMax?' · '+brl(s.preco)+' a '+brl(s.precoMax):''}</option>`).join('')}</select></div>
+      <div class="field"><label>Valor a cobrar</label><input id="x-valor" inputmode="decimal" placeholder="usa o preço do serviço"></div>
+    </div>
+  </div></div>
+  <div class="sec" id="x-res"></div>`;
+  el.innerHTML=x;
+
+  const calc=()=>{
+    const s=serv($('#x-serv').value); if(!s)return;
+    const valor=num($('#x-valor').value)||s.preco;
+    const linhas=[{k:'pix',n:'Pix',p:1},{k:'dinheiro',n:'Dinheiro',p:1},{k:'debito',n:'Débito',p:1},
+      {k:'cred1',n:'Crédito à vista',p:1},{k:'parc',n:'Crédito 2x',p:2},{k:'parc',n:'Crédito 3x',p:3},
+      {k:'parc',n:'Crédito 6x',p:6},{k:'parc',n:'Crédito 10x',p:10},{k:'parc',n:'Crédito 12x',p:12}];
+    const dados=linhas.map(l=>Object.assign({n:l.n,p:l.p},conta({servicoId:s.id,valor,forma:l.k,parcelas:l.p})));
+    const melhor=dados.reduce((a,b)=>b.lucro>a.lucro?b:a);
+    const pior=dados.reduce((a,b)=>b.lucro<a.lucro?b:a);
+    const maxL=Math.max(...dados.map(d=>Math.abs(d.lucro)))||1;
+    let h=`<div class="card">
+      <h2>${esc(s.nome)} por ${brl(valor)}</h2>
+      <p class="sub" style="margin-bottom:14px">produto ${brl(s.custo)}${s.comissao?` · comissão ${pct(s.comissao)}`:''}${S.imposto?` · imposto ${pct(num(S.imposto))}`:''}</p>`;
+    dados.forEach(d=>{
+      const dest=d===melhor?'<span class="pill ok">melhor</span>':(d===pior?'<span class="pill bad">pior</span>':'');
+      h+=`<div class="simrow">
+        <div class="simtop"><b>${d.n}</b>${dest}
+          <b class="val ${d.lucro>=0?'v-ok':'v-bad'}">${brl(d.lucro)}</b></div>
+        <div class="simsub"><span>taxa ${pct(d.tx)} · ${brl(d.taxa)}</span>
+          <span>recebe ${brl(d.liquido)} · ${pct(d.margem)}</span></div>
+        <div class="bar"><i style="width:${Math.abs(d.lucro)/maxL*100}%"></i></div></div>`});
+    h+=`<div class="nota" style="margin-top:16px">A diferença entre <b>${melhor.n}</b> e <b>${pior.n}</b>
+        é de <b>${brl(melhor.lucro-pior.lucro)}</b> neste atendimento.
+        Para empatar com o Pix cobrando em 12x, o preço teria que ser
+        <b>${brl(valor*(1+(dados[8].tx-dados[0].tx)/100))}</b>.</div>
+    </div>`;
+    $('#x-res').innerHTML=h;
+  };
+  $('#x-serv').onchange=calc; $('#x-valor').addEventListener('input',calc); calc();
+};
+
+/* ══════════ RESERVAS ══════════ */
+T.reserva=function(el){
+  const res=reservas(mesSel).sort((a,b)=>b.falta-a.falta);
+  const r=resumo(mesSel);
+  const total=res.reduce((a,b)=>a+b.reservar,0), gasto=res.reduce((a,b)=>a+b.gasto,0), falta=res.reduce((a,b)=>a+b.falta,0);
+  const livre=r.lucroBruto-r.despesas;
+
+  let x=`<div class="sec-top"><div><h1>Reservas</h1>
+    <p class="sub">O dinheiro que não é seu: é da reposição</p></div>${seletorMes()}</div>`;
+
+  x+=`<div class="stats" style="margin-top:14px">
+    <div class="stat"><span class="lb">Produto consumido</span><span class="vl">${brl(total)}</span>
+      <span class="ex">no mês inteiro</span></div>
+    <div class="stat"><span class="lb">Já comprado</span><span class="vl v-ok">${brl(gasto)}</span>
+      <span class="ex">registrado nas saídas</span></div>
+    <div class="stat"><span class="lb">Ainda a separar</span><span class="vl ${falta>0?'v-ac':'v-ok'}">${brl(falta)}</span>
+      <span class="ex">${falta>0?'guarde antes de retirar':'nada pendente'}</span></div>
+    <div class="stat"><span class="lb">Livre para retirar</span>
+      <span class="vl ${livre-falta>=0?'v-ok':'v-bad'}">${brl(livre-falta)}</span>
+      <span class="ex">depois de tudo separado</span></div>
+  </div>`;
+
+  x+=`<div class="sec"><div class="card">`;
+  if(!res.length){ x+=`<div class="vazio"><b>Sem movimento neste mês</b><p>As reservas aparecem conforme você registra atendimentos.</p></div>` }
+  else res.forEach(a=>{
+    const p=a.reservar?Math.min(100,a.gasto/a.reservar*100):100;
+    x+=`<div style="padding:13px 0;border-bottom:1px solid var(--line)">
+      <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:8px">
+        <div><b style="font-size:14.5px">${esc(a.nome)}</b>
+          <div style="font-size:12.5px;color:var(--tx3);font-weight:500">${a.qtd} atendimento(s)</div></div>
+        <div style="text-align:right">
+          <b style="font-size:14.5px" class="${a.falta>0?'v-ac':'v-ok'}">${a.falta>0?brl(a.falta)+' a separar':'em dia'}</b>
+          <div style="font-size:12px;color:var(--tx3);font-weight:600">${brl(a.gasto)} de ${brl(a.reservar)}</div></div>
+      </div><div class="bar"><i style="width:${p}%"></i></div></div>`});
+  x+=`</div></div>`;
+
+  x+=`<div class="sec"><div class="nota">
+    <b>Como ler esta tela.</b> Cada atendimento consome produto. O valor desse produto não é lucro: ele precisa voltar
+    para o estoque. Enquanto você não registra a compra nas saídas, ele aparece aqui como <b>a separar</b>.
+    Assim o mês não fecha com dinheiro na conta e sem toxina na geladeira.
+  </div></div>`;
+
+  el.innerHTML=x; ligarMes();
+};
+
+/* ══════════ AGENDA ══════════ */
+let agDia='', buscaAg='', buscaRet='';
+T.agenda=function(el){
+  const hoje=hojeISO();
+  if(!agDia)agDia=hoje;
+  const qa=buscaAg.trim().toLowerCase();
+  const casaAg=a=>{ const s=serv(a.servicoId), c=cli(a.clienteId);
+    return (c&&c.nome.toLowerCase().includes(qa))||(s&&s.nome.toLowerCase().includes(qa))
+      ||dataBR(a.data).includes(qa)||(a.obs||'').toLowerCase().includes(qa) };
+  const ordena=(a,b)=>a.data.localeCompare(b.data)||(a.hora||'').localeCompare(b.hora||'');
+  const achados=qa?S.agenda.filter(a=>a.status==='marcado'&&casaAg(a)).sort(ordena):[];
+  const doDia=S.agenda.filter(a=>a.data===agDia).sort((a,b)=>(a.hora||'').localeCompare(b.hora||''));
+  const atras=S.agenda.filter(a=>a.status==='marcado'&&a.data<hoje).sort((a,b)=>b.data.localeCompare(a.data));
+  const qr=buscaRet.trim().toLowerCase();
+  const ret=retornos().filter(r=>!qr||r.cliente.nome.toLowerCase().includes(qr)||r.servico.nome.toLowerCase().includes(qr));
+
+  let x=`<h1>Agenda</h1><p class="sub">Quem vem, quem faltou e quem está na hora de voltar</p>`;
+
+  if(!S.servicos.length){
+    x+=`<div class="card" style="margin-top:14px"><div class="vazio"><b>Cadastre um serviço primeiro</b>
+      <p>A agenda usa os serviços para calcular valor e retorno.</p></div></div>`;
+    el.innerHTML=x; return;
+  }
+
+  const ed=S.agenda.find(a=>a.id===emEdicao('ag'));
+  x+=`<div class="sec"><div class="card" ${ed?'style="border-color:var(--ac)"':''}>
+    <h2 style="margin-bottom:12px">${ed?'Editar agendamento':'Novo agendamento'}</h2>
+    <div class="grid2">
+      <div class="field"><label>Cliente</label>
+        <select id="a-cli"><option value="">Sem cadastro</option>
+        ${S.clientes.slice().sort((a,b)=>a.nome.localeCompare(b.nome)).map(c=>`<option value="${c.id}" ${ed&&ed.clienteId===c.id?'selected':''}>${esc(c.nome)}</option>`).join('')}</select></div>
+      <div class="field"><label>Procedimento</label>
+        <select id="a-serv">${S.servicos.map(s=>`<option value="${s.id}" ${ed&&ed.servicoId===s.id?'selected':''}>${esc(s.nome)}</option>`).join('')}</select></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Data</label><input id="a-data" type="date" value="${ed?ed.data:hoje}"></div>
+      <div class="field"><label>Hora</label><input id="a-hora" type="time" value="${ed?(ed.hora||'09:00'):'09:00'}"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Observação (opcional)</label><input id="a-obs" placeholder="retorno, pacote, primeira sessão..." value="${ed?esc(ed.obs||''):''}"></div>
+      <div class="field"><label>Situação</label><select id="a-st">
+        ${[['marcado','Marcado'],['concluido','Atendido'],['faltou','Faltou'],['cancelado','Cancelado pelo cliente']].map(o=>
+          `<option value="${o[0]}" ${ed&&ed.status===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>
+    </div>
+    <div class="row">
+      <button class="btn pri" id="a-add" style="flex:1">${ed?'Salvar alterações':'Agendar'}</button>
+      ${ed?'<button class="btn soft" id="a-cancel">Cancelar</button>':''}</div>
+  </div></div>`;
+
+  if(atras.length){
+    x+=`<div class="sec"><div class="sec-top"><h2>Atrasados</h2><span class="pill war">${atras.length}</span></div><div class="card">`;
+    atras.forEach(a=>x+=linhaAg(a,true));
+    x+=`</div></div>`;
+  }
+
+  x+=`<div class="sec"><input id="ag-busca" type="search" placeholder="buscar agendamento por cliente, procedimento ou data" value="${esc(buscaAg)}"></div>`;
+
+  if(qa){
+    x+=`<div class="sec"><div class="sec-top"><h2>Resultados da busca</h2><span class="pill">${achados.length}</span></div><div class="card">`;
+    if(!achados.length){ x+=`<div class="vazio"><b>Nada encontrado</b><p>Tente outro nome ou data.</p></div>` }
+    else achados.forEach(a=>{ x+=`<p class="eyebrow" style="margin:12px 0 0">${dataBR(a.data)} · ${diaSemana(a.data)}</p>`+linhaAg(a,false) });
+    x+=`</div></div>`;
+  }else{
+    const marcadosDia=doDia.filter(a=>a.status==='marcado');
+    x+=`<div class="sec"><div class="sec-top"><h2>Dia ${dataBR(agDia)} · ${diaSemana(agDia)}${agDia===hoje?' · hoje':''}</h2>
+      <span class="pill">${marcadosDia.length}</span></div>
+      <div class="row" style="margin-bottom:10px;flex-wrap:nowrap">
+        <button class="btn soft" id="ag-ant" aria-label="Dia anterior">←</button>
+        <input id="ag-data" type="date" value="${agDia}" style="flex:1">
+        <button class="btn soft" id="ag-prox" aria-label="Próximo dia">→</button>
+        ${agDia!==hoje?'<button class="btn soft" id="ag-hoje">Hoje</button>':''}
+      </div><div class="card">`;
+    if(!doDia.length){ x+=`<div class="vazio"><b>Nenhum horário neste dia</b><p>Use as setas para ver outro dia ou agende acima.</p></div>` }
+    else doDia.forEach(a=>{ x+=linhaAg(a,false) });
+    x+=`</div></div>`;
+  }
+
+  x+=`<div class="sec"><div class="sec-top"><h2>Hora de chamar de volta</h2><span class="pill ${ret.length?'ac':''}">${ret.length}</span></div>
+    <input id="ret-busca" type="search" placeholder="buscar por cliente ou procedimento" value="${esc(buscaRet)}" style="margin-bottom:10px">
+    <div class="card">`;
+  if(!ret.length){ x+=`<div class="vazio"><b>${qr?'Nada encontrado':'Ninguém em atraso'}</b><p>${qr?'Tente outro nome.':'Quando um cliente passar do intervalo de retorno do procedimento, ele aparece aqui.'}</p></div>` }
+  else ret.slice(0,25).forEach(r=>{
+    const msg=`Oi, ${r.cliente.nome.split(' ')[0]}! Tudo bem? Já faz ${diasEntre(r.ultimo,hoje)} dias desde a sua última sessão de ${r.servico.nome}. Quer que eu reserve um horário para você?`;
+    const l=zap(r.cliente.tel,msg);
+    x+=`<div class="item"><div class="mn"><b>${esc(r.cliente.nome)}</b>
+      <small>${esc(r.servico.nome)} · última em ${dataBR(r.ultimo)} · ${r.atraso===0?'vence hoje':r.atraso+' dia(s) de atraso'}</small></div>
+      <div class="acts">${l?`<a class="btn sm soft" href="${l}" target="_blank" rel="noopener">Chamar no WhatsApp</a>`:'<span class="pill">sem telefone</span>'}</div></div>`});
+  x+=`</div></div>`;
+
+  el.innerHTML=x;
+  $('#a-add').onclick=()=>{
+    const dados={data:$('#a-data').value||hoje,hora:$('#a-hora').value||'',
+      clienteId:$('#a-cli').value,servicoId:$('#a-serv').value,obs:$('#a-obs').value.trim(),
+      status:ed?$('#a-st').value:'marcado'};
+    if(ed){ Object.assign(ed,dados); salvar(); toast('Agendamento atualizado'); fecharEdicao() }
+    else { S.agenda.push(Object.assign({id:uid()},dados)); salvar(); toast('Agendado'); render() }
+  };
+  if($('#a-cancel'))$('#a-cancel').onclick=fecharEdicao;
+  document.querySelectorAll('[data-ed-a]').forEach(b=>b.onclick=()=>abrirEdicao('ag',b.dataset.edA));
+  const foco=(sel,fn)=>{const e=$(sel); if(!e)return;
+    e.addEventListener('input',()=>{const p=e.selectionStart;fn(e.value);render();
+      const n=$(sel);if(n){n.focus();try{n.setSelectionRange(p,p)}catch(err){}}})};
+  foco('#ag-busca',v=>buscaAg=v);
+  foco('#ret-busca',v=>buscaRet=v);
+  if($('#ag-data'))$('#ag-data').onchange=()=>{agDia=$('#ag-data').value||hoje;render()};
+  if($('#ag-ant'))$('#ag-ant').onclick=()=>{agDia=somaDias(agDia,-1);render()};
+  if($('#ag-prox'))$('#ag-prox').onclick=()=>{agDia=somaDias(agDia,1);render()};
+  if($('#ag-hoje'))$('#ag-hoje').onclick=()=>{agDia=hoje;render()};
+  document.querySelectorAll('[data-ag]').forEach(b=>b.onclick=()=>{
+    const a=S.agenda.find(z=>z.id===b.dataset.ag); if(!a)return;
+    const acao=b.dataset.acao;
+    if(acao==='faltou'){ a.status='faltou'; salvar(); toast('Marcado como falta'); return render() }
+    if(acao==='excluir'){ if(!confirm('Excluir este agendamento?'))return;
+      S.agenda=S.agenda.filter(z=>z.id!==a.id); salvar(); render(); return toast('Excluído') }
+    /* concluir: vira venda, pela folha deslizante */
+    const s=serv(a.servicoId); if(!s)return toast('Serviço não existe mais');
+    const c=cli(a.clienteId);
+    abrirSheet('Fechar atendimento', `${c?esc(c.nome)+' · ':''}${esc(s.nome)}`,
+      `<div class="field"><label>Valor cobrado</label>
+         <input id="k-valor" inputmode="decimal" value="${s.preco}"></div>
+       <div class="grid2">
+         <div class="field"><label>Forma de pagamento</label>
+           <select id="k-forma">${FORMAS.map(f=>`<option value="${f.k}">${f.n}</option>`).join('')}</select></div>
+         <div class="field" id="k-boxparc" style="display:none"><label>Parcelas</label>
+           <select id="k-parc">${Array.from({length:11},(_,i)=>i+2).map(n=>`<option value="${n}">${n}x</option>`).join('')}</select></div>
+       </div>
+       <div class="nota" id="k-previa"></div>
+       <div class="row" style="margin-top:14px">
+         <button class="btn pri" id="k-ok" style="flex:1">Confirmar e lançar no caixa</button>
+         <button class="btn soft" id="k-no">Cancelar</button></div>`,
+      fechar=>{
+        const kv=$('#k-valor'), kf=$('#k-forma'), kp=$('#k-parc');
+        const atualiza=()=>{
+          $('#k-boxparc').style.display = kf.value==='parc'?'':'none';
+          const k=conta({servicoId:s.id,valor:num(kv.value),forma:kf.value,parcelas:kp.value});
+          $('#k-previa').innerHTML=`Maquininha <b>${brl(k.taxa)}</b> (${pct(k.tx)}), produto <b>${brl(k.custo)}</b>${k.comissao?`, comissão <b>${brl(k.comissao)}</b>`:''}${k.imposto?`, imposto <b>${brl(k.imposto)}</b>`:''}.
+            Sobra <b class="${k.lucro>=0?'v-ok':'v-bad'}">${brl(k.lucro)}</b>.`;
+        };
+        [kv,kf,kp].forEach(e=>{e.addEventListener('input',atualiza);e.addEventListener('change',atualiza)});
+        atualiza();
+        $('#k-no').onclick=fechar;
+        $('#k-ok').onclick=()=>{
+          const valor=num(kv.value); if(valor<=0)return toast('Informe o valor cobrado');
+          S.vendas.push({id:uid(),data:a.data,servicoId:s.id,valor,
+            forma:kf.value,parcelas:kf.value==='parc'?parseInt(kp.value):1,
+            clienteId:a.clienteId,cliente:nomeCli(a)});
+          a.status='concluido'; salvar(); fechar();
+          toast('Lançado no caixa'); render();
+        };
+      });
+  });
+};
+function linhaAg(a,atrasado){
+  const s=serv(a.servicoId), c=cli(a.clienteId);
+  const st={concluido:'<span class="pill ok">atendido</span>',faltou:'<span class="pill war">faltou</span>',
+    cancelado:'<span class="pill bad">cancelado</span>'}[a.status]||'';
+  if(a.status!=='marcado')
+    return `<div class="item" style="opacity:.62"><div class="mn">
+      <b>${c?esc(c.nome):'Sem cadastro'} ${st}</b>
+      <small>${a.hora?'<b>'+a.hora+'</b> · ':''}${s?esc(s.nome):'serviço removido'}</small></div>
+      <div class="acts"><button class="btn sm soft" data-ed-a="${a.id}">Editar</button>
+      <button class="btn sm danger ic" data-ag="${a.id}" data-acao="excluir">×</button></div></div>`;
+  return `<div class="item"><div class="mn">
+    <b>${c?esc(c.nome):'Sem cadastro'}</b>
+    <small>${a.hora?'<b>'+a.hora+'</b> · ':''}${s?esc(s.nome):'serviço removido'}${atrasado?' · '+dataBR(a.data):''}${a.obs?' · '+esc(a.obs):''}</small></div>
+    <div class="acts">
+      <button class="btn sm pri" data-ag="${a.id}" data-acao="concluir">Atendeu</button>
+      <button class="btn sm soft" data-ag="${a.id}" data-acao="faltou">Faltou</button>
+      <button class="btn sm soft" data-ed-a="${a.id}">Editar</button>
+      <button class="btn sm danger ic" data-ag="${a.id}" data-acao="excluir">×</button></div></div>`;
+}
+
+/* ══════════ CLIENTES ══════════ */
+let buscaCli='';
+T.clientes=function(el){
+  const q=buscaCli.trim().toLowerCase(), qn=soNum(buscaCli);
+  const lista=S.clientes.slice()
+    .filter(c=>!q||c.nome.toLowerCase().includes(q)||(c.email||'').toLowerCase().includes(q)
+      ||(qn.length>=3&&soNum(c.tel).includes(qn)))
+    .map(c=>{
+      const vs=S.vendas.filter(v=>v.clienteId===c.id);
+      const total=vs.reduce((a,v)=>a+num(v.valor),0);
+      const lucro=vs.reduce((a,v)=>a+conta(v).lucro,0);
+      const ult=vs.reduce((a,v)=>v.data>a?v.data:a,'');
+      return {c,qtd:vs.length,total,lucro,ult};
+    }).sort((a,b)=>b.total-a.total);
+
+  let x=`<h1>Clientes</h1><p class="sub">${S.clientes.length} cadastrado(s) · quem mais traz dinheiro para a clínica</p>`;
+
+  const ed=cli(emEdicao('cli'));
+  x+=`<div class="sec"><div class="card" ${ed?'style="border-color:var(--ac)"':''}>
+    <h2 style="margin-bottom:12px">${ed?'Editar cliente':'Novo cliente'}</h2>
+    <div class="grid2">
+      <div class="field"><label>Nome</label><input id="c-nome" placeholder="nome completo" value="${ed?esc(ed.nome):''}"></div>
+      <div class="field"><label>WhatsApp</label><input id="c-tel" inputmode="tel" placeholder="(11) 90000-0000" value="${ed?esc(ed.tel):''}"></div>
+    </div>
+    <div class="field"><label>E-mail</label><input id="c-email" type="email" inputmode="email" autocomplete="email"
+      placeholder="nome@email.com" value="${ed?esc(ed.email||''):''}"></div>
+    <div class="grid2">
+      <div class="field"><label>Aniversário (opcional)</label><input id="c-nasc" type="date" value="${ed?esc(ed.nasc||''):''}"></div>
+      <div class="field"><label>Observação</label><input id="c-obs" placeholder="alergia, preferência, indicação..." value="${ed?esc(ed.obs||''):''}"></div>
+    </div>
+    <div class="row">
+      <button class="btn pri" id="c-add" style="flex:1">${ed?'Salvar alterações':'Cadastrar cliente'}</button>
+      ${ed?'<button class="btn soft" id="c-cancel">Cancelar</button>':''}</div>
+  </div></div>`;
+
+  if(S.clientes.length){
+    x+=`<div class="sec"><input id="c-busca" type="search" placeholder="buscar por nome ou telefone" value="${esc(buscaCli)}"></div>`;
+  }
+
+  x+=`<div class="sec"><div class="card">`;
+  if(!lista.length){ x+=`<div class="vazio"><b>${S.clientes.length?'Ninguém encontrado':'Nenhum cliente ainda'}</b>
+    <p>${S.clientes.length?'Tente outro nome.':'Cadastre o primeiro acima. Depois dá para ligar cada atendimento a ele.'}</p></div>` }
+  else lista.forEach(i=>{
+    const l=zap(i.c.tel,`Oi, ${i.c.nome.split(' ')[0]}! Tudo bem?`);
+    x+=`<div class="item"><div class="mn"><b>${esc(i.c.nome)}</b>
+      <small>${i.qtd?`${i.qtd} atendimento(s) · última em ${dataBR(i.ult)}`:'ainda sem atendimento'}${i.c.obs?' · '+esc(i.c.obs):''}</small></div>
+      <div class="vr">${brl(i.total)}<small class="${i.lucro>=0?'v-ok':'v-bad'}">sobrou ${brl(i.lucro)}</small></div>
+      <div class="acts">
+        <button class="btn sm pri" data-ver-c="${i.c.id}">Histórico</button>
+        ${l?`<a class="btn sm soft" href="${l}" target="_blank" rel="noopener">WhatsApp</a>`:''}
+        <button class="btn sm soft" data-ed-c="${i.c.id}">Editar</button>
+        <button class="btn sm danger ic" data-del-c="${i.c.id}">×</button></div></div>`});
+  x+=`</div></div>`;
+
+  el.innerHTML=x;
+  $('#c-add').onclick=()=>{
+    const n=$('#c-nome').value.trim(); if(!n)return toast('Informe o nome');
+    const dados={nome:n,tel:$('#c-tel').value.trim(),email:$('#c-email').value.trim(),
+      nasc:$('#c-nasc').value,obs:$('#c-obs').value.trim()};
+    if(ed){ Object.assign(ed,dados);
+      S.vendas.forEach(v=>{if(v.clienteId===ed.id)v.cliente=ed.nome});
+      salvar(); toast('Cliente atualizado'); fecharEdicao() }
+    else { S.clientes.push(Object.assign({id:uid()},dados)); salvar(); toast('Cliente cadastrado'); render() }
+  };
+  if($('#c-cancel'))$('#c-cancel').onclick=fecharEdicao;
+  document.querySelectorAll('[data-ed-c]').forEach(b=>b.onclick=()=>abrirEdicao('cli',b.dataset.edC));
+  document.querySelectorAll('[data-ver-c]').forEach(b=>b.onclick=()=>historico(b.dataset.verC));
+  const bs=$('#c-busca');
+  if(bs)bs.addEventListener('input',()=>{buscaCli=bs.value;const p=bs.selectionStart;render();
+    const n=$('#c-busca');if(n){n.focus();try{n.setSelectionRange(p,p)}catch(e){}}});
+  document.querySelectorAll('[data-del-c]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.delC, usado=S.vendas.some(v=>v.clienteId===id);
+    if(!confirm(usado?'Esse cliente tem atendimentos registrados. Excluir mesmo assim? O histórico financeiro continua.':'Excluir este cliente?'))return;
+    S.clientes=S.clientes.filter(c=>c.id!==id);
+    S.agenda=S.agenda.filter(a=>!(a.clienteId===id&&a.status==='marcado'));
+    salvar(); render(); toast('Cliente excluído')});
+};
+
+/* histórico de um cliente: o que ele comprou, quando e quanto rendeu */
+function historico(id){
+  const c=cli(id); if(!c)return;
+  const vs=S.vendas.filter(v=>v.clienteId===id).sort((a,b)=>b.data.localeCompare(a.data));
+  const total=vs.reduce((a,v)=>a+num(v.valor),0);
+  const lucro=vs.reduce((a,v)=>a+conta(v).lucro,0);
+  const primeiro=vs.length?vs[vs.length-1].data:'';
+
+  /* agrupado por procedimento, com o retorno previsto */
+  const porServ={};
+  vs.forEach(v=>{ const k=v.servicoId||'x', s=serv(k);
+    const a=porServ[k]||(porServ[k]={nome:s?s.nome:'Serviço removido',retorno:s?s.retorno:0,qtd:0,total:0,ultima:''});
+    a.qtd++; a.total+=num(v.valor); if(v.data>a.ultima)a.ultima=v.data; });
+  const grupos=Object.values(porServ).sort((a,b)=>b.total-a.total);
+  const ags=S.agenda.filter(a=>a.clienteId===id&&a.status==='marcado'&&a.data>=hojeISO())
+    .sort((a,b)=>a.data.localeCompare(b.data));
+
+  let corpo=`<div class="stats">
+    <div class="stat"><span class="lb">Já pagou</span><span class="vl">${brl(total)}</span>
+      <span class="ex">em ${vs.length} atendimento(s)</span></div>
+    <div class="stat"><span class="lb">Sobrou para a clínica</span>
+      <span class="vl ${lucro>=0?'v-ok':'v-bad'}">${brl(lucro)}</span>
+      <span class="ex">já sem taxa, produto, comissão e imposto</span></div>
+  </div>`;
+  corpo+=`<p class="sub" style="margin-top:10px">${primeiro?'Cliente desde '+dataBR(primeiro):'Sem atendimentos ainda'}${c.tel?' · '+esc(c.tel):''}${c.email?' · '+esc(c.email):''}${c.obs?' · '+esc(c.obs):''}</p>`;
+
+  if(ags.length){
+    corpo+=`<div class="sec"><div class="sec-top"><h2>Já agendado</h2></div><div class="card">`;
+    ags.forEach(a=>{const s=serv(a.servicoId);
+      corpo+=`<div class="item"><div class="mn"><b>${s?esc(s.nome):'serviço removido'}</b>
+        <small>${dataBR(a.data)} · ${diaSemana(a.data)}${a.hora?' às '+a.hora:''}</small></div></div>`});
+    corpo+=`</div></div>`;
+  }
+
+  if(!vs.length){
+    corpo+=`<div class="sec"><div class="card"><div class="vazio"><b>Ainda não comprou nada</b>
+      <p>Quando houver um atendimento registrado para ${esc(c.nome.split(' ')[0])}, ele aparece aqui.</p></div></div></div>`;
+  }else{
+    corpo+=`<div class="sec"><div class="sec-top"><h2>Procedimentos que já fez</h2></div><div class="card">`;
+    grupos.forEach(g=>{
+      const prev=g.retorno?somaDias(g.ultima,g.retorno):'';
+      const atraso=prev?diasEntre(prev,hojeISO()):null;
+      corpo+=`<div class="item"><div class="mn"><b>${esc(g.nome)}</b>
+        <small>${g.qtd}x · última em ${dataBR(g.ultima)}${prev?' · volta em '+dataBR(prev):''}</small></div>
+        <div class="vr">${brl(g.total)}${prev?`<small class="${atraso>=0?'v-ac':''}">${atraso>=0?'em atraso':'em dia'}</small>`:''}</div></div>`});
+    corpo+=`</div></div>`;
+
+    corpo+=`<div class="sec"><div class="sec-top"><h2>Cada atendimento</h2><span class="pill">${vs.length}</span></div>
+      <p class="sub" style="margin-bottom:8px">Precisa devolver o dinheiro de algum? Use o botão de estornar.</p><div class="card">`;
+    vs.forEach(v=>{ const k=conta(v);
+      corpo+=`<div class="item"><div class="mn"><b>${esc(k.nome)} ${k.estornado?'<span class="pill bad">estornado</span>':''}</b>
+        <small>${dataBR(v.data)} · ${FORMAS.find(f=>f.k===v.forma)?.n||v.forma}${v.forma==='parc'?' '+v.parcelas+'x':''}${k.estornado?' · devolvido '+brl(k.devolvido):''}</small></div>
+        <div class="vr">${brl(k.bruto)}<small class="${k.lucro>=0?'v-ok':'v-bad'}">${k.estornado?'resultado':'sobrou'} ${brl(k.lucro)}</small></div>
+        <div class="acts">${k.estornado
+          ?`<button class="btn sm soft" data-desfaz-v="${v.id}">Desfazer estorno</button>`
+          :`<button class="btn sm soft" data-est-v="${v.id}">Estornar</button>`}</div></div>`});
+    corpo+=`</div></div>`;
+  }
+  corpo+=`<button class="btn soft full" id="h-fechar" style="margin-top:14px">Fechar</button>`;
+
+  abrirSheet(c.nome,'Histórico completo',corpo,fechar=>{
+    $('#h-fechar').onclick=fechar;
+    document.querySelectorAll('.sheet [data-est-v]').forEach(b=>b.onclick=()=>{
+      const vid=b.dataset.estV; fechar(); setTimeout(()=>estornar(vid,()=>historico(id)),240) });
+    document.querySelectorAll('.sheet [data-desfaz-v]').forEach(b=>b.onclick=()=>{
+      const v=S.vendas.find(z=>z.id===b.dataset.desfazV); if(!v)return;
+      if(!confirm('Desfazer o estorno e voltar a contar este atendimento normalmente?'))return;
+      delete v.estorno; salvar(); toast('Estorno desfeito'); fechar(); setTimeout(()=>historico(id),240) });
+  });
+}
+
+/* ══════════ AJUSTES ══════════ */
+T.ajustes=function(el){
+  el.innerHTML=`<h1>Ajustes</h1><p class="sub">Os dados ficam só neste aparelho</p>
+  <div class="sec"><div class="card">
+    <h2 style="margin-bottom:10px">Backup</h2>
+    <p class="sub" style="margin-bottom:12px">Guarde uma cópia antes de limpar o navegador ou trocar de aparelho.</p>
+    <button class="btn pri full" id="a-exp">Baixar backup (.json)</button>
+    <button class="btn soft full" id="a-imp" style="margin-top:8px">Restaurar backup</button>
+    <button class="btn soft full" id="a-csv" style="margin-top:8px">Exportar movimento (.csv)</button>
+  </div></div>
+  <div class="sec"><div class="card">
+    <h2 style="margin-bottom:10px">Exemplo</h2>
+    <p class="sub" style="margin-bottom:12px">Carrega serviços e atendimentos fictícios para você ver o sistema funcionando.</p>
+    <button class="btn soft full" id="a-demo">Carregar exemplo</button>
+  </div></div>
+  <div class="sec"><div class="card">
+    <h2 style="margin-bottom:10px">Apagar</h2>
+    <p class="sub" style="margin-bottom:12px">Remove serviços, atendimentos, saídas e taxas. Não dá para desfazer.</p>
+    <button class="btn danger full" id="a-del">Apagar tudo</button>
+  </div></div>
+  <p class="sub" style="text-align:center;margin-top:26px">Lucra · protótipo versão 1</p>`;
+
+  const baixa=(n,t,m)=>{const u=URL.createObjectURL(new Blob([t],{type:m})),a=document.createElement('a');
+    a.href=u;a.download=n;a.style.display='none';document.body.appendChild(a);a.click();
+    setTimeout(()=>{a.remove();URL.revokeObjectURL(u)},3000)};
+
+  $('#a-exp').onclick=()=>baixa('lucra-backup.json',JSON.stringify(S),'application/json');
+  $('#a-csv').onclick=()=>{
+    let c='tipo;data;descricao;forma;bruto;taxa;custo;lucro\n';
+    S.vendas.forEach(v=>{const k=conta(v);
+      c+=`venda;${v.data};${(k.nome||'').replace(/;/g,',')};${v.forma}${v.forma==='parc'?' '+v.parcelas+'x':''};${k.bruto.toFixed(2)};${k.taxa.toFixed(2)};${k.custo.toFixed(2)};${k.lucro.toFixed(2)}\n`});
+    S.despesas.forEach(d=>{c+=`saida;${d.data};${(d.desc||'').replace(/;/g,',')};;-${num(d.valor).toFixed(2)};;;\n`});
+    baixa('lucra-movimento.csv',c,'text/csv;charset=utf-8');
+  };
+  $('#a-imp').onclick=()=>{
+    const i=document.createElement('input'); i.type='file'; i.accept='application/json,.json';
+    i.onchange=()=>{const f=i.files&&i.files[0]; if(!f)return; const rd=new FileReader();
+      rd.onerror=()=>toast('Não consegui ler o arquivo');
+      rd.onload=()=>{try{const d=JSON.parse(rd.result);
+        if(!d||typeof d!=='object'||Array.isArray(d))throw 0;
+        S=Object.assign(JSON.parse(JSON.stringify(PAD)),d); normalizar(); salvar(); tema();
+        toast('Backup restaurado'); ir('painel');
+      }catch(e){toast('Arquivo inválido')}};
+      rd.readAsText(f)};
+    i.click();
+  };
+  $('#a-demo').onclick=()=>{ if(!confirm('Isso substitui os dados atuais pelo exemplo. Continuar?'))return;
+    demo(); toast('Exemplo carregado'); ir('painel') };
+  $('#a-del').onclick=()=>{ if(!confirm('Apagar tudo? Não dá para desfazer.'))return;
+    const t=S.tema; S=JSON.parse(JSON.stringify(PAD)); S.tema=t; salvar(); toast('Tudo apagado'); ir('painel') };
+};
+
+/* ── exemplo ── */
+/* Exemplo com preços de mercado de 2026 e taxas reais da InfinitePay
+   (Mastercard/Visa, faturamento até R$ 20 mil). Custos de produto são
+   estimativas de mercado — cada clínica ajusta para os próprios. */
+function demo(){
+  const t=S.tema;
+  S=JSON.parse(JSON.stringify(PAD)); S.tema=t; S.meta=25000; S.imposto=6;
+  const sv=[
+    {nome:'Limpeza de pele profunda',        preco:220,  custo:24,  comissao:30, retorno:45,  qtd:22},
+    {nome:'Peeling químico superficial',     preco:280,  custo:45,  comissao:30, retorno:30,  qtd:6},
+    {nome:'Microagulhamento facial',         preco:380,  custo:90,  comissao:30, retorno:30,  qtd:8},
+    {nome:'Radiofrequência facial',          preco:200,  custo:15,  comissao:30, retorno:15,  qtd:10},
+    {nome:'Drenagem linfática (1h)',         preco:130,  precoMax:160, custo:12, comissao:40, retorno:7, qtd:18},
+    {nome:'Massagem modeladora (1h)',        preco:150,  precoMax:200, custo:15, comissao:40, retorno:7, qtd:8},
+    {nome:'Criolipólise · 1 área',           preco:480,  custo:60,  comissao:20, retorno:60,  qtd:6},
+    {nome:'Laser · axilas',                  preco:150,  custo:18,  comissao:20, retorno:40,  qtd:14},
+    {nome:'Laser · virilha completa',        preco:280,  custo:30,  comissao:20, retorno:40,  qtd:7},
+    {nome:'Toxina botulínica · 3 áreas',     preco:1500, custo:520, comissao:0,  retorno:180, qtd:3}
+  ].map(s=>Object.assign({id:uid()},s));
+  S.servicos=sv.map(({id,nome,preco,precoMax,custo,comissao,retorno})=>
+    ({id,nome,preco,precoMax:precoMax||0,custo,comissao,retorno}));
+  S.custoDomicilio=35;
+
+  /* mês fechado anterior, para o exemplo ter um mês inteiro de movimento */
+  const h=new Date(), ant=new Date(h.getFullYear(),h.getMonth()-1,1);
+  const mes=`${ant.getFullYear()}-${String(ant.getMonth()+1).padStart(2,'0')}`;
+  const ultimo=new Date(ant.getFullYear(),ant.getMonth()+1,0).getDate();
+  const dia=d=>`${mes}-${String(Math.max(1,Math.min(ultimo,d))).padStart(2,'0')}`;
+
+  /* mistura de pagamento parecida com a de clínica pequena */
+  const formas=[['pix',1],['pix',1],['pix',1],['debito',1],['debito',1],
+    ['cred1',1],['cred1',1],['cred1',1],['parc',3],['parc',3],['parc',6],['parc',10]];
+  let seed=20261101; const rnd=n=>{seed=(seed*1103515245+12345)%2147483648;return Math.floor(seed/2147483648*n)};
+
+  S.clientes=[{id:uid(),nome:'Diego Brandão',tel:'(11) 98098-4102',
+    email:'diegobrandao118@gmail.com',nasc:'',obs:''}];
+
+  sv.forEach(s=>{ for(let i=0;i<s.qtd;i++){
+    const f=formas[rnd(formas.length)];
+    /* procedimento caro quase nunca sai à vista no débito */
+    const forma=(s.preco>=480&&f[0]==='debito')?'parc':f[0];
+    const parc=forma==='parc'?(f[0]==='parc'?f[1]:6):1;
+    const c=S.clientes[rnd(S.clientes.length)];
+    S.vendas.push({id:uid(),data:dia(1+rnd(ultimo)),servicoId:s.id,valor:s.preco,
+      forma,parcelas:parc,clienteId:c.id,cliente:c.nome});
+  }});
+
+  /* pacotes vendidos e atendimento em domicílio */
+  const eu=S.clientes[0];
+  S.vendas.push({id:uid(),data:dia(9),servicoId:sv[4].id,valor:700,forma:'pix',parcelas:1,
+    sessoes:5,usadas:[dia(9),dia(13),dia(17)],desloc:0,clienteId:eu.id,cliente:eu.nome});
+  S.vendas.push({id:uid(),data:dia(16),servicoId:sv[5].id,valor:1500,forma:'parc',parcelas:2,
+    sessoes:10,usadas:[dia(16),dia(20)],desloc:35,clienteId:eu.id,cliente:eu.nome});
+
+  /* alguns horários marcados para os próximos dias */
+  const hj=hojeISO();
+  const horas=['09:00','10:30','13:00','14:30','16:00','17:30'];
+  for(let d=0;d<6;d++){ const qt=d===0?3:1+rnd(3);
+    for(let i=0;i<qt;i++){
+      const s=sv[rnd(sv.length)], c=S.clientes[rnd(S.clientes.length)];
+      S.agenda.push({id:uid(),data:somaDias(hj,d),hora:horas[(i+d)%horas.length],
+        clienteId:c.id,servicoId:s.id,obs:'',status:'marcado'});
+    }}
+
+  S.despesas=[
+    {id:uid(),data:dia(5),  desc:'Aluguel da sala',                 valor:2200, servicoId:''},
+    {id:uid(),data:dia(5),  desc:'Energia, água e internet',        valor:480,  servicoId:''},
+    {id:uid(),data:dia(6),  desc:'Contador',                        valor:300,  servicoId:''},
+    {id:uid(),data:dia(7),  desc:'Impulsionamento no Instagram',    valor:400,  servicoId:''},
+    {id:uid(),data:dia(8),  desc:'Compra de toxina botulínica',     valor:1600, servicoId:sv[9].id},
+    {id:uid(),data:dia(10), desc:'Cosméticos e descartáveis',       valor:520,  servicoId:sv[0].id},
+    {id:uid(),data:dia(14), desc:'Ponteiras de microagulhamento',   valor:700,  servicoId:sv[2].id},
+    {id:uid(),data:dia(18), desc:'Mantas e gel de criolipólise',    valor:380,  servicoId:sv[6].id},
+    {id:uid(),data:dia(22), desc:'Óleos e cremes de massagem',      valor:240,  servicoId:sv[4].id},
+    {id:uid(),data:dia(25), desc:'Sistema de agendamento',          valor:150,  servicoId:''}
+  ];
+  mesSel=mes;
+  salvar();
+}
+
+/* ── início ── */
+carregar(); tema();
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>ir(b.dataset.t));
+$('#b-tema').onclick=()=>{S.tema=S.tema==='escuro'?'claro':'escuro';tema();salvar()};
+$('#b-cfg').onclick=()=>{document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-current','false'));tela='ajustes';render();window.scrollTo(0,0)};
+render();
+</script>
+</body>
+</html>
