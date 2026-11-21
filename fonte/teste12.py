@@ -191,9 +191,9 @@ async def main():
         await espera(b,"syncEst==='ok'")
         assert await b.evaluate("S.taxas.debito")==1.99 and DB['dados'][cid]['estado']['taxas']['debito']==1.99, 'aparelho novo apagou as taxas'
         assert await b.evaluate("S.clientes.some(c=>c.nome==='Paciente Antigo')") and await b.evaluate("S.prontuario.length===0&&S.anamneses.length===0"), 'recepção recebeu dados de saúde'
-        assert await b.evaluate("tela")=='agenda'
+        assert await b.evaluate("tela")=='hoje'
         assert await b.locator('#menu button[data-t=painel]').is_hidden() and await b.locator('#menu button[data-t=lucro]').is_hidden() and await b.locator('#menu button[data-t=caixa]').count()==1
-        await b.evaluate("ir('lucro')"); await b.wait_for_timeout(200); assert await b.evaluate("tela")=='agenda'
+        await b.evaluate("ir('lucro')"); await b.wait_for_timeout(200); assert await b.evaluate("tela")=='hoje'
         await b.evaluate("ir('ajustes')"); await b.wait_for_timeout(300)
         tx=await b.inner_text('#view'); assert 'Recepção' in tx and 'Taxas' not in tx
         await b.screenshot(path=f'{SH}/n4-recepcao.png',full_page=True)

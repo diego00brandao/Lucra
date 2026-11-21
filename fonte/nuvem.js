@@ -281,11 +281,11 @@ salvar=function(){ salvarLocal(); if(CONTA)agendaSync() };
 
 /* ── papéis: o que cada um vê ── */
 const NAV_PAPEL={
-  profissional:['novoag','agenda','retornos','clientes','registrar','ajustes'],
-  recepcao:['novoag','agenda','retornos','clientes','caixa','registrar','saida','ajustes']};
+  profissional:['hoje','novoag','agenda','retornos','clientes','registrar','ajustes'],
+  recepcao:['hoje','novoag','agenda','retornos','clientes','caixa','registrar','saida','ajustes']};
 const EXTRA_PAPEL={profissional:[],recepcao:[]};
 function permitido(t){ if(!CONTA||CONTA.papel==='dono')return true; return NAV_PAPEL[CONTA.papel].includes(t)||EXTRA_PAPEL[CONTA.papel].includes(t) }
-const telaInicial=()=>!CONTA||CONTA.papel==='dono'?'painel':'agenda';
+const telaInicial=()=>'hoje';
 function aplicarPapel(){
   const ul=document.querySelectorAll('#menu ul');
   document.querySelectorAll('#menu button[data-t]').forEach(b=>{ const li=b.closest('li'); if(li)li.hidden=!permitido(b.dataset.t) });

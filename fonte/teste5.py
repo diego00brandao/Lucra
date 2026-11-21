@@ -28,7 +28,7 @@ async def main():
             # sem internet: servidor desligado de verdade
             srv.terminate(); srv.wait(); await ctx.set_offline(True)
             await pg.reload(); await pg.wait_for_timeout(1500)
-            assert await pg.locator('.kpi.dest').count()==1 and await pg.evaluate('S.vendas.length')>100, 'não abriu sem internet'
+            assert await pg.evaluate('tela')=='hoje' and await pg.locator('#view h1').count()==1 and await pg.evaluate('S.vendas.length')>100, 'não abriu sem internet'
             await pg.click('#fab'); await pg.wait_for_timeout(400); await pg.click('#r-ok'); await pg.wait_for_timeout(500)
             n=await pg.evaluate('S.vendas.length'); await pg.reload(); await pg.wait_for_timeout(1200)
             assert await pg.evaluate('S.vendas.length')==n, 'registro offline não ficou salvo'
