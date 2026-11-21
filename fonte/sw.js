@@ -7,7 +7,7 @@ self.addEventListener('fetch',e=>{
   const r=e.request; if(r.method!=='GET')return;
   const u=new URL(r.url);
   if(r.mode==='navigate'){            /* a página: tenta a versão nova, cai para a guardada se estiver sem internet */
-    e.respondWith(fetch(r).then(res=>{ if(res.ok){ const c=res.clone(); caches.open(V).then(k=>k.put('./index.html',c)) } return res })
+    e.respondWith(fetch(r,{cache:'no-cache'}).then(res=>{ if(res.ok){ const c=res.clone(); caches.open(V).then(k=>k.put('./index.html',c)) } return res })
       .catch(()=>caches.match('./index.html')));
     return;
   }
