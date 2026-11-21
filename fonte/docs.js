@@ -5,7 +5,13 @@ const TIPOS_DOC={
   receita:{n:'Receita',areas:['odonto'],ic:'file'},
   atestado:{n:'Atestado',areas:['odonto'],ic:'file'},
   declaracao:{n:'Declaração de comparecimento',areas:['odonto','estetica','psico'],ic:'clock'},
-  termo:{n:'Termo de consentimento',areas:['odonto','estetica'],ic:'edit'}};
+  termo:{n:'Termo de consentimento',areas:['odonto','estetica'],ic:'edit'},
+  contrato:{n:'Contrato terapêutico',areas:['psico'],modelo:1},
+  atestadoPsi:{n:'Atestado psicológico',areas:['psico'],modelo:1},
+  relatorio:{n:'Relatório psicológico',areas:['psico'],modelo:1},
+  laudo:{n:'Laudo psicológico',areas:['psico'],modelo:1},
+  parecer:{n:'Parecer psicológico',areas:['psico'],modelo:1}};
+const ASSINA=['termo','contrato'];
 const tiposDoc=()=>Object.keys(TIPOS_DOC).filter(k=>TIPOS_DOC[k].areas.includes(area()));
 const docsDe=cid=>(S.documentos||[]).filter(d=>d.clienteId===cid).sort((a,b)=>b.data.localeCompare(a.data)||String(b.id).localeCompare(String(a.id)));
 const TERMO_PAD='Eu, {paciente}{cpf}, declaro que fui informado(a) de forma clara sobre o procedimento {procedimento}: seus objetivos, benefícios, riscos, cuidados antes e depois, e as alternativas de tratamento.\n\nTive a oportunidade de fazer perguntas e todas foram respondidas. Estou ciente de que o resultado pode variar de pessoa para pessoa e de que devo seguir as orientações recebidas.\n\nAutorizo a realização do procedimento e o registro de fotos para acompanhamento clínico, que não serão divulgadas sem a minha autorização. Sei que posso retirar este consentimento a qualquer momento.';
@@ -26,12 +32,12 @@ function textoDeclaracao(c,o){ const ps=ehPsico();
   return `Declaro, para os devidos fins, que ${c.nome}${c.cpf?', CPF '+fmtDoc(c.cpf)+',':''} compareceu ${ps?'a atendimento psicológico':'a atendimento'} no dia ${dataBR(o.data)}${o.de?`, das ${o.de}${o.ate?' às '+o.ate:''}`:''}.${o.acomp?`\n\nEsteve acompanhado(a) por ${o.acomp}.`:''}` }
 
 /* ── o papel impresso ── */
-function docHTML(d){ const c=cli(d.clienteId)||{nome:''}, p=S.perfil||{}, tit=d.tipo==='termo'?(d.titulo||TIPOS_DOC.termo.n):TIPOS_DOC[d.tipo].n;
+function docHTML(d){ const c=cli(d.clienteId)||{nome:''}, p=S.perfil||{}, tit=d.titulo||TIPOS_DOC[d.tipo].n;
   return `<div class="recibo doc-imp"><div class="rc-cab"><b class="rc-t">${esc(tit)}</b>${topoRecibo()?`<span>${esc(topoRecibo())}</span>`:''}${profLinha()?`<span>${esc(profLinha())}</span>`:''}</div>
     ${d.tipo==='receita'?`<p class="doc-pac"><b>Paciente:</b> ${esc(c.nome)}</p>`:''}
     <div class="doc-tx">${esc(d.texto)}</div>
     <p class="doc-dt">${esc((p.cidade?p.cidade+', ':'')+dataCheia(d.data))}</p>
-    ${d.tipo==='termo'?`<div class="rc-ass">${d.assinatura?`<img src="${d.assinatura}" alt="Assinatura de ${esc(c.nome)}">`:''}<span></span><small>${esc(c.nome)}${c.cpf?' · CPF '+esc(fmtDoc(c.cpf)):''}</small></div>`:''}
+    ${ASSINA.includes(d.tipo)?`<div class="rc-ass">${d.assinatura?`<img src="${d.assinatura}" alt="Assinatura de ${esc(c.nome)}">`:''}<span></span><small>${esc(c.nome)}${c.cpf?' · CPF '+esc(fmtDoc(c.cpf)):''}</small></div>`:''}
     <div class="rc-ass"><span></span><small>${esc(p.nome||'Profissional')}${p.registro?' · '+esc(AREAS[area()].reg)+' '+esc(p.registro):''}</small></div>
     ${p.endereco?`<p class="doc-end">${esc(p.endereco)}</p>`:''}</div>` }
 
@@ -67,6 +73,17 @@ function abreDoc(cid,tipo,docId,volta){
         <div class="field"><label for="dc-cid">CID (opcional)</label><input id="dc-cid" maxlength="8" placeholder="só com autorização"></div></div>`
         :`<div class="field"><label for="dc-ac">Acompanhante (opcional)</label><input id="dc-ac" placeholder="Nome de quem acompanhou"></div>`}
       <div class="field"><label for="dc-tx">Texto</label><textarea id="dc-tx" rows="6"></textarea></div>`; }
+  else if(T_.modelo){ const ms=modelosDoc(tipo), sv=S.servicos[0];
+    campos=`${tipo==='contrato'?`<div class="grid3"><div class="field"><label for="dc-fr">Frequência</label><select id="dc-fr"><option>semanal</option><option>quinzenal</option><option>mensal</option><option>duas vezes por semana</option></select></div>
+        <div class="field"><label for="dc-vl">Valor da sessão</label><input id="dc-vl" inputmode="decimal" value="${sv?String(num(sv.preco)).replace('.',','):''}"></div>
+        <div class="field"><label for="dc-pg">Pagamento</label><select id="dc-pg"><option>a cada sessão</option><option>no fim do mês</option><option>no início do mês</option></select></div></div>`:''}
+      ${ms.length?`<div class="field"><label for="dc-mod">Modelo</label><select id="dc-mod"><option value="">Modelo padrão do Lucra</option>${ms.map(m=>`<option value="${m.id}">${esc(m.nome)}</option>`).join('')}</select></div>`:''}
+      <div class="field"><label for="dc-tx">Texto</label><textarea id="dc-tx" rows="14"></textarea></div>
+      <p class="sub" style="margin:-4px 0 10px">${tipo==='contrato'?'Ajuste os combinados ao seu jeito de trabalhar e guarde como modelo.':'Estrutura da Resolução CFP nº 06/2019. Preencha cada parte; o conteúdo é de responsabilidade técnica de quem assina.'}</p>
+      <button class="btn-tx" id="dc-salvamod" type="button">Guardar este texto como modelo</button>
+      ${tipo==='contrato'?`<p class="eyebrow" style="margin-top:14px">Assinatura de ${esc(c.nome.split(' ')[0])}</p>
+      <canvas id="dc-ass" class="ass-cv" aria-label="Espaço para assinar com o dedo"></canvas>
+      <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Assine com o dedo ou a caneta</small><button class="btn-tx" id="dc-limpa" type="button">Limpar</button></div>`:''}`; }
   else { const ms=modelosDoc('termo');
     campos=`<div class="grid2"><div class="field"><label for="dc-proc">Procedimento</label><select id="dc-proc">${S.servicos.map(s=>`<option>${esc(s.nome)}</option>`).join('')}<option value="">Outro</option></select></div>
         <div class="field"><label for="dc-mod">Modelo</label><select id="dc-mod"><option value="">Modelo padrão do Lucra</option>${ms.map(m=>`<option value="${m.id}">${esc(m.nome)}</option>`).join('')}</select></div></div>
@@ -76,12 +93,12 @@ function abreDoc(cid,tipo,docId,volta){
       <p class="eyebrow" style="margin-top:14px">Assinatura de ${esc(c.nome.split(' ')[0])}</p>
       <canvas id="dc-ass" class="ass-cv" aria-label="Espaço para assinar com o dedo"></canvas>
       <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Assine com o dedo ou a caneta</small><button class="btn-tx" id="dc-limpa" type="button">Limpar</button></div>`; }
-  abrirSheet(d?T_.n:(tipo==='termo'?'Termo de consentimento':T_.n),`${esc(c.nome)}${d?' · '+dataBR(d.data):''}`,
+  abrirSheet(T_.n,`${esc(c.nome)}${d?' · '+dataBR(d.data):''}`,
     `${falta?`<div class="nota" style="margin-bottom:12px">Seu nome e ${AREAS[area()].reg} ainda não estão no app. <button class="btn-tx" id="dc-perfil" type="button">Preencher agora</button></div>`:''}
      ${d&&d.assinatura?`<div class="doc-assv"><img src="${d.assinatura}" alt="Assinatura"><small>Assinado na tela em ${dataBR(d.data)}</small></div>`:''}
      ${campos}
      <div class="row" style="margin-top:12px;gap:8px"><button class="btn pri" id="dc-imp" style="flex:1">${ic('file')}Imprimir ou salvar PDF</button>
-       ${c.tel&&tipo!=='termo'?`<button class="btn soft" id="dc-zap">${ic('chat',16)}WhatsApp</button>`:''}</div>
+       ${c.tel&&!ASSINA.includes(tipo)&&!T_.modelo?`<button class="btn soft" id="dc-zap">${ic('chat',16)}WhatsApp</button>`:''}</div>
      ${d?`<button class="btn-tx" id="dc-del" style="display:block;margin:10px auto 0">Excluir este documento</button>`:''}`,
     fechar=>{
       const tx=$('#dc-tx');
@@ -89,20 +106,24 @@ function abreDoc(cid,tipo,docId,volta){
       const gera=()=>{ if(d)return;
         if(tipo==='atestado')tx.value=textoAtestado(c,{data:dataSel(),de:$('#dc-de').value,ate:$('#dc-ate').value,dias:$('#dc-dias').value,cid:$('#dc-cid').value.trim()});
         if(tipo==='declaracao')tx.value=textoDeclaracao(c,{data:dataSel(),de:$('#dc-de').value,ate:$('#dc-ate').value,acomp:$('#dc-ac').value.trim()});
+        if(T_.modelo){ const m=$('#dc-mod')&&modelosDoc(tipo).find(z=>z.id===$('#dc-mod').value);
+          tx.value=preencheDoc(m?m.texto:MODELO_PSI[tipo],c,{}).replace(/\{registro\}/g,(S.perfil||{}).registro?', CRP '+(S.perfil||{}).registro:'')
+            .replace(/\{frequencia\}/g,$('#dc-fr')?$('#dc-fr').value:'semanal').replace(/\{valor\}/g,$('#dc-vl')?brl(num($('#dc-vl').value)):'').replace(/\{pagamento\}/g,$('#dc-pg')?$('#dc-pg').value:'') }
         if(tipo==='termo'){ const m=modelosDoc('termo').find(z=>z.id===$('#dc-mod').value); tx.value=preencheDoc(m?m.texto:TERMO_PAD,c,{procedimento:$('#dc-proc').value}) } };
-      ['#dc-d','#dc-de','#dc-ate','#dc-dias','#dc-cid','#dc-ac','#dc-proc','#dc-mod'].forEach(q=>{ const e=$(q); if(e&&!(tipo==='receita'&&q==='#dc-mod')){ e.addEventListener('input',gera); e.addEventListener('change',gera) } });
+      ['#dc-d','#dc-de','#dc-ate','#dc-dias','#dc-cid','#dc-ac','#dc-proc','#dc-mod','#dc-fr','#dc-vl','#dc-pg'].forEach(q=>{ const e=$(q); if(e&&!(tipo==='receita'&&q==='#dc-mod')){ e.addEventListener('input',gera); e.addEventListener('change',gera) } });
       gera();
       if(tipo==='receita'&&$('#dc-mod'))$('#dc-mod').onchange=()=>{ const m=modelosDoc('receita').find(z=>z.id===$('#dc-mod').value); if(m)tx.value=m.texto };
       const ass=$('#dc-ass')?quadroAssinatura($('#dc-ass')):null;
       if($('#dc-limpa'))$('#dc-limpa').onclick=()=>ass.limpa();
       if($('#dc-perfil'))$('#dc-perfil').onclick=()=>{ fechar(); setTimeout(()=>ir('ajustes'),220) };
       if($('#dc-salvamod'))$('#dc-salvamod').onclick=()=>{ const t=tx.value.trim(); if(!t)return toast('Escreva o texto antes');
-        pedeTexto('Nome do modelo',tipo==='termo'?'ex.: Clareamento':'ex.: Pós-extração',nome=>{ if(!S.modelosDoc)S.modelosDoc=[];
-          S.modelosDoc.push({id:uid(),tipo,nome,texto:tipo==='termo'?t.split(c.nome).join('{paciente}'):t}); salvar(); toast('Modelo guardado') }) };
+        pedeTexto('Nome do modelo',tipo==='termo'?'ex.: Clareamento':tipo==='receita'?'ex.: Pós-extração':'ex.: Meu modelo',nome=>{ if(!S.modelosDoc)S.modelosDoc=[];
+          S.modelosDoc.push({id:uid(),tipo,nome,texto:tipo!=='receita'?t.split(c.nome).join('{paciente}'):t}); salvar(); toast('Modelo guardado') }) };
       const guarda=()=>{ const t=tx.value.trim(); if(!t){ toast('O documento está vazio'); return null }
         if(d){ d.texto=t; salvar(); return d }
         d={id:uid(),clienteId:cid,tipo,data:tipo==='atestado'||tipo==='declaracao'?dataSel():h,texto:t,
           titulo:tipo==='termo'?'Termo de consentimento'+($('#dc-proc').value?' · '+$('#dc-proc').value:''):'',assinatura:ass&&ass.tem()?ass.imagem():''};
+        if(!d.titulo)delete d.titulo;
         if(!S.documentos)S.documentos=[]; S.documentos.push(d); salvar(); return d };
       $('#dc-imp').onclick=()=>{ const x=guarda(); if(!x)return; imprimir(docHTML(x)) };
       if($('#dc-zap'))$('#dc-zap').onclick=()=>{ const x=guarda(); if(!x)return; const p=S.perfil||{};
@@ -125,8 +146,8 @@ function secDocsFicha(cid){ if(!podeClinico())return ''; const ts=tiposDoc(); if
   const ds=docsDe(cid);
   return `<div class="sec" id="h-docs"><div class="sec-top"><h2>Documentos</h2>${ds.length?`<span class="pill">${ds.length}</span>`:''}</div><div class="card">
     <div class="row" style="gap:8px;flex-wrap:wrap">${ts.map(t=>`<button class="btn sm soft" data-doc-novo="${t}">${ic('plus',16)}${TIPOS_DOC[t].n}</button>`).join('')}</div>
-    ${ds.length?`<div style="margin-top:8px">${ds.slice(0,8).map(d=>`<button type="button" class="item pr-it" data-doc="${d.id}"><div class="mn"><b>${esc(d.tipo==='termo'?(d.titulo||'Termo'):TIPOS_DOC[d.tipo].n)}</b>
-      <small>${dataBR(d.data)}${d.tipo==='termo'?(d.assinatura?' · assinado na tela':' · sem assinatura na tela'):' · '+esc(d.texto.slice(0,60))+(d.texto.length>60?'…':'')}</small></div>${ic('right',18)}</button>`).join('')}</div>`:''}</div></div>` }
+    ${ds.length?`<div style="margin-top:8px">${ds.slice(0,8).map(d=>`<button type="button" class="item pr-it" data-doc="${d.id}"><div class="mn"><b>${esc(d.titulo||TIPOS_DOC[d.tipo].n)}</b>
+      <small>${dataBR(d.data)}${ASSINA.includes(d.tipo)?(d.assinatura?' · assinado na tela':' · sem assinatura na tela'):' · '+esc(d.texto.slice(0,60))+(d.texto.length>60?'…':'')}</small></div>${ic('right',18)}</button>`).join('')}</div>`:''}</div></div>` }
 const _topoDc=topoHist, _ligaDc=ligarTopoHist;
 topoHist=c=>_topoDc(c)+secDocsFicha(c.id);
 ligarTopoHist=function(id,fechar){ _ligaDc(id,fechar);
@@ -134,3 +155,10 @@ ligarTopoHist=function(id,fechar){ _ligaDc(id,fechar);
   document.querySelectorAll('.sheet [data-doc-novo]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>abreDoc(id,b.dataset.docNovo,'',volta),260) });
   document.querySelectorAll('.sheet [data-doc]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>abreDoc(id,'',b.dataset.doc,volta),260) });
 };
+
+const MODELO_PSI={
+  contrato:'Paciente: {paciente}{cpf}\nPsicólogo(a): {profissional}{registro}\n\n1. Atendimento: sessões de psicoterapia de 50 minutos, com frequência {frequencia}, em dia e horário combinados.\n\n2. Valor: {valor} por sessão, pago {pagamento}. O valor pode ser reajustado uma vez por ano, com aviso prévio.\n\n3. Faltas e remarcações: avisar com pelo menos 24 horas de antecedência. Faltas sem aviso são cobradas normalmente.\n\n4. Férias e feriados: combinados com antecedência. Nas férias do(a) psicólogo(a) não há cobrança.\n\n5. Sigilo: o conteúdo das sessões é sigiloso, conforme o Código de Ética Profissional do Psicólogo. O sigilo só pode ser quebrado nas situações previstas no Código, como risco à vida do paciente ou de outras pessoas.\n\n6. Atendimento online: quando acontecer, segue as mesmas regras deste contrato.\n\n7. Término: qualquer uma das partes pode encerrar o processo, de preferência conversando sobre isso em sessão.\n\nDe acordo.',
+  atestadoPsi:'Interessado(a): {paciente}{cpf}\nFinalidade: ____________________\n\nAtesto, para os devidos fins, que {paciente}, após avaliação psicológica, apresenta ____________________, necessitando de ____________________.\n\nEste atestado vale apenas para a finalidade indicada acima.',
+  relatorio:'1. Identificação\nAutor(a): {profissional}{registro}\nInteressado(a): ____________________\nAssunto: ____________________\nAtendido(a): {paciente}{cpf}\n\n2. Descrição da demanda\n\n\n3. Procedimento\n\n\n4. Análise\n\n\n5. Conclusão\n',
+  laudo:'1. Identificação\nAutor(a): {profissional}{registro}\nInteressado(a): ____________________\nAssunto: ____________________\nAvaliado(a): {paciente}{cpf}\n\n2. Descrição da demanda\n\n\n3. Procedimento\n\n\n4. Análise\n\n\n5. Conclusão\n\n\n6. Referências\n',
+  parecer:'1. Identificação\nParecerista: {profissional}{registro}\nInteressado(a): ____________________\nAssunto: ____________________\n\n2. Descrição da demanda\n\n\n3. Análise\n\n\n4. Conclusão\n\n\n5. Referências\n'};

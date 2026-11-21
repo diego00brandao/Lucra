@@ -1,11 +1,11 @@
 # ── décima oitava leva: documentos, laboratório, parcelas, convênios, orçamentos, agenda online e satisfação ──
-js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + """
+js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + rd('psi.js') + """
 /* transferência não tem taxa; entrada sem procedimento (parcela, convênio) mostra a descrição.
    As contas originais ficam intactas: só embrulhamos. */
 const _taxaDeT=taxaDe; taxaDe=function(f,p){ return f==='transf'?0:_taxaDeT(f,p) };
 const _contaN=conta; conta=function(v){ const k=_contaN(v); if(!serv(v.servicoId)&&v.desc)k.nome=String(v.desc).split(' · ')[0]; return k };
 /* telas que só fazem sentido em algumas áreas */
-const NAV_AREA={lab:['odonto'],convenios:['odonto','psico'],orcamentos:['estetica','odonto']};
+const NAV_AREA={lab:['odonto'],convenios:['odonto','psico'],orcamentos:['estetica','odonto'],fechamento:['psico']};
 const areaOk=t=>!NAV_AREA[t]||NAV_AREA[t].includes(area());
 const _permA=permitido;
 permitido=function(t){ return areaOk(t)&&_permA(t) };
@@ -15,10 +15,10 @@ const _irA=ir;
 ir=function(t){ if(!areaOk(t))t='hoje'; _irA(t) };
 /* ══════════ BOAS-VINDAS""", 1)
 for k in ["'receber','evolucoes','anamneses','prontuario','planos','odontogramas'].forEach(k=>{ if(!Array.isArray(S[k]))S[k]=[] });"]:
-    rep(k, k.replace("'planos','odontogramas'","'planos','odontogramas','documentos','modelosDoc','lab','parcelas','convenios','guias','pesquisas'"))
-rep("planos:[], odontogramas:[], area:", "planos:[], odontogramas:[], documentos:[], modelosDoc:[], lab:[], parcelas:[], convenios:[], guias:[], pesquisas:[], area:")
+    rep(k, k.replace("'planos','odontogramas'","'planos','odontogramas','documentos','modelosDoc','lab','parcelas','convenios','guias','pesquisas','prontPsi','escalas'"))
+rep("planos:[], odontogramas:[], area:", "planos:[], odontogramas:[], documentos:[], modelosDoc:[], lab:[], parcelas:[], convenios:[], guias:[], pesquisas:[], prontPsi:[], escalas:[], area:")
 rep("S.planos=S.planos.filter(e=>e.clienteId!==id); S.odontogramas=S.odontogramas.filter(e=>e.clienteId!==id);",
-    "S.planos=S.planos.filter(e=>e.clienteId!==id); S.odontogramas=S.odontogramas.filter(e=>e.clienteId!==id); ['documentos','lab','parcelas','guias'].forEach(k=>{ S[k]=(S[k]||[]).filter(e=>e.clienteId!==id) });")
+    "S.planos=S.planos.filter(e=>e.clienteId!==id); S.odontogramas=S.odontogramas.filter(e=>e.clienteId!==id); ['documentos','lab','parcelas','guias','prontPsi','escalas'].forEach(k=>{ S[k]=(S[k]||[]).filter(e=>e.clienteId!==id) });")
 # transferência como forma de pagamento (convênio paga assim), sem taxa
 rep("{k:'cred1',n:'Crédito à vista'},{k:'parc',n:'Crédito parcelado'}", "{k:'cred1',n:'Crédito à vista'},{k:'parc',n:'Crédito parcelado'},{k:'transf',n:'Transferência'}")
 # entrada sem procedimento (parcela, convênio): mostra a descrição

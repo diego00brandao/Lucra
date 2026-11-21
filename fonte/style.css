@@ -1026,3 +1026,17 @@ body.publico{background:var(--bg);color:var(--tx);font-family:var(--sans);margin
 .pub-esc{display:flex;justify-content:space-between;color:var(--tx3);margin-top:4px}
 .pub-ok{text-align:center;padding-top:40px}.pub-ok .av-ic{margin:0 auto 12px}
 @media (max-width:380px){.pub-nps{grid-template-columns:repeat(6,1fr)}}
+/* psicologia: questionários e documentos */
+.q-it{border:0;padding:10px 0;margin:0;border-bottom:1px solid var(--line)}
+.q-it legend{font-weight:600;font-size:14.5px;line-height:1.4;padding:0;margin-bottom:8px}
+.q-op{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.q-op label{display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 10px;border:1px solid var(--line2);border-radius:var(--r-s);cursor:pointer;font-size:13.5px;line-height:1.25}
+.q-op input{accent-color:var(--ac);width:18px;height:18px;min-height:0;flex:none;margin:0}
+.q-op label:has(input:checked){border-color:var(--ac);background:var(--ac-soft)}
+.esc-b{padding:10px 0;border-bottom:1px solid var(--line)}.esc-b:last-of-type{border-bottom:none}
+.esc-g{display:block;width:100%;max-width:320px;height:70px;margin-top:6px}
+.recibo .doc-ev{margin-top:10px;padding-top:8px;border-top:1px solid #ddd}
+.recibo .doc-tab{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+.recibo .doc-tab th,.recibo .doc-tab td{text-align:left;padding:6px 4px;border-bottom:1px solid #ddd}
+.recibo .doc-tab td:last-child,.recibo .doc-tab th:last-child{text-align:right}
+.recibo .doc-tab tfoot td{font-weight:700;border-bottom:none}

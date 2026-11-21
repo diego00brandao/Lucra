@@ -54,7 +54,7 @@ async def main():
         assert await pg.evaluate("CLINICO.includes('documentos')")
         # psicologia: só declaração
         await pg.evaluate("mudaArea('psico',true)"); c2=await pg.evaluate("(S.clientes.push({id:'p1',nome:'Paula',tel:'',email:'',nasc:'',obs:''}),'p1')"); await pg.evaluate(f"historico('{c2}')"); await pg.wait_for_timeout(400)
-        r=await pg.evaluate("[...document.querySelectorAll('.sheet [data-doc-novo]')].map(b=>b.dataset.docNovo)"); assert r==['declaracao'], (r, er)
+        r=await pg.evaluate("[...document.querySelectorAll('.sheet [data-doc-novo]')].map(b=>b.dataset.docNovo)"); assert r==['declaracao','contrato','atestadoPsi','relatorio','laudo','parecer'], (r, er)
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300); await pg.evaluate("mudaArea('odonto')"); cid=await pg.evaluate("S.clientes[0].id")
 
         # ── laboratório ──
