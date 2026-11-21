@@ -26,3 +26,6 @@ rep("  vs.forEach(v=>{ const k=v.servicoId||'x', s=serv(k);\n    const a=porServ
     "  vs.forEach(v=>{ const s=serv(v.servicoId), k=s?v.servicoId:(v.desc?'d:'+String(v.desc).split(' · ')[0]:'x');\n    const a=porServ[k]||(porServ[k]={nome:s?s.nome:(v.desc?String(v.desc).split(' · ')[0]:'Serviço removido'),")
 # link público (?agendar= / ?avaliar=) abre antes do login
 rep("const iniciar=()=>{ if(NUVEM)return nuvemIniciar(iniciarLocal); iniciarLocal() };", "const iniciar=()=>{ if(paginaPublica())return; if(NUVEM)return nuvemIniciar(iniciarLocal); iniciarLocal() };")
+# o nome da tela agora é "Valor do atendimento"
+rep("${edV?'Editar atendimento':'Registrar atendimento'}</h2>", "${edV?'Editar atendimento':'Valor do atendimento'}</h2>")
+rep("${edV?'Salvar alterações':'Registrar atendimento'}</button>", "${edV?'Salvar alterações':'Registrar valor'}</button>")

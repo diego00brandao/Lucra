@@ -106,7 +106,7 @@ async def main():
         await pg.click('#fab'); await pg.wait_for_timeout(400); assert await pg.locator('#r-ok').count()==1
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
         txt=(await pg.text_content('#menu')).upper()
-        ordem=['ANALÍTICO','PAINEL','LUCRO','CAIXA DO DIA','OCUPAÇÃO DA AGENDA','ATENDIMENTO','NOVO AGENDAMENTO','AGENDA','RETORNOS','CLIENTES','FINANCEIRO','REGISTRAR ATENDIMENTO',
+        ordem=['ANALÍTICO','PAINEL','LUCRO','CAIXA DO DIA','OCUPAÇÃO DA AGENDA','ATENDIMENTO','NOVO AGENDAMENTO','AGENDA','RETORNOS','CLIENTES','FINANCEIRO','VALOR DO ATENDIMENTO',
                'REGISTRAR SAÍDA','SERVIÇOS','SIMULADOR','CONFIGURAÇÕES','TAXAS E ENCARGOS','AJUSTES','SAIR']
         pos=[]; at=0
         for o in ordem: at=txt.index(o,at); pos.append(at); at+=len(o)

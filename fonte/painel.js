@@ -85,7 +85,7 @@ T.painel=function(el){
   const ps=Object.values(r.porServico).sort((a,b)=>b.lucro-a.lucro);
   x+=`<div class="sec" data-pn="esq"><div class="sec-top"><h2>Lucro por procedimento</h2></div><div class="card">`;
   if(!ps.length){ x+=`<div class="vazio"><b>Nenhum atendimento neste mês</b><p>Registre um atendimento no Caixa e veja aqui quanto cada procedimento deixa de verdade, já sem taxa, produto, comissão e imposto.</p>
-    <button class="btn pri" id="ir-cx">${ic('plus')}Registrar atendimento</button></div>` }
+    <button class="btn pri" id="ir-cx">${ic('plus')}Valor do atendimento</button></div>` }
   else{
     const maxL=Math.max(...ps.map(a=>Math.abs(a.lucro)))||1;
     ps.forEach((a,i)=>{ const mg=a.bruto?a.lucro/a.bruto*100:0;

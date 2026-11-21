@@ -21,7 +21,7 @@ function ligarMods(){ document.querySelectorAll('[data-mod]').forEach(c=>c.oncha
 /* ── seções que começam fechadas: o título vira um botão de abrir ── */
 const DOBRAS={
   painel:['Aniversariantes','Comissões a repassar','Lucro por procedimento','Lucro por dia'],
-  vendas:['Registrar atendimento','Contas a pagar','Registrar saída'],
+  vendas:['Valor do atendimento','Contas a pagar','Registrar saída'],
   agenda:['Novo agendamento','Aniversariantes'], clientes:['Novo cliente'],
   servicos:['Novo serviço','Taxas e encargos','Equipe'],
   ajustes:['O que aparece no app','Mensagens do WhatsApp','Aparência','Exemplo','Apagar']
@@ -76,7 +76,7 @@ function registroRapido(){
   if(!S.servicos.length)return ir('servicos');
   const s0=servMaisUsado(), cs=S.clientes.slice().sort((a,b)=>a.nome.localeCompare(b.nome));
   if(!FORMAS.some(f=>f.k===rapForma))rapForma=FORMAS[0].k;
-  abrirSheet('Registrar atendimento','Hoje, '+dataBR(hojeISO()),
+  abrirSheet('Valor do atendimento','Hoje, '+dataBR(hojeISO()),
     `<div class="field"><label>Procedimento</label><select id="r-serv">${S.servicos.map(s=>
         `<option value="${s.id}" ${s.id===s0.id?'selected':''}>${esc(s.nome)}</option>`).join('')}</select></div>
      <div class="grid2">
@@ -111,7 +111,7 @@ function registroRapido(){
 }
 function fab(){
   let b=$('#fab');
-  if(!b){ b=document.createElement('button'); b.id='fab'; b.className='fab'; b.setAttribute('aria-label','Registrar atendimento');
+  if(!b){ b=document.createElement('button'); b.id='fab'; b.className='fab'; b.setAttribute('aria-label','Valor do atendimento');
     b.innerHTML=ic('plus',26)+'<span>Registrar</span>'; b.onclick=registroRapido; document.body.appendChild(b) }
   b.hidden=!S.servicos.length||tela==='ajustes';
 }

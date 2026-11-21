@@ -31,7 +31,7 @@ T.lucro=function(el){ _T.painel(el);
 
 /* ── Financeiro ── */
 T.registrar=function(el){ const ed=!!emEdicao('venda'); _T.vendas(el); soPartes(el,'data-cx',['reg','busca','atd']);
-  tituloTela(el,ed?'Editar atendimento':'Registrar atendimento','Encaixe, venda de pacote ou sessão fora da agenda. Quem veio pela agenda entra pelo “Atendeu”.');
+  tituloTela(el,ed?'Editar atendimento':'Valor do atendimento','Encaixe, venda de pacote ou sessão fora da agenda. Quem veio pela agenda entra pelo “Atendeu”.');
   const h=el.querySelector('[data-cx=reg] h2'); if(h&&!ed)h.remove() };
 T.saida=function(el){ const ed=!!emEdicao('desp'); _T.vendas(el); soPartes(el,'data-cx',['sreg','busca','sai']);
   tituloTela(el,ed?'Editar saída':'Registrar saída','Aluguel, contas e compras de produto');
@@ -326,7 +326,7 @@ T.caixa=function(el){
     return `<div class="item"><div class="mn"><b>Devolução${cl?' · '+esc(cl.nome):''}</b><small>estorno</small></div><div class="vr v-bad">− ${brl(Math.min(num(v.estorno.valor),num(v.valor)))}</div></div>` }).join('')}</div></div>`;
   if(rec.length)x+=`<div class="sec"><div class="sec-top"><h2>Ficou para receber</h2><span class="pill war">${brl(rec.reduce((s,r)=>s+num(r.valor),0))}</span></div><div class="card">${rec.map(r=>{ const cl=cli(r.clienteId);
     return `<div class="item"><div class="mn"><b>${cl?esc(cl.nome):'Sem cadastro'}</b><small>${esc(r.desc||'')}</small></div><div class="vr">${brl(num(r.valor))}</div></div>` }).join('')}</div></div>`;
-  x+=`<div class="row" style="margin-top:16px;gap:8px"><button class="btn pri" id="cx-reg">${ic('plus')}Registrar atendimento</button><button class="btn soft" id="cx-sai">Registrar saída</button></div>`;
+  x+=`<div class="row" style="margin-top:16px;gap:8px"><button class="btn pri" id="cx-reg">${ic('plus')}Valor do atendimento</button><button class="btn soft" id="cx-sai">Registrar saída</button></div>`;
   el.innerHTML=x;
   el.querySelectorAll('[data-cx-d]').forEach(b=>b.onclick=()=>{ cxDia=b.dataset.cxD; render() });
   $('#cx-ant').onclick=()=>{ cxDia=somaDias(cxDia,-7); render() };
