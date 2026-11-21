@@ -895,3 +895,22 @@ body.papel-recepcao #h-evo,body.papel-recepcao [data-nota-a]{display:none!import
 /* com conta, a área já foi escolhida ao criar a clínica */
 body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
 .invalido{border-color:var(--bad)!important}
+/* ══ barra de baixo no celular (no lugar da gaveta) ══ */
+#barra{display:none}
+@media (max-width:899px){
+  #b-menu,#menu,#menu-fundo{display:none!important}
+  #barra{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:var(--surf);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+  #barra button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:54px;border-radius:10px;color:var(--tx3);font-size:11.5px;font-weight:600}
+  #barra button svg{width:23px;height:23px}
+  #barra button[aria-current="true"]{color:var(--ac);background:var(--ac-soft)}
+  main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .fab-redondo{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  body.porta-on #barra{display:none}
+}
+.grupo-l{display:grid;gap:6px}
+.grupo-l button{display:flex;align-items:center;gap:14px;min-height:54px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--surf);font-size:16px;font-weight:600;color:var(--tx);text-align:left}
+.grupo-l button>span:nth-child(2){flex:1}
+.grupo-l .ico svg{width:22px;height:22px;color:var(--ac)}
+.grupo-l button[aria-current="true"]{border-color:var(--ac);background:var(--ac-soft)}
+.grupo-l button>svg{color:var(--tx3)}

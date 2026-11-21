@@ -80,23 +80,29 @@ async def main():
         # 8 · menu: gaveta no celular, atalhos embaixo, lateral no computador
         ctx,pg=await nova(br)
         await pg.evaluate("UI.boasVindas=true;salvarUI();document.querySelector('.ob')&&document.querySelector('.ob').remove();document.body.style.overflow='';demo();ir('painel')")
-        assert not await pg.locator('#menu button[data-t=agenda]').is_visible()
-        await pg.click('#b-menu'); await pg.wait_for_timeout(400)
-        assert await pg.evaluate("document.body.classList.contains('menu-on')") and await pg.locator('#menu button[data-t=clientes]').is_visible()
-        assert 'ATENDIMENTO' in (await pg.inner_text('#menu')).upper() and await pg.locator('#menu button[data-t=ajustes]').is_visible()
-        a=await pg.evaluate("T.ALVOS_TMP=1") if False else None
-        await pg.click('#menu button[data-t=clientes]'); await pg.wait_for_timeout(400)
-        assert await pg.evaluate("tela")=='clientes' and not await pg.evaluate("document.body.classList.contains('menu-on')")
-        await pg.click('#b-menu'); await pg.wait_for_timeout(300); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
-        assert not await pg.evaluate("document.body.classList.contains('menu-on')")
-        await pg.click('#b-menu'); await pg.wait_for_timeout(300); await pg.click('#menu-fundo',position={'x':370,'y':400}); await pg.wait_for_timeout(300)
-        assert not await pg.evaluate("document.body.classList.contains('menu-on')")
-        await pg.click('#b-menu'); await pg.wait_for_timeout(300); await pg.click('#menu button[data-t=ajustes]'); await pg.wait_for_timeout(300)
+        # celular: sem gaveta; barra de baixo com os 4 grupos
+        assert not await pg.locator('#menu').is_visible() and not await pg.locator('#b-menu').is_visible()
+        nomes=[x.strip() for x in await pg.locator('#barra button span').all_text_contents()]
+        assert nomes==['Analítico','Atendimento','Financeiro','Configurações'], nomes
+        assert await pg.locator('#barra button[aria-current=true]').inner_text()=='Analítico'
+        await pg.screenshot(path=f'{T.SHOTS}/170-barra.png')
+        await pg.click('#barra button:has-text("Atendimento")'); await pg.wait_for_timeout(400)
+        opc=[x.strip() for x in await pg.locator('.sheet .grupo-l button').all_text_contents()]
+        assert opc==['Novo agendamento','Agenda','Retornos','Clientes'], opc
+        await pg.screenshot(path=f'{T.SHOTS}/171-grupo.png'); await T.checa(pg,'grupo atendimento')
+        await pg.click('.sheet .grupo-l button:has-text("Clientes")'); await pg.wait_for_timeout(500)
+        assert await pg.evaluate("tela")=='clientes' and await pg.locator('.sheet').count()==0
+        assert await pg.locator('#barra button[aria-current=true]').inner_text()=='Atendimento'
+        await pg.click('#barra button:has-text("Configurações")'); await pg.wait_for_timeout(400)
+        await pg.click('.sheet .grupo-l button:has-text("Ajustes")'); await pg.wait_for_timeout(500)
         assert await pg.evaluate("tela")=='ajustes'
+        # o + não fica em cima da barra
+        fb=await pg.evaluate("(()=>{const f=document.querySelector('#fab').getBoundingClientRect(),b=document.querySelector('#barra').getBoundingClientRect();return [f.bottom,b.top]})()")
+        assert fb[0]<=fb[1], fb
         await pg.evaluate("ir('vendas')"); await pg.wait_for_timeout(300)
         assert await pg.locator('.barra').count()==0 or not await pg.locator('.barra').is_visible()
         box=await pg.evaluate("(()=>{const r=document.querySelector('#fab').getBoundingClientRect();return [r.width,r.height,innerWidth-r.right,innerHeight-r.bottom]})()")
-        assert box[0]==box[1]>=56 and 0<box[2]<40 and 0<box[3]<60, box
+        assert box[0]==box[1]>=56 and 0<box[2]<40 and 60<box[3]<160, box
         await pg.click('#fab'); await pg.wait_for_timeout(400); assert await pg.locator('#r-ok').count()==1
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
         txt=(await pg.text_content('#menu')).upper()
@@ -108,7 +114,7 @@ async def main():
             await pg.evaluate(f"ir('{t}')"); await pg.wait_for_timeout(200)
             assert await pg.evaluate("tela")==t and await pg.locator(f'#menu button[data-t={t}][aria-current=true]').count()==1, t
         await pg.evaluate("ir('vendas')"); await pg.wait_for_timeout(200)
-        await pg.click('#b-menu'); await pg.wait_for_timeout(300); await pg.click('#b-sair'); await pg.wait_for_timeout(400)
+        await pg.click('#barra button:has-text("Configurações")'); await pg.wait_for_timeout(400); await pg.click('.sheet .grupo-l button:has-text("Sair")'); await pg.wait_for_timeout(500)
         assert 'não tem login' in await pg.inner_text('.sheet') and await pg.evaluate("tela")=='vendas'
         await pg.screenshot(path=f'{T.SHOTS}/160-sair.png')
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)

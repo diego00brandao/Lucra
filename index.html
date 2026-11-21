@@ -914,6 +914,25 @@ body.papel-recepcao #h-evo,body.papel-recepcao [data-nota-a]{display:none!import
 /* com conta, a área já foi escolhida ao criar a clínica */
 body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
 .invalido{border-color:var(--bad)!important}
+/* ══ barra de baixo no celular (no lugar da gaveta) ══ */
+#barra{display:none}
+@media (max-width:899px){
+  #b-menu,#menu,#menu-fundo{display:none!important}
+  #barra{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:var(--surf);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+  #barra button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:54px;border-radius:10px;color:var(--tx3);font-size:11.5px;font-weight:600}
+  #barra button svg{width:23px;height:23px}
+  #barra button[aria-current="true"]{color:var(--ac);background:var(--ac-soft)}
+  main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .fab-redondo{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  body.porta-on #barra{display:none}
+}
+.grupo-l{display:grid;gap:6px}
+.grupo-l button{display:flex;align-items:center;gap:14px;min-height:54px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--surf);font-size:16px;font-weight:600;color:var(--tx);text-align:left}
+.grupo-l button>span:nth-child(2){flex:1}
+.grupo-l .ico svg{width:22px;height:22px;color:var(--ac)}
+.grupo-l button[aria-current="true"]{border-color:var(--ac);background:var(--ac-soft)}
+.grupo-l button>svg{color:var(--tx3)}
 </style>
 </head>
 <body>
@@ -4373,6 +4392,7 @@ function aplicarPapel(){
   ul.forEach(u=>{ let grupo=null, vis=false; [...u.children].forEach(li=>{ if(li.classList.contains('nav-grupo')){ if(grupo)grupo.hidden=!vis; grupo=li; vis=false } else if(!li.hidden)vis=true }); if(grupo)grupo.hidden=!vis });
   const u=$('#menu button[data-t=usuarios]'); if(u)u.closest('li').hidden=!(CONTA&&CONTA.papel==='dono');
   const r=$('#b-reg'); if(r)r.hidden=!permitido('registrar');
+  if(typeof pintaBarra==='function')pintaBarra();
 }
 const _irN=ir;
 ir=function(t){ if(CONTA&&!permitido(t)&&t!=='usuarios'){ toast('Essa tela é só para o dono da clínica'); t=telaInicial() } if(t==='usuarios'&&!(CONTA&&CONTA.papel==='dono'))t=telaInicial(); _irN(t) };
@@ -4384,6 +4404,7 @@ function sairDaConta(sem,aviso){
     if(cid){ try{ localStorage.removeItem('lucra:nuvem:'+cid); localStorage.removeItem('lucra:nuvem:'+cid+':base') }catch(e){} }
     gravarJ(K_SES,null); gravarJ(K_CONTA,null); SES=null; CONTA=null; BASE={};
     document.body.classList.remove('nuvem','papel-dono','papel-profissional','papel-recepcao'); pintaSync();
+    document.querySelectorAll('#menu li[hidden]').forEach(li=>{ if(!li.querySelector('[data-t=usuarios]'))li.hidden=false });
     S=JSON.parse(JSON.stringify(PAD)); $('#view').innerHTML='';
     porta('entrar',aviso||'') };
   if(sem)return fazer();
@@ -4570,6 +4591,38 @@ function preparaNasc(o){
   tx.addEventListener('input',valida); tx.addEventListener('blur',()=>{ if(tx.value&&!o.value)toast('Confira o aniversário: use dd/mm/aaaa') });
 }
 new MutationObserver(()=>{ const o=document.getElementById('c-nasc'); if(o&&o.type==='date')preparaNasc(o) }).observe(document.body,{childList:true,subtree:true});
+/* ══════════ BARRA DE BAIXO (celular) ══════════
+   Quatro grupos: Analítico, Atendimento, Financeiro e Configurações. Tocar abre as opções do grupo.
+   As opções vêm do próprio menu, então papéis e áreas continuam valendo. */
+function gruposMenu(){
+  const gs=[]; let g=null;
+  document.querySelectorAll('#menu ul > li').forEach(li=>{
+    if(li.classList.contains('nav-grupo')){ g={nome:li.textContent.trim(),itens:[]}; gs.push(g); return }
+    const b=li.querySelector('button'); if(!g||!b||li.hidden)return;
+    g.itens.push({t:b.dataset.t||'',id:b.id||'',rot:b.querySelector('.rot').textContent,ico:b.querySelector('.ico').innerHTML}) });
+  return gs.filter(x=>x.itens.length);
+}
+const ICO_GRUPO={'Analítico':'<path d="M4 20h16"/><rect x="5" y="12" width="3.5" height="5" rx="1"/><rect x="10.25" y="8" width="3.5" height="9" rx="1"/><rect x="15.5" y="4.5" width="3.5" height="12.5" rx="1"/>',
+  'Atendimento':'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4m8-4v4M3.5 10h17"/>',
+  'Financeiro':'<path d="M3.5 8A2.5 2.5 0 0 1 6 5.5h10.5a2 2 0 0 1 2 2V9"/><path d="M3.5 8v9A2.5 2.5 0 0 0 6 19.5h12.5a2 2 0 0 0 2-2V11a2 2 0 0 0-2-2H6A2.5 2.5 0 0 1 3.5 8Z"/>',
+  'Configurações':'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.17V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-2.82-1.17l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 3.09 14H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.17-2.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9.91 3.1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 2.82 1.17l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 20.91 10H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>'};
+const svgG=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+function pintaBarra(){
+  let bar=$('#barra'); if(!bar){ bar=document.createElement('nav'); bar.id='barra'; bar.setAttribute('aria-label','Menu'); document.body.appendChild(bar) }
+  const gs=gruposMenu(), atual=tela==='vendas'?'registrar':tela;
+  bar.innerHTML=gs.map((g,i)=>{ const on=g.itens.some(x=>x.t===atual);
+    return `<button type="button" data-g="${i}" ${on?'aria-current="true"':''}>${svgG(ICO_GRUPO[g.nome]||'<circle cx="12" cy="12" r="8"/>')}<span>${esc(g.nome)}</span></button>` }).join('');
+  bar.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>abreGrupo(gs[+b.dataset.g]));
+}
+function abreGrupo(g){
+  const vai=x=>{ if(x.id==='b-sair')return sair(); ir(x.t) };
+  if(g.itens.length===1)return vai(g.itens[0]);
+  abrirSheet(g.nome,'',`<div class="grupo-l">${g.itens.map((x,i)=>`<button type="button" data-gi="${i}" ${x.t&&x.t===tela?'aria-current="true"':''}>
+      <span class="ico">${x.ico}</span><span>${esc(x.rot)}</span>${ic('right',18)}</button>`).join('')}</div>`,
+    fechar=>document.querySelectorAll('.sheet [data-gi]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>vai(g.itens[+b.dataset.gi]),180) }));
+}
+const _marcaB=marcaMenu;
+marcaMenu=function(t){ _marcaB(t); pintaBarra() };
 /* ══════════ BOAS-VINDAS ══════════
    Quatro passos: nome, meta, primeiro serviço, taxas. Cada passo grava na hora,
    então quem sair no meio não perde o que já preencheu. */

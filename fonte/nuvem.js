@@ -292,6 +292,7 @@ function aplicarPapel(){
   ul.forEach(u=>{ let grupo=null, vis=false; [...u.children].forEach(li=>{ if(li.classList.contains('nav-grupo')){ if(grupo)grupo.hidden=!vis; grupo=li; vis=false } else if(!li.hidden)vis=true }); if(grupo)grupo.hidden=!vis });
   const u=$('#menu button[data-t=usuarios]'); if(u)u.closest('li').hidden=!(CONTA&&CONTA.papel==='dono');
   const r=$('#b-reg'); if(r)r.hidden=!permitido('registrar');
+  if(typeof pintaBarra==='function')pintaBarra();
 }
 const _irN=ir;
 ir=function(t){ if(CONTA&&!permitido(t)&&t!=='usuarios'){ toast('Essa tela é só para o dono da clínica'); t=telaInicial() } if(t==='usuarios'&&!(CONTA&&CONTA.papel==='dono'))t=telaInicial(); _irN(t) };
@@ -303,6 +304,7 @@ function sairDaConta(sem,aviso){
     if(cid){ try{ localStorage.removeItem('lucra:nuvem:'+cid); localStorage.removeItem('lucra:nuvem:'+cid+':base') }catch(e){} }
     gravarJ(K_SES,null); gravarJ(K_CONTA,null); SES=null; CONTA=null; BASE={};
     document.body.classList.remove('nuvem','papel-dono','papel-profissional','papel-recepcao'); pintaSync();
+    document.querySelectorAll('#menu li[hidden]').forEach(li=>{ if(!li.querySelector('[data-t=usuarios]'))li.hidden=false });
     S=JSON.parse(JSON.stringify(PAD)); $('#view').innerHTML='';
     porta('entrar',aviso||'') };
   if(sem)return fazer();
