@@ -27,7 +27,7 @@ T.online=function(el){ const o=onl(), lk=linkAgendar();
   el.innerHTML=`<h1>Agenda online</h1><p class="sub">O paciente escolhe um horário livre por um link. Você confirma.</p>
     <div class="sec"><div class="card">
       <label class="sw"><input type="checkbox" id="on-at" ${o.ativo?'checked':''}><span><b>Receber pedidos de horário pelo link</b></span></label>
-      ${o.ativo&&lk?`<div class="on-link"><span>${esc(lk)}</span><div class="row" style="gap:8px;margin-top:8px"><button class="btn sm pri" id="on-cp">${ic('file',16)}Copiar link</button><a class="btn sm soft" href="${esc(lk)}" target="_blank" rel="noopener">${ic('arrow',16)}Ver como o paciente vê</a></div>
+      ${o.ativo&&lk?`<div class="on-link"><span>${esc(lk)}</span><div class="row" style="gap:8px;margin-top:8px"><button class="btn sm pri" id="on-cp">${ic('file',16)}Copiar link</button><a class="btn sm soft" href="${esc(lk)}&previa=1" target="_blank" rel="noopener">${ic('arrow',16)}Ver como o paciente vê</a></div>
         <p class="sub" style="margin-top:8px">Coloque na bio do Instagram, no WhatsApp Business ou mande para quem pedir horário.</p></div>`:''}
     </div></div>
     <div class="sec"><div class="card"><h2 style="margin-bottom:10px">O que o paciente pode marcar</h2>
@@ -43,6 +43,8 @@ T.online=function(el){ const o=onl(), lk=linkAgendar();
   const tog=new Set(o.servicos.filter(id=>serv(id)));
   el.querySelectorAll('[data-on-s]').forEach(b=>b.onclick=()=>{ const id=b.dataset.onS; tog.has(id)?tog.delete(id):tog.add(id); b.setAttribute('aria-pressed',tog.has(id)) });
   $('#on-exp').onclick=()=>ir('ocupacao');
+  const prev=el.querySelector('a[href$="&previa=1"]'); if(prev)prev.onclick=e=>{ e.preventDefault();
+    abrirSheet('Como o paciente vê','A página do link, aqui dentro do app',`<iframe class="prev-fr" src="${esc(lk)}&previa=1&dentro=1" title="Página de agendamento"></iframe>`,()=>{}) };
   if($('#on-cp'))$('#on-cp').onclick=()=>{ try{ navigator.clipboard.writeText(lk); toast('Link copiado') }catch(e){ toast('Não deu para copiar') } };
   $('#on-ok').onclick=async()=>{ const at=$('#on-at').checked; if(at&&!tog.size)return toast('Escolha pelo menos um procedimento');
     const n=Object.assign(onl(),{ativo:at,servicos:[...tog],preco:$('#on-pr').checked,dias:+$('#on-d').value,antes:+$('#on-an').value,titulo:$('#on-tit').value.trim(),aviso:$('#on-av').value.trim()});
@@ -133,7 +135,9 @@ T.hoje=function(el){ _hojeOn(el);
 /* ══════════ PÁGINAS PÚBLICAS: ?agendar=código e ?avaliar=token ══════════ */
 function paginaPublica(){ let q; try{ q=new URLSearchParams(location.search) }catch(e){ return false }
   const ag=q.get('agendar'), avl=q.get('avaliar'), rsp=q.get('responder'), txt=q.has('privacidade')?'privacidade':q.has('termos')?'termos':''; if(!ag&&!avl&&!rsp&&!txt)return false;
-  document.body.className='publico'; document.body.innerHTML=`<main class="pub" id="pub"><div class="pub-c"><p class="sub">Carregando…</p></div></main><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  const previa=(q.has('previa')&&!q.has('dentro'))||q.has('privacidade')||q.has('termos');
+  document.body.className='publico'; document.body.innerHTML=`${previa?`<button class="btn soft pub-volta" id="pub-volta">${ic('left',18)}Voltar ao Lucra</button>`:''}<main class="pub" id="pub"><div class="pub-c"><p class="sub">Carregando…</p></div></main><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  if($('#pub-volta'))$('#pub-volta').onclick=()=>{ if(history.length>1)history.back(); else location.href=SITE() };
   const pub=$('#pub'), pubRpc=(n,a)=>sb('/rest/v1/rpc/'+n,{metodo:'POST',corpo:a,auth:false});
   const cor=ar=>{ if(AREAS[ar])document.documentElement.style.setProperty('--ac',AREAS[ar].cor) };
   const erro=t=>{ pub.innerHTML=`<div class="pub-c"><h1>Ops</h1><p class="sub">${t}</p></div>` };

@@ -1069,3 +1069,14 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .un-l{display:grid;gap:8px;margin-top:14px}
 .lote-pg{break-after:page;page-break-after:always}.lote-pg:last-child{break-after:auto;page-break-after:auto}
 .emerg-n{margin-bottom:12px}.emerg-n a{font-weight:700;color:inherit}
+/* assinaturas */
+.ass-blocos{display:grid;gap:10px;margin-top:14px}
+.ass-b{border:1px solid var(--line);border-radius:var(--r-s);padding:10px 12px;background:var(--surf)}
+.ass-b summary{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;min-height:36px;list-style:none}
+.ass-b summary::-webkit-details-marker{display:none}
+.ass-b summary small{color:var(--tx3);font-size:12.5px}
+.ass-b[open] summary{margin-bottom:8px}
+.recibo .rc-ass img{display:block;margin:0 auto -4px}
+.pub-volta{position:sticky;top:10px;margin:10px 0 0 12px;z-index:5}
+.prev-fr{width:100%;height:70vh;border:1px solid var(--line);border-radius:var(--r-s);background:var(--bg)}
+.md-b{padding:12px 0;border-bottom:1px solid var(--line)}.md-b:last-child{border-bottom:none}

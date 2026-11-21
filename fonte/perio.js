@@ -61,7 +61,7 @@ function perioHTML(p,ant){ const c=cli(p.clienteId), r=resumoPerio(p), pf=S.perf
     <p class="doc-pac">Sangramento à sondagem: <b>${r.sang.toFixed(0)}%</b> · bolsas ≥ 4 mm: <b>${r.b4}</b> · bolsas ≥ 6 mm: <b>${r.b6}</b>${ant?` (exame de ${dataBR(ant.data)}: ${resumoPerio(ant).sang.toFixed(0)}%, ${resumoPerio(ant).b4}, ${resumoPerio(ant).b6})`:''}</p>
     <table class="doc-tab pr-ptab">${linha(DENTES.perm[0])}${linha(DENTES.perm[1])}${linha(DENTES.perm[2])}${linha(DENTES.perm[3])}</table>
     <p class="sub" style="font-size:11px">Pontos: DV, V, MV, DL, L, ML (mm).</p>${p.obs?`<div class="doc-tx">${esc(p.obs)}</div>`:''}
-    <div class="rc-ass"><span></span><small>${esc(pf.nome||'Profissional')}${pf.registro?' · CRO '+esc(pf.registro):''}</small></div></div>` }
+    <div class="rc-ass">${assProfImg()}<span></span><small>${esc(pf.nome||'Profissional')}${pf.registro?' · CRO '+esc(pf.registro):''}</small></div></div>` }
 /* na ficha, junto do odontograma */
 const _topoPr=topoHist, _ligaPr=ligarTopoHist;
 topoHist=c=>{ let h=_topoPr(c); if(area()!=='odonto'||!podeClinico())return h; const ps=periosDe(c.id), u=ps[ps.length-1], r=u&&resumoPerio(u);

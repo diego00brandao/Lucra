@@ -38,7 +38,7 @@ function prontPsiHTML(cid){ const c=cli(cid), p=prontPsiDe(cid)||{}, f=p.fim, pf
     ${bl('Demanda',p.demanda)}${bl('Objetivos do trabalho',p.objetivos)}${bl('Observações',p.obs)}
     <p class="doc-pac"><b>Evolução</b></p>${evs.map(e=>`<div class="doc-ev"><b>${dataBR(e.data)}</b>${e.foco?' · '+esc(e.foco):''}${e.evolucao?' · '+esc(e.evolucao):''}<div class="doc-tx" style="margin:2px 0 0">${esc([e.chegada,e.notas,e.proximo?'Próximo passo: '+e.proximo:''].filter(Boolean).join('\n'))}</div></div>`).join('')||'<p>Sem sessões anotadas.</p>'}
     ${f?`<p class="doc-pac"><b>Encerramento:</b> ${dataBR(f.data)}${f.motivo?' · '+esc(f.motivo):''}${f.para?' · encaminhado para '+esc(f.para):''}</p>${f.obs?`<div class="doc-tx" style="margin-top:4px">${esc(f.obs)}</div>`:''}`:''}
-    <div class="rc-ass"><span></span><small>${esc(pf.nome||'Psicólogo(a)')}${pf.registro?' · CRP '+esc(pf.registro):''}</small></div></div>` }
+    <div class="rc-ass">${assProfImg()}<span></span><small>${esc(pf.nome||'Psicólogo(a)')}${pf.registro?' · CRP '+esc(pf.registro):''}</small></div></div>` }
 MASC.push(['#pp-ini,#pp-fd',v=>molde(soDig(v).slice(0,8),'##/##/####')]);
 
 /* ── 2. Questionários de uso livre: PHQ-9 (humor) e GAD-7 (ansiedade) ── */
@@ -110,7 +110,7 @@ function informeHTML(cid,ano){ const c=cli(cid), p=S.perfil||{}, ms=pagosNoAno(c
     <table class="doc-tab"><thead><tr><th>Mês</th><th>Atendimentos</th><th>Valor</th></tr></thead><tbody>${ms.filter(m=>m.n).map(m=>`<tr><td>${esc(mesNome(m.mes))}</td><td>${m.n}</td><td>${brl(m.total)}</td></tr>`).join('')}</tbody>
       <tfoot><tr><td>Total</td><td>${ms.reduce((a,m)=>a+m.n,0)}</td><td>${brl(tot)}</td></tr></tfoot></table>
     <p class="doc-dt">${esc((p.cidade?p.cidade+', ':'')+dataCheia(hojeISO()))}</p>
-    <div class="rc-ass"><span></span><small>${esc(p.nome||'Profissional')}${p.doc?' · CPF/CNPJ '+esc(fmtDoc(p.doc)):''}${p.registro?' · '+esc(AREAS[area()].reg)+' '+esc(p.registro):''}</small></div></div>` }
+    <div class="rc-ass">${assProfImg()}<span></span><small>${esc(p.nome||'Profissional')}${p.doc?' · CPF/CNPJ '+esc(fmtDoc(p.doc)):''}${p.registro?' · '+esc(AREAS[area()].reg)+' '+esc(p.registro):''}</small></div></div>` }
 function abreInforme(cid){ const c=cli(cid), a0=+hojeISO().slice(0,4); let ano=new Date().getMonth()<4?a0-1:a0;
   abrirSheet('Informe para o IR',esc(c.nome),`<div class="chips" role="group" aria-label="Ano">${[a0-2,a0-1,a0].map(a=>`<button class="chip" data-ir-a="${a}">${a}</button>`).join('')}</div><div id="ir-c" style="margin-top:12px"></div>`,fechar=>{
     const pinta=()=>{ document.querySelectorAll('[data-ir-a]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.irA===ano)); const ms=pagosNoAno(cid,ano), tot=ms.reduce((a,m)=>a+m.total,0), p=S.perfil||{};

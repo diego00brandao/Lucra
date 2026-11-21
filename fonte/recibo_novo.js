@@ -28,6 +28,7 @@ function reciboHTML(cid,mes,cpf){
       <div class="rc-lin">${r.linhas.length?r.linhas.map(l=>`<span>Atendimento no dia ${dataCheia(l.data)} - ${brl(l.valor)}</span>`).join(''):`<span>Nenhum atendimento pago em ${mesNome(mes)}</span>`}</div>
       <span class="rc-ext">Total: ${brl(r.total)} (${extenso(r.total)})</span></div>
     ${bloco('Emissão',[`${dataCheia(hojeISO())}${p.doc?' por '+esc(p.doc):''}`])}
+    ${p.assinatura?`<div class="rc-ass"><img src="${p.assinatura}" alt="Assinatura do profissional"><span></span><small>${esc(p.nome||'')}</small></div>`:''}
   </div>`;
 }
 function reciboTexto(cid,mes,cpf){ const d=document.createElement('div'); d.innerHTML=reciboHTML(cid,mes,cpf);
