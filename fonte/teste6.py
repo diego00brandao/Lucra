@@ -29,7 +29,7 @@ async def main():
         assert await pg.locator('nav button[data-t=clientes] .rot').text_content()=='Pacientes'
         ac=await pg.evaluate("getComputedStyle(document.documentElement).getPropertyValue('--ac').trim()"); assert ac.upper()!='#7A2E4D', ac
         await pg.screenshot(path=f'{SH}/90-ob-area.png'); await checa(pg,'ob área')
-        await pg.click('#ob-volta'); await pg.wait_for_timeout(300); await pg.click('#ob-demo'); await pg.wait_for_timeout(900)
+        await pg.evaluate("document.querySelector('.ob')&&document.querySelector('.ob').remove();document.body.style.overflow='';UI.boasVindas=true;salvarUI();demoArea();ir('painel')"); await pg.wait_for_timeout(900)
         st=json.loads(await pg.evaluate("JSON.stringify({a:S.area,s:S.servicos.length,c:S.clientes.length,ag:S.agenda.length,r:S.receber.length,e:S.evolucoes.length,v:S.vendas.length})"))
         print('demo psico',st); assert st['a']=='psico' and st['r']>=3 and st['e']>=10
         # painel
@@ -162,7 +162,7 @@ async def main():
         assert ac in ('','#7A2E4D') or ac.upper()=='#7A2E4D', ac
         # odontologia: exemplo próprio
         await pg.click('.areas [data-area=odonto]'); await pg.wait_for_timeout(300)
-        await pg.locator('.dobravel:has-text("Exemplo")').click(); await pg.click('#a-demo'); await pg.wait_for_timeout(300); await pg.click('[data-cf=ok]'); await pg.wait_for_timeout(800)
+        await pg.evaluate("demoArea();render()"); await pg.wait_for_timeout(800)
         assert await pg.evaluate("S.area")=='odonto' and await pg.evaluate("S.servicos.some(s=>s.nome==='Tratamento de canal')")
         await pg.screenshot(path=f'{SH}/101-painel-odonto.png',full_page=True); await checa(pg,'painel odonto')
         for t in ['agenda','clientes','vendas','servicos','sim']:

@@ -6,7 +6,7 @@ async def main():
     async with async_playwright() as p:
         br=await p.chromium.launch(channel='chrome',args=['--no-sandbox'])
         pg=await T.nova(br,390,844)
-        await pg.click('#ob-demo'); await pg.wait_for_timeout(900)
+        await pg.evaluate("document.querySelector('.ob')&&document.querySelector('.ob').remove();document.body.style.overflow='';UI.boasVindas=true;salvarUI();demoArea();ir('painel')"); await pg.wait_for_timeout(900)
         await pg.evaluate("(()=>{const c=S.clientes[0]; c.nome='Diego Brandão'; c.tel='(11) 98098-4102'; S.clientes=[c]; S.vendas.forEach(v=>{v.clienteId=c.id;v.cliente=c.nome}); S.agenda.forEach(a=>a.clienteId=c.id); salvar(); render()})()")  # fixture: cliente único com telefone
         await pg.evaluate("UI.mod={equipe:true,estoque:true,contas:true};salvarUI();render()")
         base=await pg.evaluate(T.RES)

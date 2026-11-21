@@ -8,6 +8,8 @@ const K_SES='lucra:sessao', K_CONTA='lucra:conta';
 let SES=null, CONTA=null, BASE={}, syncEst='', syncFila=null, syncRodando=false, renderPendente=false;
 const lerJ=k=>{ try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){ return null } };
 const gravarJ=(k,v)=>{ try{ v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v)) }catch(e){} };
+const OLHO=['<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12s3.500-6.500 9.500-6.500S21.500 12 21.500 12 18 18.500 12 18.500 2.500 12 2.500 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16"/><path d="M10.600 6.100A9.700 9.700 0 0 1 12 6c6 0 9.500 6 9.500 6a16.600 16.600 0 0 1-2.900 3.600M6.600 7.700C4 9.400 2.500 12 2.500 12S6 18 12 18c1.700 0 3.200-.4 4.500-1.100"/><path d="M9.900 9.900a3 3 0 0 0 4.200 4.200"/></svg>'];
 const SITE=()=>location.origin+location.pathname;
 function podeClinico(){ return !CONTA||CONTA.papel!=='recepcao' }
 function ehDono(){ return !CONTA||CONTA.papel==='dono' }
@@ -60,7 +62,9 @@ function porta(modo,aviso,extra){
   document.body.classList.add('porta-on');
   const e=(extra&&extra.email)||(lerJ('lucra:ultimo-email')||'');
   const cab=(t,s)=>`<div class="pt-marca">${MARCA||''}<b>Lucra</b></div><h1>${t}</h1>${s?`<p class="sub">${s}</p>`:''}${aviso?`<div class="pt-aviso" role="alert">${esc(aviso)}</div>`:''}`;
-  const campo=(id,rot,tipo,val,ac,ph)=>`<div class="field"><label for="${id}">${rot}</label><input id="${id}" type="${tipo}" value="${esc(val||'')}" autocomplete="${ac}" ${ph?`placeholder="${ph}"`:''}></div>`;
+  const campo=(id,rot,tipo,val,ac,ph)=>`<div class="field"><label for="${id}">${rot}</label>${tipo==='password'
+    ?`<div class="pt-senha"><input id="${id}" type="password" value="" autocomplete="${ac}" ${ph?`placeholder="${ph}"`:''}><button type="button" class="pt-olho" data-olho="${id}" aria-label="Mostrar senha" aria-pressed="false">${OLHO[0]}</button></div>`
+    :`<input id="${id}" type="${tipo}" value="${esc(val||'')}" autocomplete="${ac}" ${ph?`placeholder="${ph}"`:''}>`}</div>`;
   let h='';
   if(modo==='entrar')h=cab('Entrar','O financeiro da clínica em qualquer aparelho')+
     `<form id="pt-f" novalidate>${campo('pt-email','E-mail','email',e,'email')}${campo('pt-senha','Senha','password','','current-password')}
@@ -81,6 +85,8 @@ function porta(modo,aviso,extra){
      <div class="pt-links"><button class="lnk" data-pt="entrar">Já confirmei, quero entrar</button></div>`;
   else if(modo==='carregando')h=`<div class="pt-marca">${MARCA||''}<b>Lucra</b></div><p class="sub pt-carr" aria-live="polite">${esc(aviso||'Abrindo a sua clínica…')}</p>`;
   p.innerHTML=`<div class="pt-caixa">${h}</div>`;
+  p.querySelectorAll('[data-olho]').forEach(b=>b.onclick=()=>{ const i=$('#'+b.dataset.olho), ver=i.type==='password';
+    i.type=ver?'text':'password'; b.setAttribute('aria-pressed',String(ver)); b.setAttribute('aria-label',ver?'Esconder senha':'Mostrar senha'); b.innerHTML=OLHO[ver?1:0]; i.focus() });
   p.querySelectorAll('[data-pt]').forEach(b=>b.onclick=ev=>{ ev.preventDefault(); const em=$('#pt-email'); porta(b.dataset.pt,'',{email:em?em.value.trim():e}) });
   const f=$('#pt-f'); if(!f)return;
   const ok=$('#pt-ok'), ocupado=s=>{ ok.disabled=s; ok.textContent=s?'Um instante…':ok.dataset.tx||ok.textContent };

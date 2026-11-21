@@ -67,8 +67,8 @@ async def main():
         # 2 · exemplo pelos Ajustes (confirmação em folha)
         await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(500); await checa(pg, 'ajustes')
         await pg.screenshot(path=f'{SHOTS}/08-ajustes.png', full_page=True)
-        await pg.click('#a-demo'); await pg.wait_for_timeout(500); await pg.screenshot(path=f'{SHOTS}/09-confirma.png'); await checa(pg, 'confirmar')
-        await pg.click('[data-cf=ok]'); await pg.wait_for_timeout(900)
+        assert await pg.locator('#a-demo').count()==0, 'carregar exemplo ainda aparece'
+        await pg.evaluate("demoArea();ir('painel')"); await pg.wait_for_timeout(900)
         novo = await pg.evaluate(RES)
         for t in ['painel', 'agenda', 'clientes', 'vendas', 'servicos', 'sim']:
             await pg.evaluate(f"ir('{t}')"); await pg.wait_for_timeout(900)
@@ -134,7 +134,8 @@ async def main():
         # 4 · desktop
         pd = await nova(br, 1366, 800)
         await pd.screenshot(path=f'{SHOTS}/19-desk-ob.png')
-        await pd.click('#ob-demo'); await pd.wait_for_timeout(1000)
+        assert await pd.locator('#ob-demo').count()==0
+        await pd.evaluate("document.querySelector('.ob')&&document.querySelector('.ob').remove();document.body.style.overflow='';UI.boasVindas=true;salvarUI();demoArea();ir('painel')"); await pd.wait_for_timeout(1000)
         await pd.screenshot(path=f'{SHOTS}/20-desk-painel.png'); await checa(pd, 'desk painel')
         await pd.evaluate("ir('vendas')"); await pd.wait_for_timeout(800); await pd.screenshot(path=f'{SHOTS}/21-desk-caixa.png'); await checa(pd, 'desk caixa')
         await pd.evaluate("ir('clientes')"); await pd.wait_for_timeout(500); await pd.click('[data-ver-c]'); await pd.wait_for_timeout(600)

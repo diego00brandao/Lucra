@@ -14,12 +14,11 @@ T.painel=function(el){
       <p>O Lucra precisa de três coisas: o preço que você cobra, quanto gasta de produto em cada atendimento e as taxas da sua maquininha. Com isso ele mostra o lucro real de cada procedimento.</p>
       <button class="btn pri full" id="ir-ob">${ic('arrow')}Configurar em 2 minutos</button>
       <button class="btn soft full" id="ir-serv">${ic('plus')}Cadastrar serviços direto</button>
-      <button class="btn soft full" id="ir-demo">Carregar exemplo pronto</button>
     </div></div>`;
     el.innerHTML=x; ligarMes();
     $('#ir-ob').onclick=()=>boasVindas();
     $('#ir-serv').onclick=()=>ir('servicos');
-    $('#ir-demo').onclick=()=>{demo();UI.boasVindas=true;salvarUI();toast('Exemplo carregado');render();animar()};
+    if($('#ir-demo'))$('#ir-demo').onclick=()=>{demo();UI.boasVindas=true;salvarUI();toast('Exemplo carregado');render();animar()};
     return;
   }
 

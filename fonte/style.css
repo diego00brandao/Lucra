@@ -879,3 +879,18 @@ body.papel-recepcao #r-sobra,body.papel-profissional #r-sobra,
 body.papel-recepcao .vr small,body.papel-profissional .vr small,
 body.papel-recepcao .sheet .stats,body.papel-profissional .sheet .stats{display:none!important}
 body.papel-recepcao #h-evo,body.papel-recepcao [data-nota-a]{display:none!important}
+/* senha com olhinho */
+.pt-senha{position:relative}
+.pt-senha input{width:100%;padding-right:52px}
+.pt-olho{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;color:var(--tx3);border-radius:8px}
+.pt-olho:hover,.pt-olho[aria-pressed="true"]{color:var(--ac)}
+/* serviços comuns na configuração inicial */
+.ob-sug{margin:4px 0 14px}
+.ob-esc{display:grid;gap:8px}
+.ob-esc-l{display:grid;grid-template-columns:1fr 96px 96px 44px;gap:8px;align-items:end;border:1px solid var(--line);border-radius:10px;padding:10px 10px 10px 12px;background:var(--surf)}
+.ob-esc-l>b{align-self:center;font-size:14.5px}
+.ob-esc-l .field{margin:0}
+.ob-esc-l .field label{font-size:12px}
+@media (max-width:480px){ .ob-esc-l{grid-template-columns:1fr 1fr 44px} .ob-esc-l>b{grid-column:1/-1} }
+/* com conta, a área já foi escolhida ao criar a clínica */
+body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}

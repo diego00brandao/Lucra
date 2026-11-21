@@ -898,6 +898,21 @@ body.papel-recepcao #r-sobra,body.papel-profissional #r-sobra,
 body.papel-recepcao .vr small,body.papel-profissional .vr small,
 body.papel-recepcao .sheet .stats,body.papel-profissional .sheet .stats{display:none!important}
 body.papel-recepcao #h-evo,body.papel-recepcao [data-nota-a]{display:none!important}
+/* senha com olhinho */
+.pt-senha{position:relative}
+.pt-senha input{width:100%;padding-right:52px}
+.pt-olho{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;color:var(--tx3);border-radius:8px}
+.pt-olho:hover,.pt-olho[aria-pressed="true"]{color:var(--ac)}
+/* serviços comuns na configuração inicial */
+.ob-sug{margin:4px 0 14px}
+.ob-esc{display:grid;gap:8px}
+.ob-esc-l{display:grid;grid-template-columns:1fr 96px 96px 44px;gap:8px;align-items:end;border:1px solid var(--line);border-radius:10px;padding:10px 10px 10px 12px;background:var(--surf)}
+.ob-esc-l>b{align-self:center;font-size:14.5px}
+.ob-esc-l .field{margin:0}
+.ob-esc-l .field label{font-size:12px}
+@media (max-width:480px){ .ob-esc-l{grid-template-columns:1fr 1fr 44px} .ob-esc-l>b{grid-column:1/-1} }
+/* com conta, a área já foi escolhida ao criar a clínica */
+body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
 </style>
 </head>
 <body>
@@ -1271,12 +1286,11 @@ T.painel=function(el){
       <p>O Lucra precisa de três coisas: o preço que você cobra, quanto gasta de produto em cada atendimento e as taxas da sua maquininha. Com isso ele mostra o lucro real de cada procedimento.</p>
       <button class="btn pri full" id="ir-ob">${ic('arrow')}Configurar em 2 minutos</button>
       <button class="btn soft full" id="ir-serv">${ic('plus')}Cadastrar serviços direto</button>
-      <button class="btn soft full" id="ir-demo">Carregar exemplo pronto</button>
     </div></div>`;
     el.innerHTML=x; ligarMes();
     $('#ir-ob').onclick=()=>boasVindas();
     $('#ir-serv').onclick=()=>ir('servicos');
-    $('#ir-demo').onclick=()=>{demoArea();UI.boasVindas=true;salvarUI();toast('Exemplo carregado');render();animar()};
+    if($('#ir-demo'))$('#ir-demo').onclick=()=>{demoArea();UI.boasVindas=true;salvarUI();toast('Exemplo carregado');render();animar()};
     return;
   }
 
@@ -2208,11 +2222,6 @@ T.ajustes=function(el){
     <button class="btn soft full" id="a-csv" style="margin-top:8px">${ic('file')}Exportar movimento (.csv)</button>
   </div></div>
   <div class="sec"><div class="card">
-    <h2 style="margin-bottom:10px">Exemplo</h2>
-    <p class="sub" style="margin-bottom:12px">Carrega serviços e atendimentos fictícios para você ver o sistema funcionando.</p>
-    <button class="btn soft full" id="a-demo">Carregar exemplo</button>
-  </div></div>
-  <div class="sec"><div class="card">
     <h2 style="margin-bottom:10px">Apagar</h2>
     <p class="sub" style="margin-bottom:12px">Remove serviços, atendimentos, saídas e taxas. Não dá para desfazer.</p>
     <button class="btn danger full" id="a-del">${ic('trash')}Apagar tudo</button>
@@ -2255,7 +2264,7 @@ T.ajustes=function(el){
       rd.readAsText(f)};
     i.click();
   };
-  $('#a-demo').onclick=()=>confirmar('Carregar o exemplo?','Isso <b>substitui os dados da área ${AREAS[area()].n}</b> por um exemplo fictício. As outras áreas não mudam. Se você já lançou algo de verdade, baixe um backup antes.',
+  if($('#a-demo'))$('#a-demo').onclick=()=>confirmar('Carregar o exemplo?','Isso <b>substitui os dados da área ${AREAS[area()].n}</b> por um exemplo fictício. As outras áreas não mudam. Se você já lançou algo de verdade, baixe um backup antes.',
     'Carregar exemplo',()=>{ demoArea(); fotosOrfas(); UI.boasVindas=true; salvarUI(); toast('Exemplo carregado'); ir('painel') },true);
   $('#a-del').onclick=()=>confirmar('Apagar tudo?','Tudo o que é da área <b>${AREAS[area()].n}</b> sai deste aparelho: serviços, atendimentos, clientes, fotos, agenda, contas e taxas. As outras áreas não mudam. <b>Não dá para desfazer.</b>',
     'Apagar tudo',()=>{ const t=S.tema, ar=S.area; S=JSON.parse(JSON.stringify(PAD)); S.tema=t; S.area=ar; salvar(); fotosOrfas(); toast('Tudo apagado'); ir('painel') },true);
@@ -4079,6 +4088,8 @@ const K_SES='lucra:sessao', K_CONTA='lucra:conta';
 let SES=null, CONTA=null, BASE={}, syncEst='', syncFila=null, syncRodando=false, renderPendente=false;
 const lerJ=k=>{ try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){ return null } };
 const gravarJ=(k,v)=>{ try{ v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v)) }catch(e){} };
+const OLHO=['<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12s3.500-6.500 9.500-6.500S21.500 12 21.500 12 18 18.500 12 18.500 2.500 12 2.500 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16"/><path d="M10.600 6.100A9.700 9.700 0 0 1 12 6c6 0 9.500 6 9.500 6a16.600 16.600 0 0 1-2.900 3.600M6.600 7.700C4 9.400 2.500 12 2.500 12S6 18 12 18c1.700 0 3.200-.4 4.500-1.100"/><path d="M9.900 9.900a3 3 0 0 0 4.200 4.200"/></svg>'];
 const SITE=()=>location.origin+location.pathname;
 function podeClinico(){ return !CONTA||CONTA.papel!=='recepcao' }
 function ehDono(){ return !CONTA||CONTA.papel==='dono' }
@@ -4131,7 +4142,9 @@ function porta(modo,aviso,extra){
   document.body.classList.add('porta-on');
   const e=(extra&&extra.email)||(lerJ('lucra:ultimo-email')||'');
   const cab=(t,s)=>`<div class="pt-marca">${MARCA||''}<b>Lucra</b></div><h1>${t}</h1>${s?`<p class="sub">${s}</p>`:''}${aviso?`<div class="pt-aviso" role="alert">${esc(aviso)}</div>`:''}`;
-  const campo=(id,rot,tipo,val,ac,ph)=>`<div class="field"><label for="${id}">${rot}</label><input id="${id}" type="${tipo}" value="${esc(val||'')}" autocomplete="${ac}" ${ph?`placeholder="${ph}"`:''}></div>`;
+  const campo=(id,rot,tipo,val,ac,ph)=>`<div class="field"><label for="${id}">${rot}</label>${tipo==='password'
+    ?`<div class="pt-senha"><input id="${id}" type="password" value="" autocomplete="${ac}" ${ph?`placeholder="${ph}"`:''}><button type="button" class="pt-olho" data-olho="${id}" aria-label="Mostrar senha" aria-pressed="false">${OLHO[0]}</button></div>`
+    :`<input id="${id}" type="${tipo}" value="${esc(val||'')}" autocomplete="${ac}" ${ph?`placeholder="${ph}"`:''}>`}</div>`;
   let h='';
   if(modo==='entrar')h=cab('Entrar','O financeiro da clínica em qualquer aparelho')+
     `<form id="pt-f" novalidate>${campo('pt-email','E-mail','email',e,'email')}${campo('pt-senha','Senha','password','','current-password')}
@@ -4152,6 +4165,8 @@ function porta(modo,aviso,extra){
      <div class="pt-links"><button class="lnk" data-pt="entrar">Já confirmei, quero entrar</button></div>`;
   else if(modo==='carregando')h=`<div class="pt-marca">${MARCA||''}<b>Lucra</b></div><p class="sub pt-carr" aria-live="polite">${esc(aviso||'Abrindo a sua clínica…')}</p>`;
   p.innerHTML=`<div class="pt-caixa">${h}</div>`;
+  p.querySelectorAll('[data-olho]').forEach(b=>b.onclick=()=>{ const i=$('#'+b.dataset.olho), ver=i.type==='password';
+    i.type=ver?'text':'password'; b.setAttribute('aria-pressed',String(ver)); b.setAttribute('aria-label',ver?'Esconder senha':'Mostrar senha'); b.innerHTML=OLHO[ver?1:0]; i.focus() });
   p.querySelectorAll('[data-pt]').forEach(b=>b.onclick=ev=>{ ev.preventDefault(); const em=$('#pt-email'); porta(b.dataset.pt,'',{email:em?em.value.trim():e}) });
   const f=$('#pt-f'); if(!f)return;
   const ok=$('#pt-ok'), ocupado=s=>{ ok.disabled=s; ok.textContent=s?'Um instante…':ok.dataset.tx||ok.textContent };
@@ -4456,9 +4471,19 @@ anotarSessao=function(){ if(!podeClinico())return toast('As anotações são só
 /* ══════════ BOAS-VINDAS ══════════
    Quatro passos: nome, meta, primeiro serviço, taxas. Cada passo grava na hora,
    então quem sair no meio não perde o que já preencheu. */
+const SUGESTOES={
+  estetica:[['Limpeza de pele',180,25],['Drenagem linfática',150,10],['Massagem modeladora',150,10],['Peeling químico',250,40],
+    ['Microagulhamento',350,60],['Toxina botulínica',1200,450],['Preenchimento labial',1300,500],['Bioestimulador de colágeno',1800,700],
+    ['Skinbooster',900,350],['Radiofrequência',200,15],['Depilação a laser',200,15],['Design de sobrancelha',60,5]],
+  odonto:[['Avaliação',150,5],['Limpeza (profilaxia)',250,20],['Restauração em resina',300,40],['Clareamento em consultório',1200,250],
+    ['Clareamento caseiro',800,150],['Tratamento de canal',1200,120],['Extração simples',300,30],['Extração de siso',700,60],
+    ['Raspagem periodontal',400,30],['Faceta em resina',600,80],['Coroa de porcelana',2000,600],['Implante',3500,1200],
+    ['Instalação de aparelho',1500,400],['Manutenção de aparelho',200,15]]};
 function boasVindas(){
   if(document.querySelector('.ob'))return;
-  const TOT=4; let passo=0, servId='';
+  const TOT=4; let passo=0, servId='', criados=[];
+  let sugA=area(); const sel={};
+  const SUGX=()=>{ if(sugA!==area()){ sugA=area(); Object.keys(sel).forEach(k=>delete sel[k]) } return SUGESTOES[area()]||null };
   const d={clinica:UI.clinica||'',meta:S.meta||'',nome:'',preco:'',custo:'',
     deb:S.taxas.debito,c1:S.taxas.cred1,parc:S.taxas.parc,extra:S.taxas.parcExtra,imp:S.imposto};
   const bg=document.createElement('div'); bg.className='ob';
@@ -4487,9 +4512,8 @@ function boasVindas(){
       </ul>
       <div class="ob-acoes">
         <button class="btn pri full lg" id="ob-ok">Começar · leva 2 minutos${ic('arrow')}</button>
-        <button class="btn soft full" id="ob-demo">Ver com um exemplo pronto</button>
         <button class="btn-tx" id="ob-fora">Agora não, quero explorar primeiro</button>
-        <p class="ob-nota">Seus dados ficam só neste aparelho.</p>
+        <p class="ob-nota">${typeof CONTA!=='undefined'&&CONTA?'Tudo fica salvo na sua conta.':'Seus dados ficam só neste aparelho.'}</p>
       </div>`,
     ()=>`${topo()}<h1>Como se chama o seu espaço?</h1>
       <p class="ob-lead">Pode ser o nome da clínica, do studio ou o seu próprio nome.</p>
@@ -4508,7 +4532,26 @@ function boasVindas(){
         <div class="chips">${[5000,10000,20000,30000].map(n=>`<button class="chip" data-meta="${n}">${brl(n).replace(',00','')}</button>`).join('')}</div></div>
       <div class="nota" style="margin-top:18px">Não tem certeza? Chute um valor. Dá para mudar a qualquer hora no Painel.</div>
       ${acoes()}`,
-    ()=>`${topo()}<h1>${ehPsico()?'Quanto custa a sua sessão?':'Qual procedimento você mais faz?'}</h1>
+    ()=>SUGX()?`${topo()}<h1>Quais serviços você faz?</h1>
+      <p class="ob-lead">Toque nos que você oferece. Os valores são só um ponto de partida: troque pelo seu preço e pelo que você gasta de produto.</p>
+      <div class="chips ob-sug" role="group" aria-label="Serviços comuns">${SUGX().map((s,i)=>`<button type="button" class="chip" data-sug="${i}" aria-pressed="${!!sel[i]}">${esc(s[0])}</button>`).join('')}</div>
+      ${Object.keys(sel).length?`<div class="ob-esc">${Object.keys(sel).map(i=>`<div class="ob-esc-l"><b>${esc(SUGX()[i][0])}</b>
+        <div class="field"><label for="sp-${i}">Preço (R$)</label><input id="sp-${i}" data-sp="${i}" data-c="preco" inputmode="decimal" value="${esc(String(sel[i].preco).replace('.',','))}"></div>
+        <div class="field"><label for="sc-${i}">Produto (R$)</label><input id="sc-${i}" data-sp="${i}" data-c="custo" inputmode="decimal" value="${esc(String(sel[i].custo).replace('.',','))}"></div>
+        <button type="button" class="ibtn" data-tira="${i}" aria-label="Tirar ${esc(SUGX()[i][0])}">${ic('x',18)}</button></div>`).join('')}</div>`:''}
+      <p class="eyebrow" style="margin-top:18px">Faz algum que não está na lista?</p>
+      <div class="ob-campos">
+        <div class="field"><label for="ob-nome">Nome do procedimento</label>
+          <input id="ob-nome" data-k="nome" placeholder="opcional" value="${esc(d.nome)}"></div>
+        <div class="grid2">
+          <div class="field"><label for="ob-preco">Preço cobrado (R$)</label>
+            <input id="ob-preco" data-k="preco" inputmode="decimal" placeholder="0,00" value="${v('preco')}"></div>
+          <div class="field"><label for="ob-custo">Custo de produto (R$)</label>
+            <input id="ob-custo" data-k="custo" inputmode="decimal" placeholder="0,00" value="${v('custo')}"></div>
+        </div></div>
+      <div class="nota">O <b>custo de produto</b> é o que sai do seu bolso a cada atendimento: ${area()==='odonto'?'resina, anestésico, descartável, laboratório':'creme, descartável, agulha, toxina'}. Um valor aproximado já serve.</div>
+      ${acoes()}`
+    :`${topo()}<h1>${ehPsico()?'Quanto custa a sua sessão?':'Qual procedimento você mais faz?'}</h1>
       <p class="ob-lead">Cadastre só um agora. Os outros você adiciona depois em Serviços.</p>
       <div class="ob-campos">
         <div class="field"><label for="ob-nome">Nome do procedimento</label>
@@ -4555,10 +4598,18 @@ function boasVindas(){
         </div>` }
   ];
 
-  const guarda=()=>bg.querySelectorAll('[data-k]').forEach(i=>d[i.dataset.k]=i.value);
+  const guarda=()=>{ bg.querySelectorAll('[data-k]').forEach(i=>d[i.dataset.k]=i.value);
+    bg.querySelectorAll('[data-sp]').forEach(i=>{ if(sel[i.dataset.sp])sel[i.dataset.sp][i.dataset.c]=i.value }) };
   const avanca=()=>{ guarda();
     if(passo===1){ UI.clinica=String(d.clinica).trim(); salvarUI(); marca() }
     if(passo===2){ S.meta=num(d.meta); salvar() }
+    if(passo===3&&SUGX()){ const n=String(d.nome).trim(), lista=Object.keys(sel).map(i=>({nome:SUGX()[i][0],preco:num(sel[i].preco),custo:num(sel[i].custo)}));
+      if(n){ if(num(d.preco)<=0){ toast('Informe o preço de '+n); q('#ob-preco').focus(); return } lista.push({nome:n,preco:num(d.preco),custo:num(d.custo)}) }
+      if(!lista.length){ toast('Escolha pelo menos um serviço'); return }
+      const semPreco=lista.find(s=>s.preco<=0); if(semPreco){ toast('Informe o preço de '+semPreco.nome); return }
+      S.servicos=S.servicos.filter(s=>!criados.includes(s.id)); criados=[];
+      lista.forEach(s=>{ const id=uid(); criados.push(id); S.servicos.push({id,nome:s.nome,preco:s.preco,precoMax:0,custo:s.custo,comissao:0,retorno:0}) });
+      servId=criados[0]; salvar(); passo++; return desenha() }
     if(passo===3){ const n=String(d.nome).trim(), p=num(d.preco);
       if(!n){ toast('Dê um nome ao procedimento'); q('#ob-nome').focus(); return }
       if(p<=0){ toast('Informe o preço cobrado'); q('#ob-preco').focus(); return }
@@ -4578,6 +4629,9 @@ function boasVindas(){
     if(q('#ob-demo'))q('#ob-demo').onclick=()=>{ demoArea(); sair('Exemplo carregado') };
     if(q('#ob-fim'))q('#ob-fim').onclick=()=>{ const tem=!!serv(servId); sair(); if(!tem)ir('servicos') };
     if(q('#ob-cx'))q('#ob-cx').onclick=()=>{ sair(); ir('registrar') };
+    bg.querySelectorAll('[data-sug]').forEach(b=>b.onclick=()=>{ guarda(); const i=b.dataset.sug;
+      if(sel[i])delete sel[i]; else sel[i]={preco:SUGX()[i][1],custo:SUGX()[i][2]}; const y=bg.scrollTop; desenha(); bg.scrollTop=y });
+    bg.querySelectorAll('[data-tira]').forEach(b=>b.onclick=()=>{ guarda(); delete sel[b.dataset.tira]; const y=bg.scrollTop; desenha(); bg.scrollTop=y });
     bg.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{ guarda(); mudaArea(b.dataset.area,true); desenha() });
     bg.querySelectorAll('[data-eq]').forEach(b=>b.onclick=()=>{ UI.mod.equipe=b.dataset.eq==='1'; salvarUI();
       bg.querySelectorAll('[data-eq]').forEach(z=>z.setAttribute('aria-pressed',String(z===b))) });

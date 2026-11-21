@@ -18,7 +18,7 @@ async def main():
             assert man['display']=='standalone' and man['start_url']=='./' and len(man['icons'])==3
             for i in man['icons']:
                 st=await pg.evaluate("u=>fetch(u).then(r=>[r.status,r.headers.get('content-type')])",'http://127.0.0.1:8765/lucra/'+i['src']); assert st==[200,'image/png'], st
-            await pg.click('#ob-demo'); await pg.wait_for_timeout(700)
+            await pg.evaluate("document.querySelector('.ob')&&document.querySelector('.ob').remove();document.body.style.overflow='';UI.boasVindas=true;salvarUI();demoArea();ir('painel')"); await pg.wait_for_timeout(700)
             await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(400)
             assert await pg.locator('text=Instalar no celular').count()==1
             await pg.screenshot(path='shots/80-instalar.png')

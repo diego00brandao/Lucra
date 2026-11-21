@@ -9,7 +9,7 @@ async def main():
         br=await p.chromium.launch(channel='chrome',args=['--no-sandbox'])
         for w in (390,360):
             pg=await T.nova(br,w,780)
-            await pg.click('#ob-demo'); await pg.wait_for_timeout(800); await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(400)
+            await pg.evaluate("document.querySelector('.ob')&&document.querySelector('.ob').remove();document.body.style.overflow='';UI.boasVindas=true;salvarUI();demoArea();ir('painel')"); await pg.wait_for_timeout(800); await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(400)
             await T.checa(pg,f'ajustes aparência {w}')
             if w==390:
                 await pg.locator('.sec:has(h2:text("Aparência"))').screenshot(path=f'{SH}/40-aparencia.png')
