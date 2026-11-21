@@ -157,8 +157,8 @@ function telaOrc(el,x){
   const sv=S.orcamentos.slice().sort((a,b)=>b.data.localeCompare(a.data));
   if(sv.length){
     x+=`<div class="sec"><div class="sec-top"><h2>Orçamentos salvos</h2><span class="pill">${sv.length}</span></div><div class="card">`;
-    sv.forEach(o=>{ const t=calcOrc(o), c=cli(o.clienteId), ab=o.status!=='fechado';
-      x+=`<div class="item" ${ab?'':'style="opacity:.62"'}><div class="mn"><b>${esc(c?c.nome:'Sem cadastro')} ${ab?'':'<span class="pill ok">fechado</span>'}</b>
+    sv.forEach(o=>{ const t=calcOrc(o), c=cli(o.clienteId), ab=o.status!=='fechado'&&o.status!=='perdido';
+      x+=`<div class="item" ${ab?'':'style="opacity:.62"'}><div class="mn"><b>${esc(c?c.nome:'Sem cadastro')} ${ab?'':o.status==='perdido'?'<span class="pill">não fechou</span>':'<span class="pill ok">fechado</span>'}</b>
         <small>${dataBR(o.data)} · ${o.itens.map(i=>{const s=serv(i.servicoId);return esc(s?s.nome:'serviço removido')+(i.sessoes>1?' ×'+i.sessoes:'')}).join(', ')}</small></div>
         <div class="vr">${brl(t.total)}<small class="${t.lucro>=0?'v-ok':'v-bad'}">sobra ${brl(t.lucro)}</small></div>
         <div class="acts">${ab?`<button class="btn sm pri" data-o-fecha="${o.id}">${ic('check',16)}Fechou</button>

@@ -50,6 +50,20 @@ T.hoje=function(el){
   if(typeof planosDe==='function'&&temPlano()&&pode('novoag')){ const pend=[]; (S.planos||[]).filter(p=>p.status==='aberto').forEach(p=>{ totPlano(p); const e=p.etapas.find(z=>z.status==='pendente'); if(e)pend.push({p,e}) });
     if(pend.length)card({tipo:'ac',ic:'file',tit:`${pend.length} ${pend.length>1?'tratamentos com etapa':'tratamento com etapa'} para agendar`,
       det:pend.slice(0,3).map(x=>`${nm(cl(x.p.clienteId))} (${esc(x.e.nome)})`).join(', ')+(pend.length>3?'…':''),acao:'Agendar a próxima',ir:()=>abrePlano(pend[0].p.id)}) }
+  /* parcelas de tratamento atrasadas ou vencendo hoje */
+  if(typeof parcAbertas==='function'&&pode('registrar')){ const ps=parcAbertas().filter(p=>p.venc<=h); if(ps.length){ const at=ps.filter(parcAtrasada).length;
+    card({tipo:at?'bad':'war',ic:'coins',tit:at?`${at} ${at>1?'parcelas atrasadas':'parcela atrasada'}`:`${ps.length} ${ps.length>1?'parcelas vencem':'parcela vence'} hoje`,
+      det:`${brl(ps.reduce((a,p)=>a+num(p.valor),0))} · ${[...new Set(ps.map(p=>p.clienteId))].slice(0,3).map(id=>nm(cl(id))).join(', ')}`,acao:'Ver parcelas',ir:()=>ir('registrar')}) } }
+  /* laboratório */
+  if(typeof temLab==='function'&&temLab()&&pode('lab')){ const at=(S.lab||[]).filter(labAtrasado), vh=(S.lab||[]).filter(l=>(l.status==='enviado'||l.status==='refazer')&&l.prevista===h);
+    if(at.length)card({tipo:'war',ic:'box',tit:`${at.length} ${at.length>1?'trabalhos atrasados':'trabalho atrasado'} no laboratório`,det:at.slice(0,3).map(l=>`${esc(l.trabalho)} de ${nm(cl(l.clienteId))}`).join(', '),acao:'Ver laboratório',ir:()=>ir('lab')});
+    else if(vh.length)card({tipo:'ac',ic:'box',tit:`${vh.length} ${vh.length>1?'trabalhos voltam':'trabalho volta'} do laboratório hoje`,det:vh.slice(0,3).map(l=>`${esc(l.trabalho)} de ${nm(cl(l.clienteId))}`).join(', '),acao:'Ver laboratório',ir:()=>ir('lab')}) }
+  /* orçamentos sem resposta */
+  if(typeof orcParaChamar==='function'&&pode('orcamentos')){ const os=orcParaChamar(); if(os.length)card({tipo:'ac',ic:'chat',tit:`${os.length} ${os.length>1?'orçamentos esperando resposta':'orçamento esperando resposta'}`,
+    det:os.slice(0,3).map(o=>nm(cl(o.clienteId))).join(', ')+(os.length>3?'…':''),acao:'Chamar de novo',ir:()=>{ funVer='abertos'; ir('orcamentos') }}) }
+  /* convênio: guias paradas */
+  if(typeof temConv==='function'&&temConv()&&pode('convenios')){ const gs=(S.guias||[]).filter(g=>g.status==='aberta'); if(gs.length>=1&&gs.some(g=>diasEntre(g.data,h)>=7))card({tipo:'war',ic:'file',tit:`${gs.length} ${gs.length>1?'guias':'guia'} de convênio para enviar`,
+    det:`${brl(gs.reduce((a,g)=>a+num(g.valor),0))} esperando você mandar para o convênio`,acao:'Ver convênios',ir:()=>ir('convenios')}) }
   /* validade */
   const venc=typeof vencendo==='function'?vencendo():[];
   if(venc.length&&ehDono()){ const ja=venc.filter(p=>diasParaVencer(p)<0).length;

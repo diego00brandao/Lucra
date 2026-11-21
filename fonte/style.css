@@ -979,3 +979,50 @@ body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
 .im-prev>div{display:grid}
 .im-prev small{color:var(--tx3);font-size:13px}
 body.papel-recepcao #h-fotos{display:none!important}
+
+/* ── documentos ── */
+.recibo .doc-tx{white-space:pre-wrap;margin:18px 0 8px;line-height:1.65;overflow-wrap:anywhere}
+.recibo .doc-pac{margin-top:14px}
+.recibo .doc-dt{margin-top:18px;text-align:right;color:#444}
+.recibo .doc-end{margin-top:18px;text-align:center;font-size:12px;color:#666}
+.recibo .rc-ass img{max-width:60%;max-height:90px;margin-bottom:-6px}
+.ass-cv{display:block;width:100%;height:150px;border:1.5px dashed var(--line2);border-radius:var(--r-s);background:#fff;touch-action:none;cursor:crosshair}
+.doc-assv{display:grid;justify-items:center;gap:2px;margin-bottom:12px;padding:8px;background:#fff;border-radius:var(--r-s);border:1px solid var(--line)}
+.doc-assv img{max-width:70%;max-height:80px}.doc-assv small{color:#555}
+.sheet textarea,#view textarea{width:100%;font:inherit;line-height:1.5;padding:10px 12px;border-radius:var(--r-s);border:1px solid var(--line2);background:var(--surf);color:var(--tx);resize:vertical}
+/* pergunta rápida */
+.mini-bg{position:fixed;inset:0;z-index:300;background:rgba(20,10,15,.45);display:grid;place-items:center;padding:16px}
+.mini{width:min(380px,100%);background:var(--surf);color:var(--tx);border-radius:var(--r);padding:18px;box-shadow:var(--sh2);display:grid;gap:8px}
+.mini input{width:100%}
+.grupo-f{display:grid;gap:8px;margin-top:6px}
+/* convênios */
+.cv-tab{display:grid;gap:2px;margin-top:6px}
+.cv-l{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.cv-l:last-child{border-bottom:none}
+.cv-l span{flex:1;display:grid;font-size:14.5px}.cv-l span small{color:var(--tx3);font-size:12.5px}
+.cv-l input{width:110px;flex:none}
+.ck-l.item{display:flex;align-items:center;gap:10px}
+.ck-l .mn small{margin:0;display:block}
+label.sw{display:flex;align-items:center;gap:12px;cursor:pointer;min-height:44px}
+label.sw input[type=checkbox]{width:22px;height:22px;min-height:0;flex:none;accent-color:var(--ac);margin:0}
+/* agenda online */
+.on-link{margin-top:10px;padding:12px;border-radius:var(--r-s);background:var(--ac-soft)}
+.on-link>span{display:block;font-weight:600;overflow-wrap:anywhere;font-size:14px}
+/* páginas públicas */
+body.publico{background:var(--bg);color:var(--tx);font-family:var(--sans);margin:0}
+.pub{min-height:100vh;display:flex;justify-content:center;padding:28px 16px 48px}
+.pub-c{width:min(520px,100%)}
+.pub-c h1{font-family:var(--serif);font-size:28px;line-height:1.15;margin:4px 0 6px}
+.pub-h{font-size:15px;margin:20px 0 8px}
+.pub-dias{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.pub-dias .chip{display:grid;justify-items:center;min-width:64px;scroll-snap-align:start;line-height:1.2;padding:8px 10px}
+.pub-dias .chip small{font-size:11.5px;opacity:.8;text-transform:capitalize}
+.pub-nps{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin-top:14px}
+.pub-nps .chip{padding:0;min-height:44px;justify-content:center;font-weight:700}
+.pub-nps .chip[aria-pressed=true]{color:#fff}
+.pub-nps .n-b[aria-pressed=true]{background:var(--bad);border-color:var(--bad)}
+.pub-nps .n-m[aria-pressed=true]{background:var(--war);border-color:var(--war)}
+.pub-nps .n-a[aria-pressed=true]{background:var(--ok);border-color:var(--ok)}
+.pub-esc{display:flex;justify-content:space-between;color:var(--tx3);margin-top:4px}
+.pub-ok{text-align:center;padding-top:40px}.pub-ok .av-ic{margin:0 auto 12px}
+@media (max-width:380px){.pub-nps{grid-template-columns:repeat(6,1fr)}}

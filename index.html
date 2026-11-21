@@ -998,6 +998,53 @@ body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
 .im-prev>div{display:grid}
 .im-prev small{color:var(--tx3);font-size:13px}
 body.papel-recepcao #h-fotos{display:none!important}
+
+/* ── documentos ── */
+.recibo .doc-tx{white-space:pre-wrap;margin:18px 0 8px;line-height:1.65;overflow-wrap:anywhere}
+.recibo .doc-pac{margin-top:14px}
+.recibo .doc-dt{margin-top:18px;text-align:right;color:#444}
+.recibo .doc-end{margin-top:18px;text-align:center;font-size:12px;color:#666}
+.recibo .rc-ass img{max-width:60%;max-height:90px;margin-bottom:-6px}
+.ass-cv{display:block;width:100%;height:150px;border:1.5px dashed var(--line2);border-radius:var(--r-s);background:#fff;touch-action:none;cursor:crosshair}
+.doc-assv{display:grid;justify-items:center;gap:2px;margin-bottom:12px;padding:8px;background:#fff;border-radius:var(--r-s);border:1px solid var(--line)}
+.doc-assv img{max-width:70%;max-height:80px}.doc-assv small{color:#555}
+.sheet textarea,#view textarea{width:100%;font:inherit;line-height:1.5;padding:10px 12px;border-radius:var(--r-s);border:1px solid var(--line2);background:var(--surf);color:var(--tx);resize:vertical}
+/* pergunta rápida */
+.mini-bg{position:fixed;inset:0;z-index:300;background:rgba(20,10,15,.45);display:grid;place-items:center;padding:16px}
+.mini{width:min(380px,100%);background:var(--surf);color:var(--tx);border-radius:var(--r);padding:18px;box-shadow:var(--sh2);display:grid;gap:8px}
+.mini input{width:100%}
+.grupo-f{display:grid;gap:8px;margin-top:6px}
+/* convênios */
+.cv-tab{display:grid;gap:2px;margin-top:6px}
+.cv-l{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.cv-l:last-child{border-bottom:none}
+.cv-l span{flex:1;display:grid;font-size:14.5px}.cv-l span small{color:var(--tx3);font-size:12.5px}
+.cv-l input{width:110px;flex:none}
+.ck-l.item{display:flex;align-items:center;gap:10px}
+.ck-l .mn small{margin:0;display:block}
+label.sw{display:flex;align-items:center;gap:12px;cursor:pointer;min-height:44px}
+label.sw input[type=checkbox]{width:22px;height:22px;min-height:0;flex:none;accent-color:var(--ac);margin:0}
+/* agenda online */
+.on-link{margin-top:10px;padding:12px;border-radius:var(--r-s);background:var(--ac-soft)}
+.on-link>span{display:block;font-weight:600;overflow-wrap:anywhere;font-size:14px}
+/* páginas públicas */
+body.publico{background:var(--bg);color:var(--tx);font-family:var(--sans);margin:0}
+.pub{min-height:100vh;display:flex;justify-content:center;padding:28px 16px 48px}
+.pub-c{width:min(520px,100%)}
+.pub-c h1{font-family:var(--serif);font-size:28px;line-height:1.15;margin:4px 0 6px}
+.pub-h{font-size:15px;margin:20px 0 8px}
+.pub-dias{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.pub-dias .chip{display:grid;justify-items:center;min-width:64px;scroll-snap-align:start;line-height:1.2;padding:8px 10px}
+.pub-dias .chip small{font-size:11.5px;opacity:.8;text-transform:capitalize}
+.pub-nps{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin-top:14px}
+.pub-nps .chip{padding:0;min-height:44px;justify-content:center;font-weight:700}
+.pub-nps .chip[aria-pressed=true]{color:#fff}
+.pub-nps .n-b[aria-pressed=true]{background:var(--bad);border-color:var(--bad)}
+.pub-nps .n-m[aria-pressed=true]{background:var(--war);border-color:var(--war)}
+.pub-nps .n-a[aria-pressed=true]{background:var(--ok);border-color:var(--ok)}
+.pub-esc{display:flex;justify-content:space-between;color:var(--tx3);margin-top:4px}
+.pub-ok{text-align:center;padding-top:40px}.pub-ok .av-ic{margin:0 auto 12px}
+@media (max-width:380px){.pub-nps{grid-template-columns:repeat(6,1fr)}}
 </style>
 </head>
 <body>
@@ -1030,14 +1077,19 @@ body.papel-recepcao #h-fotos{display:none!important}
   <li><button data-t="lucro"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17l5-5 4 4 7-7"/><path d="M15 9h5v5"/></svg></span><span class="rot">Lucro</span></button></li>
   <li><button data-t="caixa"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8A2.5 2.5 0 0 1 6 5.5h10.5a2 2 0 0 1 2 2V9"/><path d="M3.5 8v9A2.5 2.5 0 0 0 6 19.5h12.5a2 2 0 0 0 2-2V11a2 2 0 0 0-2-2H6A2.5 2.5 0 0 1 3.5 8Z"/><circle cx="16.5" cy="14.25" r="1.15" fill="currentColor" stroke="none"/></svg></span><span class="rot">Caixa do dia</span></button></li>
   <li><button data-t="ocupacao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5H12Z"/><path d="M15 3.8A8.5 8.5 0 0 1 20.2 9H15Z"/></svg></span><span class="rot">Ocupação da agenda</span></button></li>
+  <li><button data-t="satisfacao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9Z"/></svg></span><span class="rot">Satisfação</span></button></li>
   <li class="nav-grupo" aria-hidden="true"><span>Atendimento</span></li>
   <li><button data-t="novoag"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4m8-4v4M3.5 10h17"/><path d="M12 12.8v5M9.5 15.3h5"/></svg></span><span class="rot">Novo agendamento</span></button></li>
   <li><button data-t="agenda"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4m8-4v4M3.5 10h17"/><path d="M8.5 15.2l2.2 2.2 4.3-4.3"/></svg></span><span class="rot">Agenda</span></button></li>
   <li><button data-t="retornos"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/><path d="M12 8.5V12l2.5 2"/></svg></span><span class="rot">Retornos</span></button></li>
   <li><button data-t="clientes"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></svg></span><span class="rot">Clientes</span></button></li>
+  <li><button data-t="orcamentos"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9.5A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5Z"/><path d="M14 3.5V8h4"/><path d="M9 13h6M9 16.5h4"/></svg></span><span class="rot">Orçamentos</span></button></li>
+  <li><button data-t="lab"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3.5h5"/><path d="M10.5 3.5v5.2L5.6 17.4A2 2 0 0 0 7.3 20.5h9.4a2 2 0 0 0 1.7-3.1l-4.9-8.7V3.5"/><path d="M7.8 14h8.4"/></svg></span><span class="rot">Laboratório</span></button></li>
+  <li><button data-t="online"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.3 3.6 5.1 3.6 8.5s-1.2 6.2-3.6 8.5c-2.4-2.3-3.6-5.1-3.6-8.5s1.2-6.2 3.6-8.5Z"/></svg></span><span class="rot">Agenda online</span></button></li>
   <li class="nav-grupo" aria-hidden="true"><span>Financeiro</span></li>
   <li><button data-t="registrar"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/></svg></span><span class="rot">Registrar atendimento</span></button></li>
   <li><button data-t="saida"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8 12h8"/></svg></span><span class="rot">Registrar saída</span></button></li>
+  <li><button data-t="convenios"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12.5" rx="2.5"/><path d="M3.5 10h17M7 14.5h4"/></svg></span><span class="rot">Convênios</span></button></li>
   <li><button data-t="servicos"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5l1.9 4.9 4.9 1.9-4.9 1.9L11 17.1l-1.9-4.9-4.9-1.9 4.9-1.9Z"/><path d="M18 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z"/></svg></span><span class="rot">Serviços</span></button></li>
   <li><button data-t="sim"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="3" width="15" height="18" rx="3"/><path d="M8 7.5h8"/><path d="M8.2 12h.1m3.65 0h.1m3.65 0h.1M8.2 16.3h.1m3.65 0h.1m3.65 0h.1" stroke-width="2.4"/></svg></span><span class="rot">Simulador</span></button></li>
   </ul>
@@ -1079,7 +1131,7 @@ const PAD={
   taxas:{pix:0, dinheiro:0, debito:1.37, cred1:3.15, parc:5.39, parcExtra:0.70},
   servicos:[], vendas:[], despesas:[], retiradas:[], clientes:[], agenda:[],
   contas:[], produtos:[], orcamentos:[], equipe:[],  /* listas novas: backups antigos abrem com elas vazias */
-  receber:[], evolucoes:[], anamneses:[], prontuario:[], planos:[], odontogramas:[], area:'estetica', perfil:{}
+  receber:[], evolucoes:[], anamneses:[], prontuario:[], planos:[], odontogramas:[], documentos:[], modelosDoc:[], lab:[], parcelas:[], convenios:[], guias:[], pesquisas:[], area:'estetica', perfil:{}
 };
 let S=JSON.parse(JSON.stringify(PAD));
 
@@ -1094,7 +1146,7 @@ function carregar(){
 function salvar(){ try{ localStorage.setItem(CHAVE,JSON.stringify(S)); if(falhaSalvar){ falhaSalvar=false; avisoSalvar() } }catch(e){ falhaSalvar=true; avisoSalvar() } }
 function normalizar(){
   S.taxas=Object.assign({},PAD.taxas,S.taxas||{});
-  ['servicos','vendas','despesas','retiradas','clientes','agenda','contas','produtos','orcamentos','equipe','receber','evolucoes','anamneses','prontuario','planos','odontogramas'].forEach(k=>{ if(!Array.isArray(S[k]))S[k]=[] });
+  ['servicos','vendas','despesas','retiradas','clientes','agenda','contas','produtos','orcamentos','equipe','receber','evolucoes','anamneses','prontuario','planos','odontogramas','documentos','modelosDoc','lab','parcelas','convenios','guias','pesquisas'].forEach(k=>{ if(!Array.isArray(S[k]))S[k]=[] });
   if(!['estetica','odonto','psico'].includes(S.area))S.area='estetica';
   if(!S.perfil||typeof S.perfil!=='object'||Array.isArray(S.perfil))S.perfil={};
   if(S.falta&&(typeof S.falta!=='object'||Array.isArray(S.falta)))delete S.falta;
@@ -1244,7 +1296,7 @@ function retornos(){
 /* ── cálculo central: quanto sobra de uma venda ── */
 const FORMAS=[
   {k:'pix',n:'Pix'},{k:'dinheiro',n:'Dinheiro'},{k:'debito',n:'Débito'},
-  {k:'cred1',n:'Crédito à vista'},{k:'parc',n:'Crédito parcelado'}
+  {k:'cred1',n:'Crédito à vista'},{k:'parc',n:'Crédito parcelado'},{k:'transf',n:'Transferência'}
 ];
 function taxaDe(forma,parcelas){
   const t=S.taxas;
@@ -2204,7 +2256,7 @@ T.clientes=function(el){
   document.querySelectorAll('[data-del-c]').forEach(b=>b.onclick=()=>{
     const id=b.dataset.delC, usado=S.vendas.some(v=>v.clienteId===id);
     confirmar('Excluir este cliente?',usado?'Esse cliente tem atendimentos registrados. O histórico financeiro continua; os horários marcados, as fotos e as anotações de sessão dele são apagados.':'O cadastro e os horários marcados dele saem do sistema. Não dá para desfazer.','Excluir',()=>{
-    S.clientes=S.clientes.filter(c=>c.id!==id); apagaFotosDe(id); S.evolucoes=S.evolucoes.filter(e=>e.clienteId!==id); S.anamneses=S.anamneses.filter(e=>e.clienteId!==id); S.prontuario=S.prontuario.filter(e=>e.clienteId!==id); S.planos=S.planos.filter(e=>e.clienteId!==id); S.odontogramas=S.odontogramas.filter(e=>e.clienteId!==id);
+    S.clientes=S.clientes.filter(c=>c.id!==id); apagaFotosDe(id); S.evolucoes=S.evolucoes.filter(e=>e.clienteId!==id); S.anamneses=S.anamneses.filter(e=>e.clienteId!==id); S.prontuario=S.prontuario.filter(e=>e.clienteId!==id); S.planos=S.planos.filter(e=>e.clienteId!==id); S.odontogramas=S.odontogramas.filter(e=>e.clienteId!==id); ['documentos','lab','parcelas','guias'].forEach(k=>{ S[k]=(S[k]||[]).filter(e=>e.clienteId!==id) });
     S.agenda=S.agenda.filter(a=>!(a.clienteId===id&&a.status==='marcado'));
     salvar(); render(); toast('Cliente excluído')},true)});
 };
@@ -2219,8 +2271,8 @@ function historico(id){
 
   /* agrupado por procedimento, com o retorno previsto */
   const porServ={};
-  vs.forEach(v=>{ const k=v.servicoId||'x', s=serv(k);
-    const a=porServ[k]||(porServ[k]={nome:s?s.nome:'Serviço removido',retorno:s?s.retorno:0,qtd:0,total:0,ultima:''});
+  vs.forEach(v=>{ const s=serv(v.servicoId), k=s?v.servicoId:(v.desc?'d:'+String(v.desc).split(' · ')[0]:'x');
+    const a=porServ[k]||(porServ[k]={nome:s?s.nome:(v.desc?String(v.desc).split(' · ')[0]:'Serviço removido'),retorno:s?s.retorno:0,qtd:0,total:0,ultima:''});
     a.qtd++; a.total+=num(v.valor); if(v.data>a.ultima)a.ultima=v.data; });
   const grupos=Object.values(porServ).sort((a,b)=>b.total-a.total);
   const ags=S.agenda.filter(a=>a.clienteId===id&&a.status==='marcado'&&a.data>=hojeISO())
@@ -2496,8 +2548,8 @@ function telaOrc(el,x){
   const sv=S.orcamentos.slice().sort((a,b)=>b.data.localeCompare(a.data));
   if(sv.length){
     x+=`<div class="sec"><div class="sec-top"><h2>Orçamentos salvos</h2><span class="pill">${sv.length}</span></div><div class="card">`;
-    sv.forEach(o=>{ const t=calcOrc(o), c=cli(o.clienteId), ab=o.status!=='fechado';
-      x+=`<div class="item" ${ab?'':'style="opacity:.62"'}><div class="mn"><b>${esc(c?c.nome:'Sem cadastro')} ${ab?'':'<span class="pill ok">fechado</span>'}</b>
+    sv.forEach(o=>{ const t=calcOrc(o), c=cli(o.clienteId), ab=o.status!=='fechado'&&o.status!=='perdido';
+      x+=`<div class="item" ${ab?'':'style="opacity:.62"'}><div class="mn"><b>${esc(c?c.nome:'Sem cadastro')} ${ab?'':o.status==='perdido'?'<span class="pill">não fechou</span>':'<span class="pill ok">fechado</span>'}</b>
         <small>${dataBR(o.data)}${ab&&o.validade?(o.validade<hojeISO()?' · <b class="v-bad">venceu em '+dataBR(o.validade)+'</b>':' · vale até '+dataBR(o.validade)):''} · ${o.itens.map(i=>{const s=serv(i.servicoId);return esc(s?s.nome:'serviço removido')+(i.sessoes>1?' ×'+i.sessoes:'')}).join(', ')}</small></div>
         <div class="vr">${brl(t.total)}<small class="${t.lucro>=0?'v-ok':'v-bad'}">sobra ${brl(t.lucro)}</small></div>
         <div class="acts">${ab?`<button class="btn sm pri" data-o-fecha="${o.id}">${ic('check',16)}Fechou</button>
@@ -4177,7 +4229,7 @@ posAtender=function(a){ _posAt(a); if(temPront()&&a.clienteId)setTimeout(()=>pro
    Aberto como arquivo (file://) ou com ?local, o Lucra continua funcionando só no aparelho, como antes. */
 const SB_URL='https://eilpdeyqrhtpfbrqjlqt.supabase.co', SB_KEY='sb_publishable_rhlQds-nbHwxNNHhz3qtIg_ENuHR4Bp';
 const NUVEM=(()=>{ try{ const q=new URLSearchParams(location.search); if(q.has('local'))return false; return location.protocol==='https:'||q.has('nuvem') }catch(e){ return false } })();
-const CLINICO=['anamneses','prontuario','evolucoes','odontogramas','fotosIdx'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
+const CLINICO=['anamneses','prontuario','evolucoes','odontogramas','fotosIdx','documentos'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
 const K_SES='lucra:sessao', K_CONTA='lucra:conta';
 let SES=null, CONTA=null, BASE={}, syncEst='', syncFila=null, syncRodando=false, renderPendente=false;
 const lerJ=k=>{ try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){ return null } };
@@ -4455,8 +4507,8 @@ salvar=function(){ salvarLocal(); if(CONTA)agendaSync() };
 
 /* ── papéis: o que cada um vê ── */
 const NAV_PAPEL={
-  profissional:['hoje','ocupacao','novoag','agenda','retornos','clientes','registrar','ajustes'],
-  recepcao:['hoje','ocupacao','novoag','agenda','retornos','clientes','caixa','registrar','saida','ajustes']};
+  profissional:['hoje','ocupacao','novoag','agenda','retornos','clientes','lab','registrar','ajustes'],
+  recepcao:['hoje','ocupacao','novoag','agenda','retornos','clientes','orcamentos','lab','caixa','registrar','saida','convenios','ajustes']};
 const EXTRA_PAPEL={profissional:[],recepcao:[]};
 function permitido(t){ if(!CONTA||CONTA.papel==='dono')return true; return NAV_PAPEL[CONTA.papel].includes(t)||EXTRA_PAPEL[CONTA.papel].includes(t) }
 const telaInicial=()=>'hoje';
@@ -4749,6 +4801,20 @@ T.hoje=function(el){
   if(typeof planosDe==='function'&&temPlano()&&pode('novoag')){ const pend=[]; (S.planos||[]).filter(p=>p.status==='aberto').forEach(p=>{ totPlano(p); const e=p.etapas.find(z=>z.status==='pendente'); if(e)pend.push({p,e}) });
     if(pend.length)card({tipo:'ac',ic:'file',tit:`${pend.length} ${pend.length>1?'tratamentos com etapa':'tratamento com etapa'} para agendar`,
       det:pend.slice(0,3).map(x=>`${nm(cl(x.p.clienteId))} (${esc(x.e.nome)})`).join(', ')+(pend.length>3?'…':''),acao:'Agendar a próxima',ir:()=>abrePlano(pend[0].p.id)}) }
+  /* parcelas de tratamento atrasadas ou vencendo hoje */
+  if(typeof parcAbertas==='function'&&pode('registrar')){ const ps=parcAbertas().filter(p=>p.venc<=h); if(ps.length){ const at=ps.filter(parcAtrasada).length;
+    card({tipo:at?'bad':'war',ic:'coins',tit:at?`${at} ${at>1?'parcelas atrasadas':'parcela atrasada'}`:`${ps.length} ${ps.length>1?'parcelas vencem':'parcela vence'} hoje`,
+      det:`${brl(ps.reduce((a,p)=>a+num(p.valor),0))} · ${[...new Set(ps.map(p=>p.clienteId))].slice(0,3).map(id=>nm(cl(id))).join(', ')}`,acao:'Ver parcelas',ir:()=>ir('registrar')}) } }
+  /* laboratório */
+  if(typeof temLab==='function'&&temLab()&&pode('lab')){ const at=(S.lab||[]).filter(labAtrasado), vh=(S.lab||[]).filter(l=>(l.status==='enviado'||l.status==='refazer')&&l.prevista===h);
+    if(at.length)card({tipo:'war',ic:'box',tit:`${at.length} ${at.length>1?'trabalhos atrasados':'trabalho atrasado'} no laboratório`,det:at.slice(0,3).map(l=>`${esc(l.trabalho)} de ${nm(cl(l.clienteId))}`).join(', '),acao:'Ver laboratório',ir:()=>ir('lab')});
+    else if(vh.length)card({tipo:'ac',ic:'box',tit:`${vh.length} ${vh.length>1?'trabalhos voltam':'trabalho volta'} do laboratório hoje`,det:vh.slice(0,3).map(l=>`${esc(l.trabalho)} de ${nm(cl(l.clienteId))}`).join(', '),acao:'Ver laboratório',ir:()=>ir('lab')}) }
+  /* orçamentos sem resposta */
+  if(typeof orcParaChamar==='function'&&pode('orcamentos')){ const os=orcParaChamar(); if(os.length)card({tipo:'ac',ic:'chat',tit:`${os.length} ${os.length>1?'orçamentos esperando resposta':'orçamento esperando resposta'}`,
+    det:os.slice(0,3).map(o=>nm(cl(o.clienteId))).join(', ')+(os.length>3?'…':''),acao:'Chamar de novo',ir:()=>{ funVer='abertos'; ir('orcamentos') }}) }
+  /* convênio: guias paradas */
+  if(typeof temConv==='function'&&temConv()&&pode('convenios')){ const gs=(S.guias||[]).filter(g=>g.status==='aberta'); if(gs.length>=1&&gs.some(g=>diasEntre(g.data,h)>=7))card({tipo:'war',ic:'file',tit:`${gs.length} ${gs.length>1?'guias':'guia'} de convênio para enviar`,
+    det:`${brl(gs.reduce((a,g)=>a+num(g.valor),0))} esperando você mandar para o convênio`,acao:'Ver convênios',ir:()=>ir('convenios')}) }
   /* validade */
   const venc=typeof vencendo==='function'?vencendo():[];
   if(venc.length&&ehDono()){ const ja=venc.filter(p=>diasParaVencer(p)<0).length;
@@ -4806,7 +4872,7 @@ function abrePlano(pid,voltaFicha){
           <div class="grid2"><div class="field"><label for="pl-r">${area()==='odonto'?'Dente ou região':'Região'}</label><input id="pl-r" placeholder="${area()==='odonto'?'ex.: 36':'ex.: rosto'}"></div>
             <div class="field"><label for="pl-v">Valor (R$)</label><input id="pl-v" inputmode="decimal" value="${S.servicos[0]?String(S.servicos[0].preco).replace('.',','):''}"></div></div>
           <button class="btn soft full" id="pl-add">${ic('plus')}Adicionar ao plano</button></div>`:''}
-        <div class="row" style="margin-top:14px;gap:8px">${c&&c.tel?`<button class="btn soft" id="pl-zap">${ic('chat',16)}Mandar o plano</button>`:''}
+        <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">${typeof abreParcelas==='function'&&ehDono()?`<button class="btn soft" id="pl-parc">${ic('coins',16)}${parcDe(p.id).length?'Parcelas':'Parcelar'}${parcDe(p.id).some(parcAtrasada)?' · atrasada':''}</button>`:''}${c&&c.tel?`<button class="btn soft" id="pl-zap">${ic('chat',16)}Mandar o plano</button>`:''}
           ${p.status==='aberto'?`<button class="btn soft" id="pl-fim">Encerrar plano</button>`:`<button class="btn soft" id="pl-reabre">Reabrir plano</button>`}
           <button class="btn danger ic" id="pl-del" aria-label="Excluir plano">${ic('trash',18)}</button></div>`;
       const acha=id=>p.etapas.find(e=>e.id===id), muda=()=>{ salvar(); pinta() };
@@ -4821,9 +4887,10 @@ function abrePlano(pid,voltaFicha){
       if($('#pl-zap'))$('#pl-zap').onclick=()=>{ const t=totPlano(p);
         const tx=`Oi, ${c.nome.split(' ')[0]}! Este é o seu plano de tratamento${UI.clinica?' · '+UI.clinica:''}:\n\n`+p.etapas.map((e,i)=>`${i+1}. ${e.nome}${e.regiao?' ('+e.regiao+')':''}: ${brl(num(e.valor))}${e.status==='feito'?' ✓':''}`).join('\n')+`\n\nTotal: ${brl(t.t)}`;
         zapAbrir(zap(c.tel,tx)) };
+      if($('#pl-parc'))$('#pl-parc').onclick=()=>{ fechar(); setTimeout(()=>abreParcelas(p.id),260) };
       if($('#pl-fim'))$('#pl-fim').onclick=()=>{ p.status='concluido'; muda(); toast('Plano encerrado') };
       if($('#pl-reabre'))$('#pl-reabre').onclick=()=>{ p.status='aberto'; muda() };
-      $('#pl-del').onclick=()=>confirmar('Excluir este plano?','As etapas somem. Os atendimentos e pagamentos já lançados continuam.','Excluir',()=>{ S.planos=S.planos.filter(z=>z.id!==p.id); salvar(); fechar(); toast('Plano excluído'); if(voltaFicha)setTimeout(()=>historico(p.clienteId),300) });
+      $('#pl-del').onclick=()=>confirmar('Excluir este plano?','As etapas somem. Os atendimentos e pagamentos já lançados continuam.','Excluir',()=>{ S.planos=S.planos.filter(z=>z.id!==p.id); S.parcelas=(S.parcelas||[]).filter(z=>z.planoId!==p.id||z.pago); salvar(); fechar(); toast('Plano excluído'); if(voltaFicha)setTimeout(()=>historico(p.clienteId),300) });
     };
     pinta();
   });
@@ -4914,7 +4981,8 @@ function secPlanoFicha(cid){
   const og=area()==='odonto'&&podeClinico()?(S.odontogramas||[]).find(z=>z.clienteId===cid):null, marc=og?Object.values(og.dentes).filter(d=>d.e).length:0;
   return `<div class="sec" id="h-plano"><div class="sec-top"><h2>Plano de tratamento</h2>${ps.length?`<span class="pill">${ps.length}</span>`:''}</div><div class="card">
       ${ps.map(p=>{ const t=totPlano(p); return `<button type="button" class="item pr-it" data-pl="${p.id}"><div class="mn"><b>${p.status==='aberto'?'Em andamento':'Encerrado'} · ${t.nf} de ${t.n} ${t.n===1?'etapa':'etapas'}</b>
-        <small>${brl(t.t)} no total · falta ${brl(t.falta)} · começou em ${dataBR(p.criado)}</small></div>${ic('right',18)}</button>` }).join('')||`<p class="sub" style="margin:0 0 10px">Monte as etapas do tratamento na ordem e acompanhe o que já foi feito.</p>`}
+        <small>${brl(t.t)} no total · falta ${brl(t.falta)} · começou em ${dataBR(p.criado)}${(()=>{ const pc=typeof parcDe==='function'?parcDe(p.id):[]; if(!pc.length)return ''; const at=pc.filter(parcAtrasada).length, ab=pc.filter(x=>!x.pago).length;
+          return at?` · <b class="v-bad">${at} parcela(s) atrasada(s)</b>`:ab?` · ${ab} parcela(s) em aberto`:' · parcelas quitadas' })()}</small></div>${ic('right',18)}</button>` }).join('')||`<p class="sub" style="margin:0 0 10px">Monte as etapas do tratamento na ordem e acompanhe o que já foi feito.</p>`}
       <div class="row" style="gap:8px;margin-top:8px">${!planoAberto(cid)?`<button class="btn sm soft" id="h-pl-novo">${ic('plus',16)}Novo plano</button>`:''}
         ${area()==='odonto'&&podeClinico()?`<button class="btn sm soft" id="h-odg">${ic('spark',16)}Odontograma${marc?' · '+marc+' marcado(s)':''}</button>`:''}</div></div></div>`;
 }
@@ -5139,6 +5207,660 @@ FOTOS.doCliente=function(cid){ return _FOTOS.doCliente.call(this,cid).then(async
     if(r._nuvem){ await _FOTOS.apagar.call(FOTOS,r.id); continue }   /* apagada em outro aparelho */
     out.push(r); fEnvia(r).catch(()=>{}) }                           /* ainda não tinha subido */
   return out }) };
+/* ══════════ DOCUMENTOS: receita, atestado, declaração e termo de consentimento ══════════
+   Saem com o nome e o registro do profissional, prontos para imprimir ou salvar em PDF.
+   Ficam guardados na ficha (dados de saúde: a recepção não vê). */
+const TIPOS_DOC={
+  receita:{n:'Receita',areas:['odonto'],ic:'file'},
+  atestado:{n:'Atestado',areas:['odonto'],ic:'file'},
+  declaracao:{n:'Declaração de comparecimento',areas:['odonto','estetica','psico'],ic:'clock'},
+  termo:{n:'Termo de consentimento',areas:['odonto','estetica'],ic:'edit'}};
+const tiposDoc=()=>Object.keys(TIPOS_DOC).filter(k=>TIPOS_DOC[k].areas.includes(area()));
+const docsDe=cid=>(S.documentos||[]).filter(d=>d.clienteId===cid).sort((a,b)=>b.data.localeCompare(a.data)||String(b.id).localeCompare(String(a.id)));
+const TERMO_PAD='Eu, {paciente}{cpf}, declaro que fui informado(a) de forma clara sobre o procedimento {procedimento}: seus objetivos, benefícios, riscos, cuidados antes e depois, e as alternativas de tratamento.\n\nTive a oportunidade de fazer perguntas e todas foram respondidas. Estou ciente de que o resultado pode variar de pessoa para pessoa e de que devo seguir as orientações recebidas.\n\nAutorizo a realização do procedimento e o registro de fotos para acompanhamento clínico, que não serão divulgadas sem a minha autorização. Sei que posso retirar este consentimento a qualquer momento.';
+const modelosDoc=t=>(S.modelosDoc||[]).filter(m=>m.tipo===t);
+const profLinha=()=>{ const p=S.perfil||{}, ar=area(); return [(p.profissao||PROFISSAO[ar]||'').trim(),p.registro?AREAS[ar].reg+' '+p.registro:''].filter(Boolean).join(' · ') };
+const hojeExtenso=()=>{ const p=S.perfil||{}; return (p.cidade?p.cidade+', ':'')+dataCheia(hojeISO()) };
+function preencheDoc(t,c,extra){ extra=extra||{};
+  return String(t||'').replace(/\{paciente\}/g,c.nome).replace(/\{cpf\}/g,c.cpf?', CPF '+fmtDoc(c.cpf):'').replace(/\{procedimento\}/g,extra.procedimento||'________')
+    .replace(/\{data\}/g,dataBR(hojeISO())).replace(/\{profissional\}/g,(S.perfil||{}).nome||'') }
+
+/* texto pronto de atestado e declaração (dá para editar antes de imprimir) */
+function textoAtestado(c,o){
+  let t=`Atesto, para os devidos fins, que ${c.nome}${c.cpf?', CPF '+fmtDoc(c.cpf)+',':''} esteve sob meus cuidados profissionais no dia ${dataBR(o.data)}${o.de?`, das ${o.de}${o.ate?' às '+o.ate:''}`:''}`;
+  t+=num(o.dias)>0?`, necessitando de ${num(o.dias)} ${num(o.dias)>1?'dias':'dia'} de repouso a partir desta data.`:', devendo se afastar de suas atividades apenas durante esse período.';
+  if(o.cid)t+=`\n\nCID: ${o.cid} (informado com autorização do paciente).`;
+  return t }
+function textoDeclaracao(c,o){ const ps=ehPsico();
+  return `Declaro, para os devidos fins, que ${c.nome}${c.cpf?', CPF '+fmtDoc(c.cpf)+',':''} compareceu ${ps?'a atendimento psicológico':'a atendimento'} no dia ${dataBR(o.data)}${o.de?`, das ${o.de}${o.ate?' às '+o.ate:''}`:''}.${o.acomp?`\n\nEsteve acompanhado(a) por ${o.acomp}.`:''}` }
+
+/* ── o papel impresso ── */
+function docHTML(d){ const c=cli(d.clienteId)||{nome:''}, p=S.perfil||{}, tit=d.tipo==='termo'?(d.titulo||TIPOS_DOC.termo.n):TIPOS_DOC[d.tipo].n;
+  return `<div class="recibo doc-imp"><div class="rc-cab"><b class="rc-t">${esc(tit)}</b>${topoRecibo()?`<span>${esc(topoRecibo())}</span>`:''}${profLinha()?`<span>${esc(profLinha())}</span>`:''}</div>
+    ${d.tipo==='receita'?`<p class="doc-pac"><b>Paciente:</b> ${esc(c.nome)}</p>`:''}
+    <div class="doc-tx">${esc(d.texto)}</div>
+    <p class="doc-dt">${esc((p.cidade?p.cidade+', ':'')+dataCheia(d.data))}</p>
+    ${d.tipo==='termo'?`<div class="rc-ass">${d.assinatura?`<img src="${d.assinatura}" alt="Assinatura de ${esc(c.nome)}">`:''}<span></span><small>${esc(c.nome)}${c.cpf?' · CPF '+esc(fmtDoc(c.cpf)):''}</small></div>`:''}
+    <div class="rc-ass"><span></span><small>${esc(p.nome||'Profissional')}${p.registro?' · '+esc(AREAS[area()].reg)+' '+esc(p.registro):''}</small></div>
+    ${p.endereco?`<p class="doc-end">${esc(p.endereco)}</p>`:''}</div>` }
+
+/* ── assinatura na tela (dedo ou caneta) ── */
+function quadroAssinatura(cv){
+  const r=window.devicePixelRatio||1, larg=cv.clientWidth||320, alt=cv.clientHeight||150;
+  cv.width=larg*r; cv.height=alt*r; const g=cv.getContext('2d'); g.scale(r,r); g.lineWidth=2.2; g.lineCap='round'; g.lineJoin='round'; g.strokeStyle='#111';
+  let ok=false, ant=null;
+  const pt=e=>{ const b=cv.getBoundingClientRect(); return [e.clientX-b.left,e.clientY-b.top] };
+  cv.addEventListener('pointerdown',e=>{ e.preventDefault(); cv.setPointerCapture(e.pointerId); ant=pt(e); g.beginPath(); g.arc(ant[0],ant[1],1,0,7); g.fillStyle='#111'; g.fill(); ok=true });
+  cv.addEventListener('pointermove',e=>{ if(!ant)return; const p=pt(e); g.beginPath(); g.moveTo(ant[0],ant[1]); g.lineTo(p[0],p[1]); g.stroke(); ant=p });
+  const solta=()=>{ ant=null }; cv.addEventListener('pointerup',solta); cv.addEventListener('pointercancel',solta);
+  return {limpa(){ g.clearRect(0,0,cv.width,cv.height); ok=false }, tem:()=>ok,
+    imagem(){ const o=document.createElement('canvas'); o.width=480; o.height=Math.round(480*alt/larg); const og=o.getContext('2d'); og.drawImage(cv,0,0,o.width,o.height); return o.toDataURL('image/png') }};
+}
+
+/* ── a folha de cada documento ── */
+function abreDoc(cid,tipo,docId,volta){
+  const c=cli(cid); if(!c)return; let d=docId?(S.documentos||[]).find(z=>z.id===docId):null; if(d)tipo=d.tipo;
+  const T_=TIPOS_DOC[tipo], h=hojeISO(), ag=S.agenda.filter(a=>a.clienteId===cid&&a.data===h)[0];
+  const falta=!(S.perfil||{}).nome;
+  let campos='';
+  if(d)campos=`<div class="field"><label for="dc-tx">Texto</label><textarea id="dc-tx" rows="9">${esc(d.texto)}</textarea></div>`;
+  else if(tipo==='receita'){ const ms=modelosDoc('receita');
+    campos=`${ms.length?`<div class="field"><label for="dc-mod">Usar um modelo seu</label><select id="dc-mod"><option value="">Escolha…</option>${ms.map(m=>`<option value="${m.id}">${esc(m.nome)}</option>`).join('')}</select></div>`:''}
+      <div class="field"><label for="dc-tx">Prescrição</label><textarea id="dc-tx" rows="9" placeholder="Uso interno&#10;1. Nome do medicamento, concentração ............ quantidade&#10;   Como tomar, de quantas em quantas horas, por quantos dias"></textarea></div>
+      <button class="btn-tx" id="dc-salvamod" type="button">Guardar este texto como modelo</button>`; }
+  else if(tipo==='atestado'||tipo==='declaracao'){
+    campos=`<div class="grid3"><div class="field"><label for="dc-d">Dia</label><input id="dc-d" inputmode="numeric" maxlength="10" value="${dataBRano(h)}"></div>
+        <div class="field"><label for="dc-de">Das</label><input id="dc-de" inputmode="numeric" maxlength="5" placeholder="09:00" value="${ag&&ag.hora?ag.hora:''}"></div>
+        <div class="field"><label for="dc-ate">Às</label><input id="dc-ate" inputmode="numeric" maxlength="5" placeholder="10:00" value="${ag&&ag.hora?somaMin(ag.hora,num(ag.dur)||num(exped().dur)||60):''}"></div></div>
+      ${tipo==='atestado'?`<div class="grid2"><div class="field"><label for="dc-dias">Dias de repouso</label><select id="dc-dias">${[0,1,2,3,4,5,7,10,15].map(n=>`<option value="${n}">${n?n+(n>1?' dias':' dia'):'Só o período do atendimento'}</option>`).join('')}</select></div>
+        <div class="field"><label for="dc-cid">CID (opcional)</label><input id="dc-cid" maxlength="8" placeholder="só com autorização"></div></div>`
+        :`<div class="field"><label for="dc-ac">Acompanhante (opcional)</label><input id="dc-ac" placeholder="Nome de quem acompanhou"></div>`}
+      <div class="field"><label for="dc-tx">Texto</label><textarea id="dc-tx" rows="6"></textarea></div>`; }
+  else { const ms=modelosDoc('termo');
+    campos=`<div class="grid2"><div class="field"><label for="dc-proc">Procedimento</label><select id="dc-proc">${S.servicos.map(s=>`<option>${esc(s.nome)}</option>`).join('')}<option value="">Outro</option></select></div>
+        <div class="field"><label for="dc-mod">Modelo</label><select id="dc-mod"><option value="">Modelo padrão do Lucra</option>${ms.map(m=>`<option value="${m.id}">${esc(m.nome)}</option>`).join('')}</select></div></div>
+      <div class="field"><label for="dc-tx">Texto do termo</label><textarea id="dc-tx" rows="10"></textarea></div>
+      <p class="sub" style="margin:-4px 0 10px">O modelo padrão é genérico. Inclua os riscos e cuidados de cada procedimento e guarde como modelo para usar de novo.</p>
+      <button class="btn-tx" id="dc-salvamod" type="button">Guardar este texto como modelo</button>
+      <p class="eyebrow" style="margin-top:14px">Assinatura de ${esc(c.nome.split(' ')[0])}</p>
+      <canvas id="dc-ass" class="ass-cv" aria-label="Espaço para assinar com o dedo"></canvas>
+      <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Assine com o dedo ou a caneta</small><button class="btn-tx" id="dc-limpa" type="button">Limpar</button></div>`; }
+  abrirSheet(d?T_.n:(tipo==='termo'?'Termo de consentimento':T_.n),`${esc(c.nome)}${d?' · '+dataBR(d.data):''}`,
+    `${falta?`<div class="nota" style="margin-bottom:12px">Seu nome e ${AREAS[area()].reg} ainda não estão no app. <button class="btn-tx" id="dc-perfil" type="button">Preencher agora</button></div>`:''}
+     ${d&&d.assinatura?`<div class="doc-assv"><img src="${d.assinatura}" alt="Assinatura"><small>Assinado na tela em ${dataBR(d.data)}</small></div>`:''}
+     ${campos}
+     <div class="row" style="margin-top:12px;gap:8px"><button class="btn pri" id="dc-imp" style="flex:1">${ic('file')}Imprimir ou salvar PDF</button>
+       ${c.tel&&tipo!=='termo'?`<button class="btn soft" id="dc-zap">${ic('chat',16)}WhatsApp</button>`:''}</div>
+     ${d?`<button class="btn-tx" id="dc-del" style="display:block;margin:10px auto 0">Excluir este documento</button>`:''}`,
+    fechar=>{
+      const tx=$('#dc-tx');
+      const dataSel=()=>dataDeBR(($('#dc-d')||{}).value||'')||h;
+      const gera=()=>{ if(d)return;
+        if(tipo==='atestado')tx.value=textoAtestado(c,{data:dataSel(),de:$('#dc-de').value,ate:$('#dc-ate').value,dias:$('#dc-dias').value,cid:$('#dc-cid').value.trim()});
+        if(tipo==='declaracao')tx.value=textoDeclaracao(c,{data:dataSel(),de:$('#dc-de').value,ate:$('#dc-ate').value,acomp:$('#dc-ac').value.trim()});
+        if(tipo==='termo'){ const m=modelosDoc('termo').find(z=>z.id===$('#dc-mod').value); tx.value=preencheDoc(m?m.texto:TERMO_PAD,c,{procedimento:$('#dc-proc').value}) } };
+      ['#dc-d','#dc-de','#dc-ate','#dc-dias','#dc-cid','#dc-ac','#dc-proc','#dc-mod'].forEach(q=>{ const e=$(q); if(e&&!(tipo==='receita'&&q==='#dc-mod')){ e.addEventListener('input',gera); e.addEventListener('change',gera) } });
+      gera();
+      if(tipo==='receita'&&$('#dc-mod'))$('#dc-mod').onchange=()=>{ const m=modelosDoc('receita').find(z=>z.id===$('#dc-mod').value); if(m)tx.value=m.texto };
+      const ass=$('#dc-ass')?quadroAssinatura($('#dc-ass')):null;
+      if($('#dc-limpa'))$('#dc-limpa').onclick=()=>ass.limpa();
+      if($('#dc-perfil'))$('#dc-perfil').onclick=()=>{ fechar(); setTimeout(()=>ir('ajustes'),220) };
+      if($('#dc-salvamod'))$('#dc-salvamod').onclick=()=>{ const t=tx.value.trim(); if(!t)return toast('Escreva o texto antes');
+        pedeTexto('Nome do modelo',tipo==='termo'?'ex.: Clareamento':'ex.: Pós-extração',nome=>{ if(!S.modelosDoc)S.modelosDoc=[];
+          S.modelosDoc.push({id:uid(),tipo,nome,texto:tipo==='termo'?t.split(c.nome).join('{paciente}'):t}); salvar(); toast('Modelo guardado') }) };
+      const guarda=()=>{ const t=tx.value.trim(); if(!t){ toast('O documento está vazio'); return null }
+        if(d){ d.texto=t; salvar(); return d }
+        d={id:uid(),clienteId:cid,tipo,data:tipo==='atestado'||tipo==='declaracao'?dataSel():h,texto:t,
+          titulo:tipo==='termo'?'Termo de consentimento'+($('#dc-proc').value?' · '+$('#dc-proc').value:''):'',assinatura:ass&&ass.tem()?ass.imagem():''};
+        if(!S.documentos)S.documentos=[]; S.documentos.push(d); salvar(); return d };
+      $('#dc-imp').onclick=()=>{ const x=guarda(); if(!x)return; imprimir(docHTML(x)) };
+      if($('#dc-zap'))$('#dc-zap').onclick=()=>{ const x=guarda(); if(!x)return; const p=S.perfil||{};
+        zapAbrir(zap(c.tel,`*${TIPOS_DOC[x.tipo].n}*${topoRecibo()?' · '+topoRecibo():''}\n\n${x.tipo==='receita'?'Paciente: '+c.nome+'\n\n':''}${x.texto}\n\n${(p.cidade?p.cidade+', ':'')+dataCheia(x.data)}\n${p.nome||''}${p.registro?' · '+AREAS[area()].reg+' '+p.registro:''}`)) };
+      if($('#dc-del'))$('#dc-del').onclick=()=>confirmar('Excluir este documento?','Ele sai da ficha do paciente.','Excluir',()=>{ S.documentos=S.documentos.filter(z=>z.id!==d.id); salvar(); fechar(); toast('Documento excluído'); if(volta)volta() },true);
+    });
+}
+/* pergunta curta numa folha (sem prompt do navegador) */
+function pedeTexto(tit,ph,fn){ setTimeout(()=>{ const bg=document.createElement('div'); bg.className='mini-bg';
+  bg.innerHTML=`<div class="mini" role="dialog" aria-modal="true" aria-label="${esc(tit)}"><label for="mini-i"><b>${esc(tit)}</b></label><input id="mini-i" placeholder="${esc(ph||'')}">
+    <div class="row" style="margin-top:10px;gap:8px"><button class="btn pri" id="mini-ok" style="flex:1">Guardar</button><button class="btn soft" id="mini-no">Cancelar</button></div></div>`;
+  document.body.appendChild(bg); const i=bg.querySelector('#mini-i'); i.focus();
+  const sai=()=>bg.remove(), ok=()=>{ const v=i.value.trim(); if(!v)return i.focus(); sai(); fn(v) };
+  bg.querySelector('#mini-ok').onclick=ok; bg.querySelector('#mini-no').onclick=sai; i.onkeydown=e=>{ if(e.key==='Enter')ok(); if(e.key==='Escape')sai() } },0) }
+const somaMin=(hh,m)=>{ const [a,b]=String(hh).split(':').map(Number), t=a*60+b+m; return String(Math.floor(t/60)%24).padStart(2,'0')+':'+String(t%60).padStart(2,'0') };
+MASC.push(['#dc-d',v=>molde(soDig(v).slice(0,8),'##/##/####')],['#dc-de,#dc-ate',v=>molde(soDig(v).slice(0,4),'##:##')]);
+
+/* ── na ficha ── */
+function secDocsFicha(cid){ if(!podeClinico())return ''; const ts=tiposDoc(); if(!ts.length)return '';
+  const ds=docsDe(cid);
+  return `<div class="sec" id="h-docs"><div class="sec-top"><h2>Documentos</h2>${ds.length?`<span class="pill">${ds.length}</span>`:''}</div><div class="card">
+    <div class="row" style="gap:8px;flex-wrap:wrap">${ts.map(t=>`<button class="btn sm soft" data-doc-novo="${t}">${ic('plus',16)}${TIPOS_DOC[t].n}</button>`).join('')}</div>
+    ${ds.length?`<div style="margin-top:8px">${ds.slice(0,8).map(d=>`<button type="button" class="item pr-it" data-doc="${d.id}"><div class="mn"><b>${esc(d.tipo==='termo'?(d.titulo||'Termo'):TIPOS_DOC[d.tipo].n)}</b>
+      <small>${dataBR(d.data)}${d.tipo==='termo'?(d.assinatura?' · assinado na tela':' · sem assinatura na tela'):' · '+esc(d.texto.slice(0,60))+(d.texto.length>60?'…':'')}</small></div>${ic('right',18)}</button>`).join('')}</div>`:''}</div></div>` }
+const _topoDc=topoHist, _ligaDc=ligarTopoHist;
+topoHist=c=>_topoDc(c)+secDocsFicha(c.id);
+ligarTopoHist=function(id,fechar){ _ligaDc(id,fechar);
+  const volta=()=>setTimeout(()=>historico(id),300);
+  document.querySelectorAll('.sheet [data-doc-novo]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>abreDoc(id,b.dataset.docNovo,'',volta),260) });
+  document.querySelectorAll('.sheet [data-doc]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>abreDoc(id,'',b.dataset.doc,volta),260) });
+};
+/* ══════════ LABORATÓRIO DE PRÓTESE (odontologia) ══════════
+   O que foi para o laboratório, quando volta e quanto custou. Atrasado aparece no Hoje. */
+const temLab=()=>area()==='odonto';
+const LAB_ST={enviado:['No laboratório','ac'],voltou:['Voltou · falta instalar','war'],instalado:['Instalado','ok'],refazer:['Voltou para refazer','bad']};
+const TRAB_SUG=['Coroa','Coroa sobre implante','Faceta','Prótese total','Prótese parcial removível','Provisório','Placa de bruxismo','Núcleo','Inlay / onlay','Modelo de estudo','Clareamento · moldeira'];
+const labDe=cid=>(S.lab||[]).filter(l=>l.clienteId===cid);
+const labAtrasado=l=>(l.status==='enviado'||l.status==='refazer')&&l.prevista&&l.prevista<hojeISO();
+let labVer='abertos';
+T.lab=function(el){
+  const h=hojeISO(), ls=(S.lab||[]).slice(), labs=[...new Set(ls.map(l=>l.laboratorio).filter(Boolean))];
+  const abertos=ls.filter(l=>l.status!=='instalado').sort((a,b)=>(labAtrasado(b)-labAtrasado(a))||(a.prevista||'9').localeCompare(b.prevista||'9'));
+  const feitos=ls.filter(l=>l.status==='instalado').sort((a,b)=>(b.instalado||'').localeCompare(a.instalado||''));
+  const cs=S.clientes.slice().sort((a,b)=>a.nome.localeCompare(b.nome));
+  const mes=mesAtual(), gasto=ls.filter(l=>mesDe(l.enviado)===mes).reduce((a,l)=>a+num(l.valor),0);
+  const linha=l=>{ const c=cli(l.clienteId), at=labAtrasado(l), st=LAB_ST[l.status];
+    return `<div class="item"><div class="mn"><b>${esc(l.trabalho)} <span class="pill ${at?'bad':st[1]}">${at?'atrasado':st[0]}</span></b>
+      <small>${esc(c?c.nome:'—')}${l.dente?' · dente '+esc(l.dente):''} · ${esc(l.laboratorio||'laboratório')} · foi em ${dataBR(l.enviado)}${l.prevista&&l.status!=='instalado'&&l.status!=='voltou'?` · ${at?'<b class="v-bad">':''}volta ${dataBR(l.prevista)}${at?'</b>':''}`:''}${l.status==='instalado'&&l.instalado?' · instalado em '+dataBR(l.instalado):''}${l.obs?' · '+esc(l.obs):''}</small></div>
+      <div class="vr">${num(l.valor)?brl(num(l.valor)):''}</div>
+      <div class="acts">${l.status==='enviado'||l.status==='refazer'?`<button class="btn sm pri" data-lab-volta="${l.id}">${ic('check',16)}Voltou</button>`:''}
+        ${l.status==='voltou'?`<button class="btn sm pri" data-lab-inst="${l.id}">${ic('check',16)}Instalado</button><button class="btn sm soft" data-lab-ref="${l.id}">Refazer</button>`:''}
+        ${c&&c.tel&&l.status==='voltou'?`<button class="btn sm soft" data-lab-zap="${l.id}">${ic('chat',16)}Chamar para instalar</button>`:''}
+        <button class="btn sm danger ic" data-lab-x="${l.id}" aria-label="Excluir">${ic('trash',18)}</button></div></div>` };
+  el.innerHTML=`<h1>Laboratório</h1><p class="sub">Trabalhos de prótese: o que foi, quando volta e quanto custou</p>
+    <section class="kpis cx-k" aria-label="Resumo">
+      <div class="kpi"><span class="lb">No laboratório</span><div class="kv">${abertos.filter(l=>l.status==='enviado'||l.status==='refazer').length}</div><p class="kx">${abertos.filter(labAtrasado).length} atrasado(s)</p></div>
+      <div class="kpi"><span class="lb">Voltou, falta instalar</span><div class="kv">${abertos.filter(l=>l.status==='voltou').length}</div><p class="kx">chame o paciente</p></div>
+      <div class="kpi"><span class="lb">Gasto este mês</span><div class="kv">${brl(gasto)}</div><p class="kx">trabalhos enviados em ${mesNome(mes)}</p></div></section>
+    <div class="sec"><div class="card"><h2 style="margin-bottom:12px">Enviar trabalho</h2>
+      <div class="field"><label for="lb-cli">Paciente</label><select id="lb-cli"><option value="" disabled selected hidden>Escolha o paciente</option>${cs.map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('')}</select></div>
+      <div class="grid2"><div class="field"><label for="lb-tr">Trabalho</label><input id="lb-tr" list="lb-trl" placeholder="ex.: Coroa"><datalist id="lb-trl">${TRAB_SUG.map(t=>`<option value="${t}">`).join('')}</datalist></div>
+        <div class="field"><label for="lb-de">Dente ou região</label><input id="lb-de" placeholder="ex.: 36"></div></div>
+      <div class="grid2"><div class="field"><label for="lb-lab">Laboratório</label><input id="lb-lab" list="lb-labl" value="${esc(labs[0]||'')}"><datalist id="lb-labl">${labs.map(t=>`<option value="${esc(t)}">`).join('')}</datalist></div>
+        <div class="field"><label for="lb-v">Custo (R$)</label><input id="lb-v" inputmode="decimal" placeholder="0,00"></div></div>
+      <div class="grid2"><div class="field"><label for="lb-env">Foi em</label><input id="lb-env" inputmode="numeric" maxlength="10" value="${dataBRano(h)}"></div>
+        <div class="field"><label for="lb-prev">Volta em</label><input id="lb-prev" inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa" value="${dataBRano(somaDias(h,7))}"></div></div>
+      <div class="grid2"><div class="field"><label for="lb-serv">Procedimento (para o lucro)</label><select id="lb-serv"><option value="">Nenhum</option>${S.servicos.map(s=>`<option value="${s.id}">${esc(s.nome)}</option>`).join('')}</select></div>
+        <div class="field"><label for="lb-obs">Cor, observação</label><input id="lb-obs" placeholder="ex.: cor A2"></div></div>
+      <button class="btn pri full" id="lb-add">${ic('plus')}Registrar envio</button></div></div>
+    <div class="chips" role="group" aria-label="Mostrar" style="margin-top:6px"><button class="chip" data-lab-v="abertos" aria-pressed="${labVer==='abertos'}">Em andamento (${abertos.length})</button><button class="chip" data-lab-v="feitos" aria-pressed="${labVer==='feitos'}">Instalados (${feitos.length})</button></div>
+    <div class="sec"><div class="card">${(labVer==='abertos'?abertos:feitos.slice(0,30)).map(linha).join('')||`<div class="vazio"><b>${labVer==='abertos'?'Nada no laboratório':'Nenhum instalado ainda'}</b><p>${labVer==='abertos'?'Registre acima quando mandar um trabalho. Se atrasar, o Lucra avisa no Hoje.':'Os trabalhos instalados aparecem aqui.'}</p></div>`}</div></div>`;
+  $('#lb-serv').onchange=()=>{ const s=serv($('#lb-serv').value); if(s&&!$('#lb-tr').value)$('#lb-tr').value=s.nome };
+  $('#lb-add').onclick=()=>{ const cid=$('#lb-cli').value, tr=$('#lb-tr').value.trim(); if(!cid)return toast('Escolha o paciente'); if(!tr)return toast('Diga qual é o trabalho');
+    const env=dataDeBR($('#lb-env').value), prev=$('#lb-prev').value?dataDeBR($('#lb-prev').value):'';
+    if(!env)return toast('Confira a data de envio: dd/mm/aaaa'); if($('#lb-prev').value&&!prev)return toast('Confira a data de volta: dd/mm/aaaa');
+    if(!S.lab)S.lab=[]; S.lab.push({id:uid(),clienteId:cid,trabalho:tr,dente:$('#lb-de').value.trim(),laboratorio:$('#lb-lab').value.trim(),valor:num($('#lb-v').value),
+      enviado:env,prevista:prev,servicoId:$('#lb-serv').value,obs:$('#lb-obs').value.trim(),status:'enviado'});
+    labVer='abertos'; salvar(); toast('Envio registrado'); render() };
+  const acha=id=>(S.lab||[]).find(l=>l.id===id);
+  el.querySelectorAll('[data-lab-v]').forEach(b=>b.onclick=()=>{ labVer=b.dataset.labV; render() });
+  el.querySelectorAll('[data-lab-volta]').forEach(b=>b.onclick=()=>labVoltou(acha(b.dataset.labVolta)));
+  el.querySelectorAll('[data-lab-inst]').forEach(b=>b.onclick=()=>{ const l=acha(b.dataset.labInst); l.status='instalado'; l.instalado=hojeISO(); salvar(); toast('Instalado'); render() });
+  el.querySelectorAll('[data-lab-ref]').forEach(b=>b.onclick=()=>{ const l=acha(b.dataset.labRef); l.status='refazer'; l.prevista=somaDias(hojeISO(),7); salvar(); toast('Voltou para o laboratório · nova data em 7 dias'); render() });
+  el.querySelectorAll('[data-lab-zap]').forEach(b=>b.onclick=()=>{ const l=acha(b.dataset.labZap), c=cli(l.clienteId);
+    zapAbrir(zap(c.tel,`Oi, ${c.nome.split(' ')[0]}! O seu trabalho (${l.trabalho.toLowerCase()}) já voltou do laboratório. Vamos marcar o horário para colocar?${UI.clinica?'\n\n'+UI.clinica:''}`)) });
+  el.querySelectorAll('[data-lab-x]').forEach(b=>b.onclick=()=>confirmar('Excluir este trabalho?','Some da lista do laboratório. O custo lançado em Saídas continua lá.','Excluir',()=>{ S.lab=S.lab.filter(l=>l.id!==b.dataset.labX); salvar(); render(); toast('Excluído') },true));
+};
+MASC.push(['#lb-env,#lb-prev',v=>molde(soDig(v).slice(0,8),'##/##/####')]);
+function labVoltou(l){ if(!l)return;
+  const pago=!!l.despesaId||!num(l.valor);
+  if(pago){ l.status='voltou'; l.voltou=hojeISO(); salvar(); toast('Voltou do laboratório'); return render() }
+  abrirSheet('Voltou do laboratório',esc(l.trabalho),`<p class="conf-tx">Quer lançar o custo de <b>${brl(num(l.valor))}</b> em Saídas, com a data de hoje? Assim ele entra no lucro${l.servicoId&&serv(l.servicoId)?' de '+esc(serv(l.servicoId).nome):''}.</p>
+    <div class="row" style="margin-top:16px"><button class="btn pri" id="lv-ok" style="flex:1">Lançar em Saídas</button><button class="btn soft" id="lv-no">Já paguei ou pago depois</button></div>`,
+    fechar=>{ const fim=lanca=>{ if(lanca){ const d={id:uid(),data:hojeISO(),desc:'Laboratório · '+l.trabalho+(l.laboratorio?' ('+l.laboratorio+')':''),valor:num(l.valor),servicoId:l.servicoId||''}; S.despesas.push(d); l.despesaId=d.id }
+        l.status='voltou'; l.voltou=hojeISO(); salvar(); fechar(); toast(lanca?'Voltou · custo lançado em Saídas':'Voltou do laboratório'); render() };
+      $('#lv-ok').onclick=()=>fim(true); $('#lv-no').onclick=()=>fim(false) });
+}
+/* na ficha: o que está no laboratório */
+function secLabFicha(cid){ if(!temLab())return ''; const ls=labDe(cid).filter(l=>l.status!=='instalado'); if(!ls.length)return '';
+  return `<div class="sec"><div class="sec-top"><h2>No laboratório</h2></div><div class="card">${ls.map(l=>`<div class="item"><div class="mn"><b>${esc(l.trabalho)}${l.dente?' · '+esc(l.dente):''}</b>
+    <small>${labAtrasado(l)?'<b class="v-bad">atrasado</b> · ':''}${LAB_ST[l.status][0]}${l.prevista&&l.status!=='voltou'?' · volta '+dataBR(l.prevista):''}</small></div></div>`).join('')}
+    <button class="btn sm soft" id="h-lab" style="margin-top:8px">Abrir o laboratório${ic('right',16)}</button></div></div>` }
+const _topoLb=topoHist, _ligaLb=ligarTopoHist;
+topoHist=c=>_topoLb(c)+secLabFicha(c.id);
+ligarTopoHist=function(id,fechar){ _ligaLb(id,fechar); if($('#h-lab'))$('#h-lab').onclick=()=>{ fechar(); setTimeout(()=>ir('lab'),220) } };
+/* ══════════ PARCELAMENTO DO TRATAMENTO ══════════
+   O valor do plano vira parcelas com vencimento. Cada parcela entra no caixa quando é paga.
+   Atrasada aparece no Hoje e em Registrar atendimento. */
+const parcDe=pid=>(S.parcelas||[]).filter(p=>p.planoId===pid).sort((a,b)=>a.n-b.n);
+const parcAbertas=()=>(S.parcelas||[]).filter(p=>!p.pago);
+const parcAtrasada=p=>!p.pago&&p.venc<hojeISO();
+function stParc(p){ if(p.pago)return `<span class="pill ok">paga em ${dataBR(p.pago)}</span>`; const d=diasEntre(hojeISO(),p.venc);
+  return d<0?`<span class="pill bad">atrasada ${-d} ${d===-1?'dia':'dias'}</span>`:d===0?'<span class="pill war">vence hoje</span>':`<span class="pill">vence ${dataBR(p.venc)}</span>` }
+function abreParcelas(pid,volta,refazer){
+  const pl=(S.planos||[]).find(z=>z.id===pid); if(!pl)return; const c=cli(pl.clienteId);
+  let refaz=!!refazer;
+  abrirSheet('Parcelas do tratamento',esc(c?c.nome:''),`<div id="pc-corpo"></div>`,fechar=>{
+    const pinta=()=>{ const b=$('#pc-corpo'); if(!b)return; const ps=parcDe(pid), t=totPlano(pl), jaPago=ps.filter(p=>p.pago).reduce((a,p)=>a+num(p.valor),0);
+      if(!ps.length||refaz){
+        b.innerHTML=`<p class="sub" style="margin-bottom:12px">O plano soma <b>${brl(t.t)}</b>${jaPago?`, e ${brl(jaPago)} já foram recebidos`:''}. Divida em parcelas: cada uma entra no caixa quando for paga, e o Lucra avisa quando atrasar.</p>
+          <div class="grid2"><div class="field"><label for="pc-tot">Valor a parcelar (R$)</label><input id="pc-tot" inputmode="decimal" value="${String(Math.max(0,Math.round((t.t-jaPago)*100)/100)).replace('.',',')}"></div>
+            <div class="field"><label for="pc-ent">Entrada hoje (R$)</label><input id="pc-ent" inputmode="decimal" placeholder="0,00"></div></div>
+          <div class="grid2"><div class="field"><label for="pc-n">Parcelas</label><select id="pc-n">${Array.from({length:24},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===6?'selected':''}>${n}x</option>`).join('')}</select></div>
+            <div class="field"><label for="pc-v1">1º vencimento</label><input id="pc-v1" inputmode="numeric" maxlength="10" value="${dataBRano(somaMes(hojeISO(),1))}"></div></div>
+          <div class="field" id="pc-entf" style="display:none"><label for="pc-ef">Entrada paga com</label><select id="pc-ef">${FORMAS.map(f=>`<option value="${f.k}">${f.n}</option>`).join('')}</select></div>
+          <div class="rap-sobra" id="pc-prev"></div>
+          <button class="btn pri full" id="pc-cria" style="margin-top:12px">${ic('check')}Criar parcelas</button>`;
+        const prev=()=>{ const tot=num($('#pc-tot').value), en=Math.min(num($('#pc-ent').value),tot), n=+$('#pc-n').value;
+          $('#pc-entf').style.display=en>0?'':'none';
+          $('#pc-prev').innerHTML=`<span>${en>0?'Entrada de '+brl(en)+' + ':''}${n}x de</span><b>${brl((tot-en)/n)}</b>` };
+        ['#pc-tot','#pc-ent','#pc-n'].forEach(q=>{ $(q).addEventListener('input',prev); $(q).addEventListener('change',prev) }); prev();
+        $('#pc-cria').onclick=()=>{ const tot=num($('#pc-tot').value), en=Math.min(num($('#pc-ent').value),tot), n=+$('#pc-n').value, v1=dataDeBR($('#pc-v1').value);
+          if(tot<=0)return toast('Informe o valor'); if(!v1)return toast('Confira o 1º vencimento: dd/mm/aaaa');
+          if(!S.parcelas)S.parcelas=[];
+          const cada=Math.floor((tot-en)/n*100)/100, resto=Math.round(((tot-en)-cada*n)*100)/100;
+          if(en>0){ const p={id:uid(),planoId:pid,clienteId:pl.clienteId,n:0,de:n,valor:en,venc:hojeISO(),pago:''}; S.parcelas.push(p); recebeParc(p,$('#pc-ef').value) }
+          for(let i=1;i<=n;i++)S.parcelas.push({id:uid(),planoId:pid,clienteId:pl.clienteId,n:i,de:n,valor:i===1?Math.round((cada+resto)*100)/100:cada,venc:somaMes(v1,i-1),pago:''});
+          refaz=false; salvar(); toast(n+' parcelas criadas'); pinta() };
+        return;
+      }
+      const pagas=ps.filter(p=>p.pago), tp=pagas.reduce((a,p)=>a+num(p.valor),0), tt=ps.reduce((a,p)=>a+num(p.valor),0), atr=ps.filter(parcAtrasada);
+      b.innerHTML=`<div class="pl-res"><div><span>Total</span><b>${brl(tt)}</b></div><div><span>Recebido</span><b class="v-ok">${brl(tp)}</b></div><div><span>Falta</span><b class="${atr.length?'v-bad':''}">${brl(tt-tp)}</b></div></div>
+        <div class="card" style="padding:4px 14px;margin-top:12px">${ps.map(p=>`<div class="item"><div class="mn"><b>${p.n?`Parcela ${p.n} de ${p.de}`:'Entrada'}</b><small>${stParc(p)}</small></div>
+          <div class="vr">${brl(num(p.valor))}</div>
+          <div class="acts">${p.pago?`<button class="btn sm soft" data-pc-volta="${p.id}">Desfazer</button>`:`<button class="btn sm pri" data-pc-ok="${p.id}">${ic('check',16)}Recebi</button>`}</div></div>`).join('')}</div>
+        <div class="row" style="margin-top:12px;gap:8px">${c&&c.tel&&ps.some(p=>!p.pago)?`<button class="btn soft" id="pc-zap">${ic('chat',16)}${atr.length?'Cobrar atrasadas':'Mandar o carnê'}</button>`:''}
+          <button class="btn soft" id="pc-refaz">Refazer parcelas</button></div>`;
+      b.querySelectorAll('[data-pc-ok]').forEach(x=>x.onclick=()=>{ const p=ps.find(z=>z.id===x.dataset.pcOk); escolheForma(f=>{ recebeParc(p,f); salvar(); toast('Parcela recebida · lançada no caixa'); pinta() }) });
+      b.querySelectorAll('[data-pc-volta]').forEach(x=>x.onclick=()=>{ const p=ps.find(z=>z.id===x.dataset.pcVolta);
+        confirmar('Desfazer o recebimento?','O valor sai do caixa e a parcela volta a ficar em aberto.','Desfazer',()=>{ S.vendas=S.vendas.filter(v=>v.id!==p.vendaId); p.pago=''; p.vendaId=''; salvar(); toast('Desfeito'); setTimeout(()=>abreParcelas(pid,volta),260) }) });
+      if($('#pc-zap'))$('#pc-zap').onclick=()=>{ const ab=ps.filter(p=>!p.pago), at=ab.filter(parcAtrasada);
+        const tx=at.length?`Oi, ${c.nome.split(' ')[0]}! Tudo bem? Passando para lembrar ${at.length>1?'das parcelas':'da parcela'} do seu tratamento em aberto:\n\n`+at.map(p=>`• Parcela ${p.n}/${p.de} · ${brl(num(p.valor))} · venceu em ${dataBR(p.venc)}`).join('\n')+`\n\nPode acertar pelo Pix quando puder. Qualquer dúvida, me chama!`
+          :`Oi, ${c.nome.split(' ')[0]}! Seguem as parcelas do seu tratamento${UI.clinica?' · '+UI.clinica:''}:\n\n`+ab.map(p=>`• ${p.n?'Parcela '+p.n+'/'+p.de:'Entrada'} · ${brl(num(p.valor))} · vence ${dataBR(p.venc)}`).join('\n');
+        zapAbrir(zap(c.tel,tx)) };
+      $('#pc-refaz').onclick=()=>confirmar('Refazer as parcelas?','As parcelas em aberto são apagadas para você criar de novo. As que já foram pagas continuam no caixa.','Refazer',()=>{
+        S.parcelas=S.parcelas.filter(p=>p.planoId!==pid||p.pago); salvar(); setTimeout(()=>{ abreParcelas(pid,volta,true) },260) });
+    };
+    pinta();
+  });
+}
+function recebeParc(p,forma){ const c=cli(p.clienteId);
+  const v={id:uid(),data:hojeISO(),servicoId:'',valor:num(p.valor),forma,parcelas:1,sessoes:1,usadas:[],desloc:0,clienteId:p.clienteId,cliente:c?c.nome:'',
+    desc:'Plano de tratamento · '+(p.n?`parcela ${p.n}/${p.de}`:'entrada')};
+  S.vendas.push(v); p.pago=hojeISO(); p.vendaId=v.id; p.forma=forma; mesSel=mesAtual() }
+function escolheForma(fn){ setTimeout(()=>{ const bg=document.createElement('div'); bg.className='mini-bg';
+  bg.innerHTML=`<div class="mini" role="dialog" aria-modal="true" aria-label="Como pagou"><b>Como pagou?</b><div class="grupo-f">${FORMAS.filter(f=>f.k!=='parc').map(f=>`<button class="btn soft" data-mf="${f.k}">${f.n}</button>`).join('')}</div>
+    <button class="btn-tx" id="mf-no" style="display:block;margin:8px auto 0">Cancelar</button></div>`;
+  document.body.appendChild(bg); bg.querySelector('[data-mf]').focus();
+  bg.querySelectorAll('[data-mf]').forEach(b=>b.onclick=()=>{ bg.remove(); fn(b.dataset.mf) }); bg.querySelector('#mf-no').onclick=()=>bg.remove() },0) }
+function somaMes(iso,n){ const [a,m,d]=iso.split('-').map(Number), x=new Date(a,m-1+n,1), ult=new Date(x.getFullYear(),x.getMonth()+1,0).getDate();
+  return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(Math.min(d,ult)).padStart(2,'0')}` }
+MASC.push(['#pc-v1',v=>molde(soDig(v).slice(0,8),'##/##/####')]);
+
+/* em Registrar atendimento: parcelas atrasadas e da semana */
+function secParcelas(){ const h=hojeISO(), ps=parcAbertas().filter(p=>p.venc<=somaDias(h,7)).sort((a,b)=>a.venc.localeCompare(b.venc)); if(!ps.length)return '';
+  return `<div class="sec" data-cx="parc"><div class="sec-top"><h2>Parcelas de tratamento</h2><span class="pill ${ps.some(parcAtrasada)?'bad':'war'}">${brl(ps.reduce((a,p)=>a+num(p.valor),0))}</span></div><div class="card">
+    ${ps.map(p=>{ const c=cli(p.clienteId); return `<div class="item"><div class="mn"><b>${esc(c?c.nome:'—')}</b><small>${p.n?`Parcela ${p.n}/${p.de}`:'Entrada'} · ${stParc(p)}</small></div>
+      <div class="vr">${brl(num(p.valor))}</div><div class="acts"><button class="btn sm pri" data-rp-ok="${p.id}">${ic('check',16)}Recebi</button><button class="btn sm soft" data-rp-ver="${p.planoId}">Ver todas</button></div></div>` }).join('')}</div></div>` }
+function ligarParcelas(el){
+  el.querySelectorAll('[data-rp-ok]').forEach(b=>b.onclick=()=>{ const p=S.parcelas.find(z=>z.id===b.dataset.rpOk); escolheForma(f=>{ recebeParc(p,f); salvar(); toast('Parcela recebida · lançada no caixa'); render() }) });
+  el.querySelectorAll('[data-rp-ver]').forEach(b=>b.onclick=()=>abreParcelas(b.dataset.rpVer)) }
+const _regPc=T.registrar;
+T.registrar=function(el){ _regPc(el); if(!temPlano()||emEdicao('venda'))return; const h=secParcelas(); if(!h)return;
+  const alvo=el.querySelector('[data-cx]')||el.querySelector('.sec:last-of-type'); const d=document.createElement('div'); d.innerHTML=h;
+  const s=d.firstElementChild; const form=el.querySelector('.sec'); if(form&&form.nextSibling)form.after(s); else el.appendChild(s); ligarParcelas(el) };
+/* ══════════ CONVÊNIOS ══════════
+   Paciente de convênio: o atendimento vira uma guia. A guia vai para o convênio (enviada)
+   e só entra no caixa quando o convênio paga. O que vier a menos fica como glosa. */
+const temConv=()=>area()==='odonto'||area()==='psico';
+const conv=id=>(S.convenios||[]).find(c=>c.id===id);
+const precoConv=(cv,sid)=>{ const s=serv(sid); if(!cv)return s?num(s.preco):0; const v=cv.precos&&cv.precos[sid]; return v!=null&&v!==''?num(v):(s?num(s.preco):0) };
+const GUIA_ST={aberta:['Para enviar','war'],enviada:['Enviada','ac'],paga:['Paga','ok'],glosada:['Glosada','bad']};
+let convAba='guias', convSel='';
+T.convenios=function(el){
+  const cs=(S.convenios||[]).slice().sort((a,b)=>a.nome.localeCompare(b.nome)), gs=S.guias||[];
+  if(convSel&&!conv(convSel))convSel='';
+  const abertas=gs.filter(g=>g.status==='aberta'), enviadas=gs.filter(g=>g.status==='enviada');
+  const soma=l=>l.reduce((a,g)=>a+num(g.valor),0), mes=mesAtual();
+  const doMes=gs.filter(g=>mesDe(g.data)===mes);
+  const filtro=g=>!convSel||g.convenioId===convSel;
+  const linha=g=>{ const c=cli(g.clienteId), s=serv(g.servicoId), cv=conv(g.convenioId), st=GUIA_ST[g.status];
+    const atr=g.status==='enviada'&&g.enviada&&cv&&diasEntre(g.enviada,hojeISO())>num(cv.prazo||30);
+    return `<div class="ck-l item">${g.status==='aberta'||g.status==='enviada'?`<label class="sw" style="flex:1"><input type="checkbox" data-gu="${g.id}">`:'<div style="flex:1">'}
+      <span class="mn"><b>${esc(c?c.nome:'—')}</b><small>${esc(cv?cv.nome:'convênio removido')} · ${esc(s?s.nome:'procedimento')} · ${dataBR(g.data)}${g.numero?' · guia '+esc(g.numero):''}${g.status==='enviada'&&g.enviada?` · enviada em ${dataBR(g.enviada)}`:''}${atr?' · <b class="v-bad">passou do prazo</b>':''}${g.status==='paga'?' · paga em '+dataBR(g.pagoEm):''}${g.status==='glosada'||g.glosa?` · glosa ${brl(num(g.glosa))}`:''}</small></span>
+      ${g.status==='aberta'||g.status==='enviada'?'</label>':'</div>'}<b>${brl(num(g.status==='paga'?g.recebido:g.valor))}</b>
+      ${g.status==='aberta'?`<button class="ibtn" data-gu-x="${g.id}" aria-label="Excluir guia">${ic('trash',16)}</button>`:''}</div>` };
+  const chipsC=cs.length>1?`<div class="chips" role="group" aria-label="Convênio" style="margin:6px 0 2px"><button class="chip" data-cv-f="" aria-pressed="${!convSel}">Todos</button>${cs.map(c=>`<button class="chip" data-cv-f="${c.id}" aria-pressed="${convSel===c.id}">${esc(c.nome)}</button>`).join('')}</div>`:'';
+  el.innerHTML=`<h1>Convênios</h1><p class="sub">Guias para enviar, o que o convênio deve e o que já pagou</p>
+    <div class="abas" role="group" aria-label="Convênios" style="margin-top:12px"><button data-cv-aba="guias" aria-pressed="${convAba==='guias'}">Guias</button><button data-cv-aba="cad" aria-pressed="${convAba==='cad'}">Convênios e preços</button></div>
+    ${convAba==='guias'?`
+    <section class="kpis cx-k" aria-label="Resumo">
+      <div class="kpi dest"><span class="lb">Convênios devem</span><div class="kv">${brl(soma(abertas)+soma(enviadas))}</div><p class="kx">${abertas.length} para enviar · ${enviadas.length} enviada(s)</p></div>
+      <div class="kpi"><span class="lb">Atendimentos em ${mesNome(mes)}</span><div class="kv">${doMes.length}</div><p class="kx">${brl(soma(doMes))} em guias</p></div>
+      <div class="kpi"><span class="lb">Glosas no ano</span><div class="kv ${gs.some(g=>num(g.glosa))?'v-bad':''}">${brl(gs.filter(g=>(g.pagoEm||'').slice(0,4)===mes.slice(0,4)).reduce((a,g)=>a+num(g.glosa),0))}</div><p class="kx">o que o convênio não pagou</p></div></section>
+    ${!cs.length?`<div class="card" style="margin-top:12px"><div class="vazio"><b>Nenhum convênio cadastrado</b><p>Cadastre os convênios que você atende e o valor que cada um paga. Depois marque no cadastro do paciente qual convênio ele usa.</p><button class="btn pri" data-cv-aba="cad" style="margin-top:10px">${ic('plus')}Cadastrar convênio</button></div></div>`:`
+    ${chipsC}
+    <div class="sec"><div class="sec-top"><h2>Para enviar ao convênio</h2><span class="pill war">${brl(soma(abertas.filter(filtro)))}</span></div><div class="card">
+      ${abertas.filter(filtro).map(linha).join('')||'<p class="sub" style="margin:0">Nenhuma guia esperando. Quando um paciente de convênio é atendido, a guia aparece aqui.</p>'}
+      ${abertas.filter(filtro).length?`<div class="row" style="margin-top:10px;gap:8px"><button class="btn pri" id="gu-env" style="flex:1">${ic('check',16)}Marcar marcadas como enviadas</button><button class="btn-tx" data-gu-todas="aberta">Marcar todas</button></div>`:''}</div></div>
+    <div class="sec"><div class="sec-top"><h2>Enviadas, esperando pagamento</h2><span class="pill">${brl(soma(enviadas.filter(filtro)))}</span></div><div class="card">
+      ${enviadas.filter(filtro).map(linha).join('')||'<p class="sub" style="margin:0">Nada esperando pagamento.</p>'}
+      ${enviadas.filter(filtro).length?`<div class="row" style="margin-top:10px;gap:8px"><button class="btn pri" id="gu-pag" style="flex:1">${ic('coins',16)}O convênio pagou as marcadas</button><button class="btn-tx" data-gu-todas="enviada">Marcar todas</button></div>`:''}</div></div>
+    ${gs.filter(g=>(g.status==='paga'||g.status==='glosada')&&filtro(g)).length?`<div class="sec"><div class="sec-top"><h2>Pagas</h2></div><div class="card">${gs.filter(g=>(g.status==='paga'||g.status==='glosada')&&filtro(g)).sort((a,b)=>(b.pagoEm||'').localeCompare(a.pagoEm||'')).slice(0,20).map(linha).join('')}</div></div>`:''}`}`
+    :`<div class="sec"><div class="card"><h2 style="margin-bottom:12px">${convSel?'Editar convênio':'Novo convênio'}</h2>
+      <div class="grid2"><div class="field"><label for="cv-n">Nome</label><input id="cv-n" placeholder="ex.: Amil Dental" value="${esc(convSel?conv(convSel).nome:'')}"></div>
+        <div class="field"><label for="cv-p">Paga em quantos dias</label><input id="cv-p" inputmode="numeric" value="${convSel?num(conv(convSel).prazo||30):30}"></div></div>
+      <p class="eyebrow" style="margin-top:6px">Quanto o convênio paga por procedimento</p>
+      <div class="cv-tab">${S.servicos.map(s=>`<div class="cv-l"><span>${esc(s.nome)}<small>particular ${brl(num(s.preco))}</small></span><input data-cv-pr="${s.id}" inputmode="decimal" aria-label="Valor do convênio para ${esc(s.nome)}" placeholder="${String(num(s.preco)).replace('.',',')}" value="${convSel&&conv(convSel).precos&&conv(convSel).precos[s.id]!=null?String(conv(convSel).precos[s.id]).replace('.',','):''}"></div>`).join('')}</div>
+      <p class="sub" style="margin:6px 0 12px">Em branco, vale o preço particular.</p>
+      <div class="row" style="gap:8px"><button class="btn pri" id="cv-ok" style="flex:1">${ic('check')}${convSel?'Salvar':'Cadastrar convênio'}</button>${convSel?`<button class="btn soft" id="cv-cancel">Cancelar</button>`:''}</div></div></div>
+    ${cs.length?`<div class="sec"><div class="sec-top"><h2>Seus convênios</h2></div><div class="card">${cs.map(c=>{ const n=S.clientes.filter(x=>x.convenioId===c.id).length;
+      return `<div class="item"><div class="mn"><b>${esc(c.nome)}</b><small>${n} paciente(s) · paga em ${num(c.prazo||30)} dias</small></div>
+        <div class="acts"><button class="btn sm soft" data-cv-ed="${c.id}">${ic('edit',16)}Editar</button><button class="btn sm danger ic" data-cv-x="${c.id}" aria-label="Excluir ${esc(c.nome)}">${ic('trash',18)}</button></div></div>` }).join('')}</div></div>`:''}`}`;
+  el.querySelectorAll('[data-cv-aba]').forEach(b=>b.onclick=()=>{ convAba=b.dataset.cvAba; if(convAba==='cad')convSel=''; render() });
+  el.querySelectorAll('[data-cv-f]').forEach(b=>b.onclick=()=>{ convSel=b.dataset.cvF; render() });
+  const marcadas=()=>[...el.querySelectorAll('[data-gu]:checked')].map(k=>gs.find(g=>g.id===k.dataset.gu)).filter(Boolean);
+  el.querySelectorAll('[data-gu-todas]').forEach(b=>b.onclick=()=>{ const st=b.dataset.guTodas; el.querySelectorAll('[data-gu]').forEach(k=>{ const g=gs.find(z=>z.id===k.dataset.gu); if(g&&g.status===st)k.checked=true }) });
+  if($('#gu-env'))$('#gu-env').onclick=()=>{ const ms=marcadas().filter(g=>g.status==='aberta'); if(!ms.length)return toast('Marque as guias enviadas');
+    ms.forEach(g=>{ g.status='enviada'; g.enviada=hojeISO() }); salvar(); toast(ms.length+' guia(s) enviada(s)'); render() };
+  if($('#gu-pag'))$('#gu-pag').onclick=()=>{ const ms=marcadas().filter(g=>g.status==='enviada'); if(!ms.length)return toast('Marque as guias que o convênio pagou'); pagouGuias(ms) };
+  el.querySelectorAll('[data-gu-x]').forEach(b=>b.onclick=()=>confirmar('Excluir esta guia?','O atendimento continua na agenda, mas sai da lista do convênio.','Excluir',()=>{ S.guias=S.guias.filter(g=>g.id!==b.dataset.guX); salvar(); render() },true));
+  if($('#cv-ok'))$('#cv-ok').onclick=()=>{ const n=$('#cv-n').value.trim(); if(!n)return toast('Informe o nome do convênio');
+    const precos={}; el.querySelectorAll('[data-cv-pr]').forEach(i=>{ if(i.value.trim())precos[i.dataset.cvPr]=num(i.value) });
+    if(!S.convenios)S.convenios=[];
+    if(convSel)Object.assign(conv(convSel),{nome:n,prazo:num($('#cv-p').value)||30,precos}); else S.convenios.push({id:uid(),nome:n,prazo:num($('#cv-p').value)||30,precos});
+    toast(convSel?'Convênio atualizado':'Convênio cadastrado'); convSel=''; salvar(); render() };
+  if($('#cv-cancel'))$('#cv-cancel').onclick=()=>{ convSel=''; render() };
+  el.querySelectorAll('[data-cv-ed]').forEach(b=>b.onclick=()=>{ convSel=b.dataset.cvEd; render(); window.scrollTo(0,0) });
+  el.querySelectorAll('[data-cv-x]').forEach(b=>b.onclick=()=>{ const c=conv(b.dataset.cvX);
+    confirmar(`Excluir ${esc(c.nome)}?`,'Os pacientes desse convênio passam a ser particulares. As guias já lançadas continuam.','Excluir',()=>{ S.convenios=S.convenios.filter(x=>x.id!==c.id); S.clientes.forEach(x=>{ if(x.convenioId===c.id)x.convenioId='' }); salvar(); render() },true) });
+};
+function pagouGuias(ms){
+  const tot=ms.reduce((a,g)=>a+num(g.valor),0);
+  abrirSheet('O convênio pagou',`${ms.length} guia(s) · ${brl(tot)}`,
+    `<p class="sub" style="margin-bottom:8px">Se veio menos em alguma guia, corrija o valor: a diferença fica registrada como glosa.</p>
+     <div class="card" style="padding:4px 14px;margin-bottom:12px">${ms.map(g=>{ const c=cli(g.clienteId), s=serv(g.servicoId);
+       return `<div class="cv-l"><span>${esc(c?c.nome:'—')}<small>${esc(s?s.nome:'')} · ${dataBR(g.data)} · guia ${brl(num(g.valor))}</small></span><input data-pg="${g.id}" inputmode="decimal" aria-label="Valor recebido" value="${String(num(g.valor)).replace('.',',')}"></div>` }).join('')}</div>
+     <div class="field"><label for="pg-f">Como entrou</label><select id="pg-f">${FORMAS.filter(f=>f.k!=='parc').map(f=>`<option value="${f.k}" ${f.k==='transf'?'selected':''}>${f.n}</option>`).join('')}</select></div>
+     <div class="rap-sobra" id="pg-s"></div>
+     <button class="btn pri full" id="pg-ok" style="margin-top:12px">${ic('check')}Lançar no caixa</button>`,
+    fechar=>{ const pinta=()=>{ const r=ms.reduce((a,g)=>a+num($(`[data-pg="${g.id}"]`).value),0); $('#pg-s').innerHTML=`<span>Entra no caixa${r<tot?` · glosa de ${brl(tot-r)}`:''}</span><b>${brl(r)}</b>` };
+      document.querySelectorAll('[data-pg]').forEach(i=>i.addEventListener('input',pinta)); pinta();
+      $('#pg-ok').onclick=()=>{ const f=$('#pg-f').value;
+        ms.forEach(g=>{ const r=num($(`[data-pg="${g.id}"]`).value), c=cli(g.clienteId), cv=conv(g.convenioId);
+          if(r>0){ const v={id:uid(),data:hojeISO(),sessao:g.data,servicoId:g.servicoId,valor:r,forma:f,parcelas:1,sessoes:1,usadas:[],desloc:0,clienteId:g.clienteId,cliente:c?c.nome:'',desc:'Convênio'+(cv?' '+cv.nome:''),profId:g.profId||''};
+            S.vendas.push(v); g.vendaId=v.id }
+          g.recebido=r; g.glosa=Math.max(0,Math.round((num(g.valor)-r)*100)/100); g.pagoEm=hojeISO(); g.status=r>0?'paga':'glosada' });
+        mesSel=mesAtual(); salvar(); fechar(); toast('Lançado no caixa'); render() } });
+}
+
+/* ── no "Atendeu": atendimento pelo convênio ── */
+const _extF=extrasFechar, _ligExtF=ligarExtrasFechar;
+extrasFechar=function(a,s){ const c=cli(a.clienteId), cv=c&&temConv()&&conv(c.convenioId);
+  return (cv?`<div class="ou"><span>ou</span></div><button class="btn soft full" id="k-conv">${ic('file')}Pelo convênio ${esc(cv.nome)} · ${brl(precoConv(cv,s.id))}</button>`:'')+_extF(a,s) };
+ligarExtrasFechar=function(a,s,fechar){ _ligExtF(a,s,fechar); const c=cli(a.clienteId), cv=c&&conv(c.convenioId);
+  if($('#k-conv'))$('#k-conv').onclick=()=>{ if(!S.guias)S.guias=[];
+    S.guias.push({id:uid(),convenioId:cv.id,clienteId:c.id,agId:a.id,servicoId:s.id,valor:precoConv(cv,s.id),data:a.data,status:'aberta',profId:$('#k-prof')?$('#k-prof').value:''});
+    a.status='concluido'; salvar(); fechar(); toast('Guia criada em Convênios'); render(); posAtender(a) } };
+
+/* ── cadastro do paciente: qual convênio usa ── */
+const _cliCv=T.clientes;
+T.clientes=function(el){ _cliCv(el); const add=$('#c-add'); if(!add||!temConv()||!(S.convenios||[]).length)return;
+  const eid=edit.t==='cli'?edit.id:'', ed=eid&&cli(eid), cpf=$('#c-cpf'); const ref=cpf&&cpf.closest('.grid2')||$('#c-email').closest('.field');
+  ref.insertAdjacentHTML('afterend',`<div class="grid2"><div class="field"><label for="c-conv">Convênio</label><select id="c-conv"><option value="">Particular</option>${S.convenios.map(c=>`<option value="${c.id}" ${ed&&ed.convenioId===c.id?'selected':''}>${esc(c.nome)}</option>`).join('')}</select></div>
+    <div class="field"><label for="c-cart">Carteirinha</label><input id="c-cart" inputmode="numeric" value="${esc(ed&&ed.carteira||'')}"></div></div>`);
+  const orig=add.onclick;
+  add.onclick=()=>{ const cv=$('#c-conv').value, ca=$('#c-cart').value.trim(), antes=new Set(S.clientes.map(c=>c.id)), id=eid;
+    orig(); const alvo=id?cli(id):S.clientes.find(c=>!antes.has(c.id)); if(alvo){ alvo.convenioId=cv; alvo.carteira=ca; salvar() } };
+};
+/* ══════════ ORÇAMENTOS: o funil de quem ainda não fechou ══════════
+   Orçamento enviado → em conversa → fechou ou não fechou (com o motivo).
+   O Hoje lembra de chamar quem recebeu o orçamento e sumiu. */
+const temFunil=()=>area()!=='psico';
+const MOTIVOS=['Achou caro','Sumiu, não respondeu','Fechou com outro lugar','Não era o momento','Outro motivo'];
+const etapaOrc=o=>o.status==='fechado'?'fechado':o.status==='perdido'?'perdido':(o.etapa||'enviado');
+const ultimoContato=o=>(o.contatos||[]).slice(-1)[0]||o.data;
+const orcParaChamar=()=>temFunil()?(S.orcamentos||[]).filter(o=>{ const e=etapaOrc(o); return (e==='enviado'||e==='conversa')&&o.clienteId&&diasEntre(ultimoContato(o),hojeISO())>=3 }):[];
+let funVer='abertos';
+T.orcamentos=function(el){
+  const h=hojeISO(), os=(S.orcamentos||[]).slice().sort((a,b)=>b.data.localeCompare(a.data)), d90=somaDias(h,-90);
+  const rec=os.filter(o=>o.data>=d90), fech=rec.filter(o=>etapaOrc(o)==='fechado'), perd=rec.filter(o=>etapaOrc(o)==='perdido');
+  const abertos=os.filter(o=>['enviado','conversa'].includes(etapaOrc(o)));
+  const decid=fech.length+perd.length, taxa=decid?fech.length/decid*100:0, tot=o=>calcOrc(o).total;
+  const chamar=new Set(orcParaChamar().map(o=>o.id));
+  const motivos={}; perd.forEach(o=>{ const m=o.motivo||'Outro motivo'; motivos[m]=(motivos[m]||0)+1 });
+  const linha=o=>{ const c=cli(o.clienteId), e=etapaOrc(o), dc=diasEntre(ultimoContato(o),h);
+    return `<div class="item"><div class="mn"><b>${esc(c?c.nome:'Sem cadastro')} ${e==='conversa'?'<span class="pill ac">em conversa</span>':e==='fechado'?'<span class="pill ok">fechou</span>':e==='perdido'?`<span class="pill">${esc(o.motivo||'não fechou')}</span>`:''}${chamar.has(o.id)?' <span class="pill war">chamar</span>':''}</b>
+      <small>${dataBR(o.data)} · ${o.itens.map(i=>{ const s=serv(i.servicoId); return esc(s?s.nome:'procedimento') }).join(', ')}${(e==='enviado'||e==='conversa')?` · ${(o.contatos||[]).length?'último contato há '+dc+(dc===1?' dia':' dias'):'enviado há '+dc+(dc===1?' dia':' dias')}`:''}</small></div>
+      <div class="vr">${brl(tot(o))}</div>
+      ${e==='enviado'||e==='conversa'?`<div class="acts">${c&&c.tel?`<button class="btn sm soft" data-fu-zap="${o.id}">${ic('chat',16)}Chamar</button>`:''}
+        ${e==='enviado'?`<button class="btn sm soft" data-fu-conv="${o.id}">Respondeu</button>`:''}
+        <button class="btn sm pri" data-fu-ok="${o.id}">${ic('check',16)}Fechou</button><button class="btn sm soft" data-fu-no="${o.id}">Não fechou</button></div>`:''}</div>` };
+  const lista=funVer==='abertos'?abertos.sort((a,b)=>(chamar.has(b.id)-chamar.has(a.id))||a.data.localeCompare(b.data)):funVer==='fechados'?os.filter(o=>etapaOrc(o)==='fechado'):os.filter(o=>etapaOrc(o)==='perdido');
+  el.innerHTML=`<h1>Orçamentos</h1><p class="sub">Quem recebeu um orçamento e ainda não fechou</p>
+    <section class="kpis cx-k" aria-label="Resumo">
+      <div class="kpi dest"><span class="lb">Em aberto</span><div class="kv">${brl(abertos.reduce((a,o)=>a+tot(o),0))}</div><p class="kx">${abertos.length} orçamento(s) · ${chamar.size} para chamar</p></div>
+      <div class="kpi"><span class="lb">Fecham (90 dias)</span><div class="kv">${decid?taxa.toFixed(0)+'%':'—'}</div><p class="kx">${fech.length} de ${decid} que já tiveram resposta</p></div>
+      <div class="kpi"><span class="lb">Fechado (90 dias)</span><div class="kv">${brl(fech.reduce((a,o)=>a+tot(o),0))}</div><p class="kx">${perd.length} não fecharam</p></div></section>
+    ${Object.keys(motivos).length?`<div class="sec"><div class="sec-top"><h2>Por que não fecharam</h2></div><div class="card">${Object.entries(motivos).sort((a,b)=>b[1]-a[1]).map(([m,n])=>`<div class="oc-l"><span>${esc(m)}</span><span class="oc-b"><i style="width:${(n/perd.length*100).toFixed(0)}%"></i></span><b>${n}</b></div>`).join('')}</div></div>`:''}
+    <div class="row" style="margin-top:10px;gap:8px;align-items:center;flex-wrap:wrap"><div class="chips" role="group" aria-label="Mostrar">${[['abertos','Em aberto ('+abertos.length+')'],['fechados','Fecharam'],['perdidos','Não fecharam']].map(([k,n])=>`<button class="chip" data-fu-v="${k}" aria-pressed="${funVer===k}">${n}</button>`).join('')}</div>
+      <button class="btn sm pri" id="fu-novo" style="margin-left:auto">${ic('plus',16)}Novo orçamento</button></div>
+    <div class="sec"><div class="card">${lista.map(linha).join('')||`<div class="vazio"><b>${funVer==='abertos'?'Nenhum orçamento em aberto':'Nada aqui ainda'}</b><p>${funVer==='abertos'?'Monte um orçamento no Simulador e salve. Ele aparece aqui até a pessoa responder.':'Quando você marcar Fechou ou Não fechou, o orçamento vem para cá.'}</p></div>`}</div></div>`;
+  const acha=id=>S.orcamentos.find(o=>o.id===id);
+  el.querySelectorAll('[data-fu-v]').forEach(b=>b.onclick=()=>{ funVer=b.dataset.fuV; render() });
+  $('#fu-novo').onclick=()=>{ simAba='orc'; ir('sim') };
+  el.querySelectorAll('[data-fu-zap]').forEach(b=>b.onclick=()=>{ const o=acha(b.dataset.fuZap), c=cli(o.clienteId);
+    o.contatos=(o.contatos||[]).concat(h); salvar();
+    zapAbrir(zap(c.tel,`Oi, ${c.nome.split(' ')[0]}! Tudo bem? Passando para saber se ficou alguma dúvida sobre o orçamento que te enviei (${o.itens.map(i=>{ const s=serv(i.servicoId); return s?s.nome:'' }).filter(Boolean).join(', ')}). Se quiser, já posso ver um horário para você.`)); render() });
+  el.querySelectorAll('[data-fu-conv]').forEach(b=>b.onclick=()=>{ const o=acha(b.dataset.fuConv); o.etapa='conversa'; o.contatos=(o.contatos||[]).concat(h); salvar(); render() });
+  el.querySelectorAll('[data-fu-no]').forEach(b=>b.onclick=()=>{ const o=acha(b.dataset.fuNo);
+    abrirSheet('Não fechou','Por quê? Ajuda a entender onde você perde paciente.',`<div class="grupo-f">${MOTIVOS.map(m=>`<button class="btn soft" data-mo="${esc(m)}">${esc(m)}</button>`).join('')}</div>`,fechar=>{
+      document.querySelectorAll('[data-mo]').forEach(x=>x.onclick=()=>{ o.status='perdido'; o.motivo=x.dataset.mo; o.decidido=h; salvar(); fechar(); toast('Anotado'); render() }) }) });
+  el.querySelectorAll('[data-fu-ok]').forEach(b=>b.onclick=()=>fechouOrc(acha(b.dataset.fuOk)));
+};
+function fechouOrc(o){ const t=calcOrc(o), c=cli(o.clienteId);
+  const lanca=()=>{ o.itens.forEach(i=>{ if(!serv(i.servicoId))return;
+      S.vendas.push({id:uid(),data:hojeISO(),servicoId:i.servicoId,valor:Math.round(num(i.valor)*t.f*100)/100,forma:o.forma,parcelas:o.forma==='parc'?o.parcelas:1,sessoes:i.sessoes,usadas:[],desloc:0,clienteId:o.clienteId||'',cliente:c?c.nome:''}) });
+    o.status='fechado'; o.decidido=hojeISO(); mesSel=mesAtual(); salvar(); toast('Lançado no caixa'); render() };
+  if(!temPlano()||!o.clienteId)return confirmar('Fechou!',`Isso lança <b>${brl(t.total)}</b> no caixa com a data de hoje.`,'Lançar no caixa',lanca);
+  abrirSheet('Fechou!',`${esc(c?c.nome:'')} · ${brl(t.total)}`,`<p class="conf-tx">Como você quer seguir?</p>
+    <div style="display:grid;gap:8px;margin-top:14px"><button class="btn pri full" id="fo-pl">${ic('file')}Virar plano de tratamento</button>
+      <small class="sub" style="text-align:center">As etapas ficam na ficha e dá para parcelar. O dinheiro entra quando for pago.</small>
+      <button class="btn soft full" id="fo-cx">${ic('coins')}Já pagou tudo · lançar no caixa</button></div>`,fechar=>{
+    $('#fo-cx').onclick=()=>{ fechar(); lanca() };
+    $('#fo-pl').onclick=()=>{ const ets=[]; o.itens.forEach(i=>{ const s=serv(i.servicoId), n=Math.max(1,parseInt(i.sessoes)||1); for(let k=0;k<n;k++)ets.push(etapaDe(s,'',num(i.valor)*t.f/n)) });
+      const p=novoPlano(o.clienteId,ets); p.orcId=o.id; o.status='fechado'; o.decidido=hojeISO(); salvar(); fechar(); render(); setTimeout(()=>abrePlano(p.id),260) } });
+}
+/* ══════════ AGENDAMENTO ONLINE E PESQUISA DE SATISFAÇÃO ══════════
+   A clínica publica só os horários livres (sem nomes). O paciente pede um horário por um link;
+   o pedido aparece no Hoje para aceitar ou recusar. Depois do atendimento, um link de avaliação de 0 a 10. */
+const onl=()=>Object.assign({ativo:false,servicos:[],dias:21,antes:2,titulo:'',aviso:'',codigo:'',preco:false},S.online||{});
+const linkAgendar=()=>onl().codigo?SITE()+'?agendar='+onl().codigo:'';
+function livresAgora(){ const o=onl(), e=exped(), h=hojeISO(), agora=new Date(), r={};
+  const dur=Math.max(15,num(e.dur)||60), mi=t=>{ const [a,b]=String(t).split(':').map(Number); return a*60+(b||0) }, hm=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+  const limite=agora.getHours()*60+agora.getMinutes()+num(o.antes)*60;
+  for(let i=0;i<Math.min(60,num(o.dias)||21);i++){ const d=somaDias(h,i); if(!e.dias.includes(dowDe(d)))continue;
+    const ocup=S.agenda.filter(a=>a.data===d&&a.status==='marcado'&&a.hora).map(a=>mi(a.hora));
+    const ls=[]; for(let m=mi(e.ini);m+dur<=mi(e.fim);m+=dur){ if(i===0&&m<limite)continue; if(num(o.antes)>=24&&i<Math.ceil(num(o.antes)/24))continue;
+      if(ocup.some(x=>Math.abs(x-m)<dur))continue; ls.push(hm(m)) }
+    if(ls.length)r[d]=ls }
+  return r }
+/* publica os horários livres quando a agenda muda */
+let pubUlt='', pubT=0;
+function publicaLivres(){ if(!CONTA||!onl().ativo||!onl().codigo)return; clearTimeout(pubT);
+  pubT=setTimeout(async()=>{ const l=livresAgora(), k=JSON.stringify(l); if(k===pubUlt)return;
+    try{ await rpc('atualizar_livres',{p_cid:CONTA.cid,p_livres:l}); pubUlt=k }catch(e){} },2500) }
+const _salvarOn=salvar;
+salvar=function(){ _salvarOn(); publicaLivres() };
+setInterval(()=>{ pubUlt=''; publicaLivres() },15*60*1000);   /* horários que já passaram saem da lista */
+
+T.online=function(el){ const o=onl(), lk=linkAgendar();
+  if(!CONTA){ el.innerHTML=`<h1>Agenda online</h1><p class="sub">O paciente escolhe um horário livre por um link</p><div class="card" style="margin-top:16px"><div class="vazio"><b>Precisa da conta na nuvem</b><p>O link de agendamento funciona quando o Lucra está com login. Abra pelo endereço do app e entre na sua conta.</p></div></div>`; return }
+  const l=livresAgora(), nd=Object.keys(l).length, nh=Object.values(l).reduce((a,x)=>a+x.length,0);
+  el.innerHTML=`<h1>Agenda online</h1><p class="sub">O paciente escolhe um horário livre por um link. Você confirma.</p>
+    <div class="sec"><div class="card">
+      <label class="sw"><input type="checkbox" id="on-at" ${o.ativo?'checked':''}><span><b>Receber pedidos de horário pelo link</b></span></label>
+      ${o.ativo&&lk?`<div class="on-link"><span>${esc(lk)}</span><div class="row" style="gap:8px;margin-top:8px"><button class="btn sm pri" id="on-cp">${ic('file',16)}Copiar link</button><a class="btn sm soft" href="${esc(lk)}" target="_blank" rel="noopener">${ic('arrow',16)}Ver como o paciente vê</a></div>
+        <p class="sub" style="margin-top:8px">Coloque na bio do Instagram, no WhatsApp Business ou mande para quem pedir horário.</p></div>`:''}
+    </div></div>
+    <div class="sec"><div class="card"><h2 style="margin-bottom:10px">O que o paciente pode marcar</h2>
+      <div class="chips" role="group" aria-label="Procedimentos no link">${S.servicos.map(s=>`<button class="chip" data-on-s="${s.id}" aria-pressed="${o.servicos.includes(s.id)}">${esc(s.nome)}</button>`).join('')}</div>
+      <label class="sw" style="margin-top:12px"><input type="checkbox" id="on-pr" ${o.preco?'checked':''}><span>Mostrar o preço</span></label>
+      <div class="grid2" style="margin-top:10px"><div class="field"><label for="on-d">Mostrar os próximos</label><select id="on-d">${[7,14,21,30,45,60].map(n=>`<option value="${n}" ${n===num(o.dias)?'selected':''}>${n} dias</option>`).join('')}</select></div>
+        <div class="field"><label for="on-an">Antecedência mínima</label><select id="on-an">${[[1,'1 hora'],[2,'2 horas'],[4,'4 horas'],[12,'12 horas'],[24,'1 dia'],[48,'2 dias']].map(([v,n])=>`<option value="${v}" ${v===num(o.antes)?'selected':''}>${n}</option>`).join('')}</select></div></div>
+      <div class="field"><label for="on-tit">Nome que aparece</label><input id="on-tit" placeholder="${esc(UI.clinica||'Nome da clínica')}" value="${esc(o.titulo)}"></div>
+      <div class="field"><label for="on-av">Recado para o paciente (opcional)</label><input id="on-av" maxlength="300" placeholder="ex.: Rua das Flores, 120 · sala 3. Chegue 10 min antes." value="${esc(o.aviso)}"></div>
+      <p class="sub">Os horários seguem o seu expediente (${e2txt()}) e somem quando alguém marca. <button class="btn-tx" id="on-exp">Mudar expediente</button></p>
+      <button class="btn pri full" id="on-ok" style="margin-top:6px">${ic('check')}Salvar</button>
+      ${o.ativo?`<p class="sub" style="margin-top:10px">Agora: ${nh} horário(s) livre(s) em ${nd} dia(s).</p>`:''}</div></div>`;
+  const tog=new Set(o.servicos.filter(id=>serv(id)));
+  el.querySelectorAll('[data-on-s]').forEach(b=>b.onclick=()=>{ const id=b.dataset.onS; tog.has(id)?tog.delete(id):tog.add(id); b.setAttribute('aria-pressed',tog.has(id)) });
+  $('#on-exp').onclick=()=>ir('ocupacao');
+  if($('#on-cp'))$('#on-cp').onclick=()=>{ try{ navigator.clipboard.writeText(lk); toast('Link copiado') }catch(e){ toast('Não deu para copiar') } };
+  $('#on-ok').onclick=async()=>{ const at=$('#on-at').checked; if(at&&!tog.size)return toast('Escolha pelo menos um procedimento');
+    const n=Object.assign(onl(),{ativo:at,servicos:[...tog],preco:$('#on-pr').checked,dias:+$('#on-d').value,antes:+$('#on-an').value,titulo:$('#on-tit').value.trim(),aviso:$('#on-av').value.trim()});
+    const svs=n.servicos.map(id=>{ const s=serv(id); return {id,nome:s.nome,preco:n.preco?num(s.preco):null} });
+    const b=$('#on-ok'); b.disabled=true;
+    try{ n.codigo=await rpc('configurar_vitrine',{p_cid:CONTA.cid,p_ativo:at,p_titulo:n.titulo||UI.clinica||'',p_aviso:n.aviso,p_servicos:svs}); S.online=n; pubUlt=''; salvar(); toast(at?'Agenda online ligada':'Agenda online desligada'); render() }
+    catch(e){ b.disabled=false; toast(/configurar_vitrine|PGRST202|404/.test(String(e.message)+e.status)?'Falta rodar o script publico.sql no Supabase':msgErro(e)) } };
+};
+const e2txt=()=>{ const e=exped(), D=['dom','seg','ter','qua','qui','sex','sáb']; return e.dias.slice().sort().map(d=>D[d]).join(', ')+', '+e.ini+' às '+e.fim };
+
+/* ── pedidos que chegaram pelo link ── */
+let PEDIDOS=[], pedT=0;
+async function buscaPedidos(){ if(!CONTA||!onl().ativo)return PEDIDOS=[];
+  if(Date.now()-pedT<20000)return PEDIDOS; pedT=Date.now();
+  try{ PEDIDOS=await api(`/rest/v1/pedidos?clinica_id=eq.${CONTA.cid}&status=eq.novo&order=criado_em.asc`)||[] }catch(e){} return PEDIDOS }
+function abrePedidos(){ if(!PEDIDOS.length)return toast('Nenhum pedido novo');
+  abrirSheet('Pedidos de horário',`${PEDIDOS.length} pelo link de agendamento`,`<div id="pd-l"></div>`,fechar=>{
+    const pinta=()=>{ const b=$('#pd-l'); if(!b)return; if(!PEDIDOS.length){ fechar(); render(); return }
+      b.innerHTML=PEDIDOS.map(p=>{ const ja=S.agenda.find(a=>a.data===p.data&&a.hora===p.hora&&a.status==='marcado'), c=cliPorTel(p.tel);
+        return `<div class="item"><div class="mn"><b>${esc(p.nome)}${c?' <span class="pill ok">já é paciente</span>':' <span class="pill ac">novo</span>'}</b>
+          <small>${esc(p.servico)} · ${DOW_L[dowDe(p.data)]}, ${dataBR(p.data)} às ${esc(p.hora)} · ${esc(fmtTel(p.tel))}${p.obs?' · '+esc(p.obs):''}${ja?' · <b class="v-bad">horário já ocupado</b>':''}</small></div>
+          <div class="acts"><button class="btn sm pri" data-pd-ok="${p.id}">${ic('check',16)}Aceitar</button><button class="btn sm soft" data-pd-no="${p.id}">Recusar</button></div></div>` }).join('');
+      const tira=id=>{ PEDIDOS=PEDIDOS.filter(p=>p.id!==id); pinta() };
+      b.querySelectorAll('[data-pd-ok]').forEach(x=>x.onclick=async()=>{ const p=PEDIDOS.find(z=>z.id===x.dataset.pdOk); x.disabled=true;
+        try{ await rpc('responder_pedido',{p_id:p.id,p_status:'aceito'}) }catch(e){ x.disabled=false; return toast(msgErro(e)) }
+        let c=cliPorTel(p.tel); if(!c){ c={id:uid(),nome:p.nome,tel:fmtTel(p.tel),email:'',nasc:'',obs:'Veio pelo agendamento online',cpf:''}; S.clientes.push(c) }
+        const a={id:uid(),clienteId:c.id,servicoId:serv(p.servico_id)?p.servico_id:'',data:p.data,hora:p.hora,status:'marcado',obs:p.obs?'Online: '+p.obs:'Pelo agendamento online'};
+        S.agenda.push(a); salvar(); tira(p.id); toast('Agendado');
+        if(c.tel)zapAbrir(zap(c.tel,`Oi, ${c.nome.split(' ')[0]}! Seu horário está confirmado: ${DOW_L[dowDe(a.data)]}, ${dataBR(a.data)} às ${a.hora}${serv(a.servicoId)?' ('+serv(a.servicoId).nome+')':''}.${onl().aviso?'\n\n'+onl().aviso:''}\n\nAté lá!`)) });
+      b.querySelectorAll('[data-pd-no]').forEach(x=>x.onclick=async()=>{ const p=PEDIDOS.find(z=>z.id===x.dataset.pdNo); x.disabled=true;
+        try{ await rpc('responder_pedido',{p_id:p.id,p_status:'recusado'}) }catch(e){ x.disabled=false; return toast(msgErro(e)) }
+        tira(p.id); pubUlt=''; publicaLivres();
+        zapAbrir(zap(p.tel,`Oi, ${p.nome.split(' ')[0]}! Recebi o seu pedido para ${dataBR(p.data)} às ${p.hora}, mas esse horário não vai dar. Posso te oferecer outro? Me diz qual dia e período ficam melhor para você.`)) });
+    }; pinta() }) }
+const cliPorTel=t=>{ const d=soDig(t).slice(-9); return d.length>=8?S.clientes.find(c=>soDig(c.tel).slice(-9)===d):null };
+
+/* ── pesquisa de satisfação ── */
+const pesqFeitas=()=>new Set((S.pesquisas||[]).map(p=>p.agId));
+function paraAvaliar(){ if(!CONTA||onl().pesquisa===false)return []; const h=hojeISO(), ont=somaDias(h,-2), ja=pesqFeitas();
+  return S.agenda.filter(a=>a.status==='concluido'&&a.data>=ont&&a.data<=h&&!ja.has(a.id)&&cli(a.clienteId)&&cli(a.clienteId).tel) }
+async function pedirAvaliacao(a,depois){ const c=cli(a.clienteId);
+  try{ const t=await rpc('criar_pesquisa',{p_cid:CONTA.cid,p_cliente:c.id,p_ag:a.id});
+    if(!S.pesquisas)S.pesquisas=[]; S.pesquisas.push({agId:a.id,clienteId:c.id,token:t,data:hojeISO()}); salvar();
+    zapAbrir(zap(c.tel,`Oi, ${c.nome.split(' ')[0]}! Obrigado por vir${UI.clinica?' à '+UI.clinica:''}. Você pode dar uma nota rápida para o atendimento? Leva 10 segundos:\n\n${SITE()}?avaliar=${t}`)); if(depois)depois() }
+  catch(e){ toast(/criar_pesquisa|PGRST202|404/.test(String(e.message)+e.status)?'Falta rodar o script publico.sql no Supabase':msgErro(e)) } }
+function abreAvaliar(){ const as=paraAvaliar(); if(!as.length)return;
+  abrirSheet('Pedir avaliação','Quem foi atendido nos últimos dias',`<div id="av-l"></div><button class="btn-tx" id="av-pula" style="display:block;margin:10px auto 0">Não pedir para estes</button>`,fechar=>{
+    const pinta=()=>{ const l=paraAvaliar(); if(!l.length){ fechar(); render(); return }
+      $('#av-l').innerHTML=l.map(a=>{ const c=cli(a.clienteId), s=serv(a.servicoId); return `<div class="item"><div class="mn"><b>${esc(c.nome)}</b><small>${dataBR(a.data)}${s?' · '+esc(s.nome):''}</small></div>
+        <div class="acts"><button class="btn sm pri" data-av-ag="${a.id}">${ic('chat',16)}Pedir nota</button></div></div>` }).join('');
+      document.querySelectorAll('[data-av-ag]').forEach(b=>b.onclick=()=>{ b.disabled=true; pedirAvaliacao(S.agenda.find(a=>a.id===b.dataset.avAg),pinta) }) };
+    $('#av-pula').onclick=()=>{ if(!S.pesquisas)S.pesquisas=[]; paraAvaliar().forEach(a=>S.pesquisas.push({agId:a.id,clienteId:a.clienteId,token:'',data:hojeISO()})); salvar(); fechar(); render() };
+    pinta() }) }
+
+let PESQ=null;
+T.satisfacao=function(el){
+  el.innerHTML=`<h1>Satisfação</h1><p class="sub">As notas que os pacientes deram, de 0 a 10</p><div id="sa-c"><div class="card" style="margin-top:16px"><p class="sub">Carregando…</p></div></div>`;
+  if(!CONTA){ $('#sa-c').innerHTML=`<div class="card" style="margin-top:16px"><div class="vazio"><b>Precisa da conta na nuvem</b><p>O link de avaliação funciona quando o Lucra está com login.</p></div></div>`; return }
+  const pinta=ls=>{ const b=$('#sa-c'); if(!b)return; const r=ls.filter(p=>p.nota!=null), env=ls.length;
+    const pro=r.filter(p=>p.nota>=9).length, det=r.filter(p=>p.nota<=6).length, nps=r.length?Math.round((pro-det)/r.length*100):0, med=r.length?r.reduce((a,p)=>a+p.nota,0)/r.length:0;
+    const ligado=onl().pesquisa!==false;
+    b.innerHTML=`<section class="kpis cx-k" aria-label="Resumo">
+      <div class="kpi dest"><span class="lb">Nota média</span><div class="kv">${r.length?med.toFixed(1).replace('.',','):'—'}</div><p class="kx">${r.length} de ${env} responderam</p></div>
+      <div class="kpi"><span class="lb">Indicariam (9 e 10)</span><div class="kv v-ok">${r.length?Math.round(pro/r.length*100)+'%':'—'}</div><p class="kx">${pro} pessoa(s)</p></div>
+      <div class="kpi"><span class="lb">Insatisfeitos (0 a 6)</span><div class="kv ${det?'v-bad':''}">${r.length?Math.round(det/r.length*100)+'%':'—'}</div><p class="kx">NPS ${r.length?nps:'—'}</p></div></section>
+      <div class="sec"><div class="sec-top"><h2>O que disseram</h2></div><div class="card">${r.length?r.sort((a,b)=>String(b.respondido_em).localeCompare(String(a.respondido_em))).slice(0,40).map(p=>{ const c=cli(p.cliente_id);
+        return `<div class="item"><div class="mn"><b>${esc(c?c.nome:'Paciente')} <span class="pill ${p.nota>=9?'ok':p.nota<=6?'bad':'war'}">${p.nota}</span></b><small>${dataBR(String(p.respondido_em).slice(0,10))}${p.comentario?' · '+esc(p.comentario):''}</small></div>
+          ${p.nota<=6&&c&&c.tel?`<div class="acts"><a class="btn sm soft" href="${zap(c.tel,`Oi, ${c.nome.split(' ')[0]}! Vi a sua avaliação e queria entender melhor o que aconteceu, para melhorar. Pode me contar?`)}" target="_blank" rel="noopener">${ic('chat',16)}Conversar</a></div>`:''}</div>` }).join('')
+        :'<p class="sub" style="margin:0">Ainda sem respostas. No Hoje, o Lucra lembra de pedir a nota para quem foi atendido.</p>'}</div></div>
+      <div class="sec"><div class="card"><label class="sw"><input type="checkbox" id="sa-on" ${ligado?'checked':''}><span>Lembrar no Hoje de pedir avaliação depois do atendimento</span></label></div></div>`;
+    $('#sa-on').onchange=()=>{ S.online=Object.assign(onl(),{pesquisa:$('#sa-on').checked}); salvar(); toast('Salvo') } };
+  if(PESQ)pinta(PESQ);
+  api(`/rest/v1/pesquisas?clinica_id=eq.${CONTA.cid}&order=criado_em.desc&limit=500`).then(ls=>{ PESQ=ls||[]; if(tela==='satisfacao')pinta(PESQ) })
+    .catch(e=>{ const b=$('#sa-c'); if(b)b.innerHTML=`<div class="card" style="margin-top:16px"><div class="vazio"><b>Não carregou</b><p>${/404|PGRST/.test(String(e.status)+e.message)?'Falta rodar o script publico.sql no Supabase.':esc(msgErro(e))}</p></div></div>` });
+};
+
+/* ── avisos no Hoje ── */
+const _hojeOn=T.hoje;
+T.hoje=function(el){ _hojeOn(el);
+  const av=[], pode=t=>typeof permitido!=='function'||permitido(t);
+  if(PEDIDOS.length&&pode('novoag'))av.push(`<section class="aviso ac"><div class="av-top"><span class="av-ic">${ic('calendar',20)}</span><div><h2>${PEDIDOS.length} ${PEDIDOS.length>1?'pedidos':'pedido'} de horário pelo link</h2><p>${PEDIDOS.slice(0,3).map(p=>esc(p.nome.split(' ')[0])+' ('+dataBR(p.data)+' '+esc(p.hora)+')').join(', ')}</p></div></div><button class="btn sm soft" id="av-ped">Ver e confirmar${ic('right',16)}</button></section>`);
+  const pa=paraAvaliar(); if(pa.length&&pode('agenda'))av.push(`<section class="aviso ok"><div class="av-top"><span class="av-ic">${ic('spark',20)}</span><div><h2>Pedir avaliação para ${pa.length} ${pa.length>1?'pessoas':'pessoa'}</h2><p>${pa.slice(0,3).map(a=>esc(cli(a.clienteId).nome.split(' ')[0])).join(', ')}${pa.length>3?'…':''}</p></div></div><button class="btn sm soft" id="av-aval">Pedir nota${ic('right',16)}</button></section>`);
+  if(av.length){ let box=el.querySelector('.avisos'); if(!box){ const v=el.querySelector('.card'); if(v)v.remove(); box=document.createElement('div'); box.className='avisos'; el.appendChild(box) }
+    box.insertAdjacentHTML('afterbegin',av.join('')); if($('#av-ped'))$('#av-ped').onclick=abrePedidos; if($('#av-aval'))$('#av-aval').onclick=abreAvaliar }
+  if(CONTA&&onl().ativo){ const n=PEDIDOS.length; buscaPedidos().then(l=>{ if(tela==='hoje'&&l.length!==n)render() }) }
+};
+
+/* ══════════ PÁGINAS PÚBLICAS: ?agendar=código e ?avaliar=token ══════════ */
+function paginaPublica(){ let q; try{ q=new URLSearchParams(location.search) }catch(e){ return false }
+  const ag=q.get('agendar'), avl=q.get('avaliar'); if(!ag&&!avl)return false;
+  document.body.className='publico'; document.body.innerHTML=`<main class="pub" id="pub"><div class="pub-c"><p class="sub">Carregando…</p></div></main><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  const pub=$('#pub'), pubRpc=(n,a)=>sb('/rest/v1/rpc/'+n,{metodo:'POST',corpo:a,auth:false});
+  const cor=ar=>{ if(AREAS[ar])document.documentElement.style.setProperty('--ac',AREAS[ar].cor) };
+  const erro=t=>{ pub.innerHTML=`<div class="pub-c"><h1>Ops</h1><p class="sub">${t}</p></div>` };
+  if(ag){
+    pubRpc('ver_vitrine',{p_codigo:ag}).then(v=>{ if(!v)return erro('Este link de agendamento não está ativo. Fale direto com a clínica.'); cor(v.area);
+      const h=hojeISO(), dias=Object.keys(v.livres||{}).filter(d=>d>=h&&(v.livres[d]||[]).length).sort(); let sv=(v.servicos[0]||{}).id||'', dia=dias[0]||'', hora='';
+      const pinta=()=>{ pub.innerHTML=`<div class="pub-c"><p class="eyebrow">Agendar horário</p><h1>${esc(v.titulo||'')}</h1>${v.aviso?`<p class="sub">${esc(v.aviso)}</p>`:''}
+        <h2 class="pub-h">O que você quer marcar?</h2><div class="chips" role="group" aria-label="Procedimento">${v.servicos.map(s=>`<button class="chip" data-p-s="${esc(s.id)}" aria-pressed="${s.id===sv}">${esc(s.nome)}${s.preco!=null?' · '+brl(s.preco):''}</button>`).join('')}</div>
+        ${dias.length?`<h2 class="pub-h">Dia</h2><div class="pub-dias" role="group" aria-label="Dia">${dias.map(d=>`<button class="chip" data-p-d="${d}" aria-pressed="${d===dia}"><small>${DOW_L[dowDe(d)].slice(0,3)}</small>${dataBR(d).slice(0,5)}</button>`).join('')}</div>
+          <h2 class="pub-h">Horário</h2><div class="chips" role="group" aria-label="Horário">${(v.livres[dia]||[]).map(t=>`<button class="chip" data-p-h="${t}" aria-pressed="${t===hora}">${t}</button>`).join('')}</div>
+          <div class="field" style="margin-top:16px"><label for="p-n">Seu nome</label><input id="p-n" autocomplete="name"></div>
+          <div class="field"><label for="p-t">WhatsApp</label><input id="p-t" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000"></div>
+          <div class="field"><label for="p-o">Quer avisar algo? (opcional)</label><input id="p-o" maxlength="300"></div>
+          <button class="btn pri full" id="p-ok">Pedir este horário</button><p class="sub" style="margin-top:8px;text-align:center">A clínica confirma pelo WhatsApp.</p>`
+          :`<div class="card" style="margin-top:16px"><p class="sub" style="margin:0">Não há horários livres nos próximos dias. Fale direto com a clínica.</p></div>`}</div>`;
+        pub.querySelectorAll('[data-p-s]').forEach(b=>b.onclick=()=>{ sv=b.dataset.pS; guarda(); pinta() });
+        pub.querySelectorAll('[data-p-d]').forEach(b=>b.onclick=()=>{ dia=b.dataset.pD; hora=''; guarda(); pinta() });
+        pub.querySelectorAll('[data-p-h]').forEach(b=>b.onclick=()=>{ hora=b.dataset.pH; guarda(); pinta() });
+        ['#p-n','#p-t','#p-o'].forEach(q=>{ const e=$(q); if(e&&mem[q])e.value=mem[q] });
+        const t=$('#p-t'); if(t)t.addEventListener('input',()=>{ t.value=fmtTel(t.value) });
+        if($('#p-ok'))$('#p-ok').onclick=async()=>{ guarda(); const nm=$('#p-n').value.trim(), tl=$('#p-t').value;
+          if(!hora)return toast('Escolha o horário'); if(nm.length<2)return toast('Escreva o seu nome'); if(soDig(tl).length<10)return toast('Confira o WhatsApp com DDD');
+          const b=$('#p-ok'); b.disabled=true; b.textContent='Enviando…';
+          try{ await pubRpc('pedir_horario',{p_codigo:ag,p_nome:nm,p_tel:soDig(tl),p_servico:sv,p_data:dia,p_hora:hora,p_obs:$('#p-o').value.trim()});
+            const s=v.servicos.find(x=>x.id===sv);
+            pub.innerHTML=`<div class="pub-c pub-ok"><span class="av-ic ok">${ic('check',26)}</span><h1>Pedido enviado!</h1><p class="sub">${esc(s?s.nome:'')} · ${DOW_L[dowDe(dia)]}, ${dataBR(dia)} às ${hora}</p><p>${esc(v.titulo||'A clínica')} vai confirmar pelo WhatsApp.</p></div>` }
+          catch(e){ b.disabled=false; b.textContent='Pedir este horário'; const m=String(e.message);
+            if(/ocupado/.test(m)){ v.livres[dia]=(v.livres[dia]||[]).filter(x=>x!==hora); hora=''; pinta(); toast('Esse horário acabou de ser pedido. Escolha outro.') }
+            else toast(/muitos/.test(m)?'Já recebemos pedidos seus. Aguarde a clínica responder.':e.rede?'Sem internet. Tente de novo.':'Não deu certo. Confira os dados e tente de novo.') } } };
+      const mem={}; const guarda=()=>['#p-n','#p-t','#p-o'].forEach(q=>{ const e=$(q); if(e)mem[q]=e.value });
+      pinta() }).catch(e=>erro(e.rede?'Sem internet. Confira a conexão e recarregue.':'Este link de agendamento não está ativo. Fale direto com a clínica.'));
+  } else {
+    pubRpc('ver_pesquisa',{p_token:avl}).then(v=>{ if(!v)return erro('Este link de avaliação não existe.'); cor(v.area);
+      if(v.respondida)return pub.innerHTML=`<div class="pub-c pub-ok"><span class="av-ic ok">${ic('check',26)}</span><h1>Obrigado!</h1><p class="sub">Esta avaliação já foi enviada.</p></div>`;
+      let nota=null;
+      const pinta=()=>{ const cm=$('#p-c')?$('#p-c').value:'';
+        pub.innerHTML=`<div class="pub-c"><p class="eyebrow">${esc(v.clinica||'')}</p><h1>Como foi o seu atendimento?</h1>
+          <p class="sub">De 0 a 10, quanto você indicaria para um amigo ou parente?</p>
+          <div class="pub-nps" role="group" aria-label="Nota de 0 a 10">${Array.from({length:11},(_,i)=>`<button class="chip ${i<=6?'n-b':i<=8?'n-m':'n-a'}" data-p-n="${i}" aria-pressed="${nota===i}">${i}</button>`).join('')}</div>
+          <div class="pub-esc"><small>nada provável</small><small>muito provável</small></div>
+          <div class="field" style="margin-top:14px"><label for="p-c">${nota!=null&&nota<=6?'O que podemos melhorar?':'Quer deixar um comentário? (opcional)'}</label><textarea id="p-c" rows="3" maxlength="500"></textarea></div>
+          <button class="btn pri full" id="p-ok" ${nota==null?'disabled':''}>Enviar avaliação</button></div>`;
+        $('#p-c').value=cm;
+        pub.querySelectorAll('[data-p-n]').forEach(b=>b.onclick=()=>{ nota=+b.dataset.pN; pinta() });
+        $('#p-ok').onclick=async()=>{ const b=$('#p-ok'); b.disabled=true;
+          try{ await pubRpc('responder_pesquisa',{p_token:avl,p_nota:nota,p_comentario:$('#p-c').value.trim()});
+            pub.innerHTML=`<div class="pub-c pub-ok"><span class="av-ic ok">${ic('check',26)}</span><h1>Obrigado!</h1><p class="sub">A sua avaliação foi enviada${v.clinica?' para '+esc(v.clinica):''}.</p></div>` }
+          catch(e){ b.disabled=false; toast(e.rede?'Sem internet. Tente de novo.':'Este link expirou ou já foi usado.') } } };
+      pinta() }).catch(e=>erro(e.rede?'Sem internet. Confira a conexão e recarregue.':'Este link de avaliação não existe.'));
+  }
+  return true;
+}
+
+/* transferência não tem taxa; entrada sem procedimento (parcela, convênio) mostra a descrição.
+   As contas originais ficam intactas: só embrulhamos. */
+const _taxaDeT=taxaDe; taxaDe=function(f,p){ return f==='transf'?0:_taxaDeT(f,p) };
+const _contaN=conta; conta=function(v){ const k=_contaN(v); if(!serv(v.servicoId)&&v.desc)k.nome=String(v.desc).split(' · ')[0]; return k };
+/* telas que só fazem sentido em algumas áreas */
+const NAV_AREA={lab:['odonto'],convenios:['odonto','psico'],orcamentos:['estetica','odonto']};
+const areaOk=t=>!NAV_AREA[t]||NAV_AREA[t].includes(area());
+const _permA=permitido;
+permitido=function(t){ return areaOk(t)&&_permA(t) };
+const _aNavA=aplicaNav;
+aplicaNav=function(){ _aNavA(); if(typeof aplicarPapel==='function')aplicarPapel() };
+const _irA=ir;
+ir=function(t){ if(!areaOk(t))t='hoje'; _irA(t) };
 /* ══════════ BOAS-VINDAS ══════════
    Quatro passos: nome, meta, primeiro serviço, taxas. Cada passo grava na hora,
    então quem sair no meio não perde o que já preencheu. */
@@ -5410,7 +6132,7 @@ $('#b-cfg').onclick=()=>ir('ajustes');
 const telaIni=location.hash.slice(1);   /* atalhos do ícone do app abrem direto na tela */
 const iniciarLocal=()=>{ marcaMenu(tela); if(T[telaIni]&&telaIni!=='painel')ir(telaIni); else render(); animar();
   if(!UI.boasVindas&&!S.servicos.length&&!S.vendas.length&&!S.clientes.length)boasVindas() };
-const iniciar=()=>{ if(NUVEM)return nuvemIniciar(iniciarLocal); iniciarLocal() };
+const iniciar=()=>{ if(paginaPublica())return; if(NUVEM)return nuvemIniciar(iniciarLocal); iniciarLocal() };
 ((document.fonts&&document.fonts.ready)
   ?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,600))]):Promise.resolve()).then(iniciar,iniciar);
 </script>

@@ -88,7 +88,7 @@ async def main():
         await pg.screenshot(path=f'{T.SHOTS}/170-barra.png')
         await pg.click('#barra button:has-text("Atendimento")'); await pg.wait_for_timeout(400)
         opc=[x.strip() for x in await pg.locator('.sheet .grupo-l button').all_text_contents()]
-        assert opc==['Novo agendamento','Agenda','Retornos','Clientes'], opc
+        assert opc==['Novo agendamento','Agenda','Retornos','Clientes','Orçamentos','Agenda online'], opc
         await pg.screenshot(path=f'{T.SHOTS}/171-grupo.png'); await T.checa(pg,'grupo atendimento')
         await pg.click('.sheet .grupo-l button:has-text("Clientes")'); await pg.wait_for_timeout(500)
         assert await pg.evaluate("tela")=='clientes' and await pg.locator('.sheet').count()==0

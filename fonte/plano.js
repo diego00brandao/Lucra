@@ -37,7 +37,7 @@ function abrePlano(pid,voltaFicha){
           <div class="grid2"><div class="field"><label for="pl-r">${area()==='odonto'?'Dente ou região':'Região'}</label><input id="pl-r" placeholder="${area()==='odonto'?'ex.: 36':'ex.: rosto'}"></div>
             <div class="field"><label for="pl-v">Valor (R$)</label><input id="pl-v" inputmode="decimal" value="${S.servicos[0]?String(S.servicos[0].preco).replace('.',','):''}"></div></div>
           <button class="btn soft full" id="pl-add">${ic('plus')}Adicionar ao plano</button></div>`:''}
-        <div class="row" style="margin-top:14px;gap:8px">${c&&c.tel?`<button class="btn soft" id="pl-zap">${ic('chat',16)}Mandar o plano</button>`:''}
+        <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">${typeof abreParcelas==='function'&&ehDono()?`<button class="btn soft" id="pl-parc">${ic('coins',16)}${parcDe(p.id).length?'Parcelas':'Parcelar'}${parcDe(p.id).some(parcAtrasada)?' · atrasada':''}</button>`:''}${c&&c.tel?`<button class="btn soft" id="pl-zap">${ic('chat',16)}Mandar o plano</button>`:''}
           ${p.status==='aberto'?`<button class="btn soft" id="pl-fim">Encerrar plano</button>`:`<button class="btn soft" id="pl-reabre">Reabrir plano</button>`}
           <button class="btn danger ic" id="pl-del" aria-label="Excluir plano">${ic('trash',18)}</button></div>`;
       const acha=id=>p.etapas.find(e=>e.id===id), muda=()=>{ salvar(); pinta() };
@@ -52,9 +52,10 @@ function abrePlano(pid,voltaFicha){
       if($('#pl-zap'))$('#pl-zap').onclick=()=>{ const t=totPlano(p);
         const tx=`Oi, ${c.nome.split(' ')[0]}! Este é o seu plano de tratamento${UI.clinica?' · '+UI.clinica:''}:\n\n`+p.etapas.map((e,i)=>`${i+1}. ${e.nome}${e.regiao?' ('+e.regiao+')':''}: ${brl(num(e.valor))}${e.status==='feito'?' ✓':''}`).join('\n')+`\n\nTotal: ${brl(t.t)}`;
         zapAbrir(zap(c.tel,tx)) };
+      if($('#pl-parc'))$('#pl-parc').onclick=()=>{ fechar(); setTimeout(()=>abreParcelas(p.id),260) };
       if($('#pl-fim'))$('#pl-fim').onclick=()=>{ p.status='concluido'; muda(); toast('Plano encerrado') };
       if($('#pl-reabre'))$('#pl-reabre').onclick=()=>{ p.status='aberto'; muda() };
-      $('#pl-del').onclick=()=>confirmar('Excluir este plano?','As etapas somem. Os atendimentos e pagamentos já lançados continuam.','Excluir',()=>{ S.planos=S.planos.filter(z=>z.id!==p.id); salvar(); fechar(); toast('Plano excluído'); if(voltaFicha)setTimeout(()=>historico(p.clienteId),300) });
+      $('#pl-del').onclick=()=>confirmar('Excluir este plano?','As etapas somem. Os atendimentos e pagamentos já lançados continuam.','Excluir',()=>{ S.planos=S.planos.filter(z=>z.id!==p.id); S.parcelas=(S.parcelas||[]).filter(z=>z.planoId!==p.id||z.pago); salvar(); fechar(); toast('Plano excluído'); if(voltaFicha)setTimeout(()=>historico(p.clienteId),300) });
     };
     pinta();
   });
@@ -145,7 +146,8 @@ function secPlanoFicha(cid){
   const og=area()==='odonto'&&podeClinico()?(S.odontogramas||[]).find(z=>z.clienteId===cid):null, marc=og?Object.values(og.dentes).filter(d=>d.e).length:0;
   return `<div class="sec" id="h-plano"><div class="sec-top"><h2>Plano de tratamento</h2>${ps.length?`<span class="pill">${ps.length}</span>`:''}</div><div class="card">
       ${ps.map(p=>{ const t=totPlano(p); return `<button type="button" class="item pr-it" data-pl="${p.id}"><div class="mn"><b>${p.status==='aberto'?'Em andamento':'Encerrado'} · ${t.nf} de ${t.n} ${t.n===1?'etapa':'etapas'}</b>
-        <small>${brl(t.t)} no total · falta ${brl(t.falta)} · começou em ${dataBR(p.criado)}</small></div>${ic('right',18)}</button>` }).join('')||`<p class="sub" style="margin:0 0 10px">Monte as etapas do tratamento na ordem e acompanhe o que já foi feito.</p>`}
+        <small>${brl(t.t)} no total · falta ${brl(t.falta)} · começou em ${dataBR(p.criado)}${(()=>{ const pc=typeof parcDe==='function'?parcDe(p.id):[]; if(!pc.length)return ''; const at=pc.filter(parcAtrasada).length, ab=pc.filter(x=>!x.pago).length;
+          return at?` · <b class="v-bad">${at} parcela(s) atrasada(s)</b>`:ab?` · ${ab} parcela(s) em aberto`:' · parcelas quitadas' })()}</small></div>${ic('right',18)}</button>` }).join('')||`<p class="sub" style="margin:0 0 10px">Monte as etapas do tratamento na ordem e acompanhe o que já foi feito.</p>`}
       <div class="row" style="gap:8px;margin-top:8px">${!planoAberto(cid)?`<button class="btn sm soft" id="h-pl-novo">${ic('plus',16)}Novo plano</button>`:''}
         ${area()==='odonto'&&podeClinico()?`<button class="btn sm soft" id="h-odg">${ic('spark',16)}Odontograma${marc?' · '+marc+' marcado(s)':''}</button>`:''}</div></div></div>`;
 }

@@ -3,7 +3,7 @@
    Aberto como arquivo (file://) ou com ?local, o Lucra continua funcionando só no aparelho, como antes. */
 const SB_URL='https://eilpdeyqrhtpfbrqjlqt.supabase.co', SB_KEY='sb_publishable_rhlQds-nbHwxNNHhz3qtIg_ENuHR4Bp';
 const NUVEM=(()=>{ try{ const q=new URLSearchParams(location.search); if(q.has('local'))return false; return location.protocol==='https:'||q.has('nuvem') }catch(e){ return false } })();
-const CLINICO=['anamneses','prontuario','evolucoes','odontogramas','fotosIdx'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
+const CLINICO=['anamneses','prontuario','evolucoes','odontogramas','fotosIdx','documentos'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
 const K_SES='lucra:sessao', K_CONTA='lucra:conta';
 let SES=null, CONTA=null, BASE={}, syncEst='', syncFila=null, syncRodando=false, renderPendente=false;
 const lerJ=k=>{ try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){ return null } };
@@ -281,8 +281,8 @@ salvar=function(){ salvarLocal(); if(CONTA)agendaSync() };
 
 /* ── papéis: o que cada um vê ── */
 const NAV_PAPEL={
-  profissional:['hoje','ocupacao','novoag','agenda','retornos','clientes','registrar','ajustes'],
-  recepcao:['hoje','ocupacao','novoag','agenda','retornos','clientes','caixa','registrar','saida','ajustes']};
+  profissional:['hoje','ocupacao','novoag','agenda','retornos','clientes','lab','registrar','ajustes'],
+  recepcao:['hoje','ocupacao','novoag','agenda','retornos','clientes','orcamentos','lab','caixa','registrar','saida','convenios','ajustes']};
 const EXTRA_PAPEL={profissional:[],recepcao:[]};
 function permitido(t){ if(!CONTA||CONTA.papel==='dono')return true; return NAV_PAPEL[CONTA.papel].includes(t)||EXTRA_PAPEL[CONTA.papel].includes(t) }
 const telaInicial=()=>'hoje';
