@@ -25,7 +25,7 @@ const VOC={
     ['Registre um atendimento no Caixa e veja aqui quanto cada procedimento deixa de verdade, já sem taxa, produto, comissão e imposto.',
      'Registre uma sessão no Caixa e veja aqui quanto cada tipo de sessão deixa para você, já sem taxa e imposto.'],
     ['O Lucra calcula a sobra a partir do preço e do custo de produto de cada serviço. Cadastre o primeiro e volte aqui para lançar o atendimento.',
-     'Cadastre o valor da sua sessão em Valores e volte aqui para lançar os pagamentos.'],
+     'Cadastre o valor da sua sessão em Serviços e valores e volte aqui para lançar os pagamentos.'],
     ['Toque em Registrar a cada cliente atendido. Na hora você já vê quanto sobra depois da maquininha e do produto.',
      'Toque em Registrar a cada sessão paga. Na hora você vê quanto fica com você depois da maquininha e do imposto.'],
     ['Lance aluguel, luz, internet e compras de produto. Sem as saídas, a sobra do mês parece maior do que é.',
@@ -36,7 +36,7 @@ const VOC={
     ['Lucro real por procedimento','Quanto fica com você por sessão'],['não só o que entrou no caixa','já sem imposto e taxa do cartão'],
     ['Dinheiro da reposição separado','Quem pagou e quem está devendo'],['para o mês não fechar sem produto','com cobrança pelo WhatsApp'],
     ['Pix ou parcelado?','Agenda semanal e evolução'],['veja a diferença antes de fechar o preço','lembrete, link da sessão e humor de cada paciente'],
-    [/\bServiços\b/g,'Valores'],[/\bserviços\b/g,'tipos de sessão'],[/\bServiço\b/g,'Tipo de sessão'],[/\bserviço\b/g,'tipo de sessão']
+    [/\bServiços\b(?! e valores)/g,'Serviços e valores'],[/\bserviços\b/g,'tipos de sessão'],[/\bServiço\b/g,'Tipo de sessão'],[/\bserviço\b/g,'tipo de sessão']
   ].concat(PACIENTE,[
     ['Lucro por procedimento','Lucro por tipo de sessão'],['Procedimentos que já fez','Sessões que já fez'],
     [/\bprocedimentos\b/g,'tipos de sessão'],[/\bProcedimentos\b/g,'Tipos de sessão'],
@@ -146,5 +146,5 @@ function camposServ(ed){
       <div class="field"><label>Retorno em (dias)</label><input id="s-ret" inputmode="numeric" placeholder="60" value="${ed?(ed.retorno||''):''}"></div>
     </div>`;
 }
-NAV_ROT.servicos={estetica:'Serviços',odonto:'Serviços',psico:'Valores'};
+NAV_ROT.servicos={estetica:'Serviços',odonto:'Serviços',psico:'Serviços e valores'};
 

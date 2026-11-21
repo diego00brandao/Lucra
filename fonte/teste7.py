@@ -100,7 +100,7 @@ async def main():
         await pg.click('#fab'); await pg.wait_for_timeout(400); assert await pg.locator('#r-ok').count()==1
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
         txt=(await pg.text_content('#menu')).upper()
-        ordem=['ANALÍTICO','PAINEL','LUCRO','ATENDIMENTO','NOVO AGENDAMENTO','AGENDA','RETORNOS','CLIENTES','FINANCEIRO','CAIXA DO DIA','REGISTRAR ATENDIMENTO',
+        ordem=['ANALÍTICO','PAINEL','LUCRO','CAIXA DO DIA','ATENDIMENTO','NOVO AGENDAMENTO','AGENDA','RETORNOS','CLIENTES','FINANCEIRO','REGISTRAR ATENDIMENTO',
                'REGISTRAR SAÍDA','SERVIÇOS','SIMULADOR','CONFIGURAÇÕES','TAXAS E ENCARGOS','AJUSTES','SAIR']
         pos=[txt.index(o) for o in ordem]; assert pos==sorted(pos), list(zip(ordem,pos))
         # cada item do menu abre a sua tela, sem erro

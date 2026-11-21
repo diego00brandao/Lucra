@@ -36,7 +36,7 @@ async def main():
         # 3 atendimentos com profissional
         await pg.evaluate("ir('vendas')"); await pg.wait_for_timeout(500)
         for i in range(3):
-            await pg.select_option('#f-prof',index=1+i%2); await pg.click('#f-add'); await pg.wait_for_timeout(350)
+            await pg.select_option('#f-prof',index=1+i%2); await pg.select_option('#f-cli',index=1); await pg.click('#f-add'); await pg.wait_for_timeout(350)
         assert await pg.evaluate('saldo(S.produtos[0])')==7, await pg.evaluate('saldo(S.produtos[0])')
         assert await pg.evaluate("S.vendas.filter(v=>v.profId).length")==3
         rp=json.loads(await pg.evaluate("JSON.stringify(repasses(mesAtual()))"))

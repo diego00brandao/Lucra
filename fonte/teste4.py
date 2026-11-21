@@ -42,6 +42,12 @@ async def main():
         esp=await pg.evaluate("conta({servicoId:document.querySelector('#r-serv').value,valor:num(document.querySelector('#r-valor').value),forma:'debito',parcelas:1,sessoes:1,desloc:0}).lucro")
         await pg.click('[data-rf=debito]'); await pg.wait_for_timeout(200)
         await pg.screenshot(path=f'{SH}/61-rapido.png'); await checa(pg,'registro rápido')
+        await pg.click('#r-ok'); await pg.wait_for_timeout(400)
+        assert await pg.evaluate('S.vendas.length')==n0 and 'Escolha' in await pg.inner_text('#toast'), 'salvou sem cliente'
+        assert 'Sem cadastro' not in await pg.inner_text('#r-cli')
+        await pg.select_option('#r-cli','__novo'); await pg.wait_for_timeout(400)
+        await pg.fill('#nc-nome','Cliente Novo Rápido'); await pg.click('#nc-ok'); await pg.wait_for_timeout(400)
+        assert await pg.evaluate("S.clientes.some(c=>c.nome==='Cliente Novo Rápido')") and await pg.evaluate("cli(document.querySelector('#r-cli').value).nome")=='Cliente Novo Rápido'
         await pg.click('#r-ok'); await pg.wait_for_timeout(600)
         v=json.loads(await pg.evaluate('JSON.stringify(S.vendas[S.vendas.length-1])'))
         assert await pg.evaluate('S.vendas.length')==n0+1 and v['forma']=='debito' and v['sessoes']==1 and v['usadas']==[] and v['parcelas']==1 and abs(await pg.evaluate('conta(S.vendas[S.vendas.length-1]).lucro')-esp)<.001, v
