@@ -50,6 +50,9 @@ T.hoje=function(el){
   if(typeof planosDe==='function'&&temPlano()&&pode('novoag')){ const pend=[]; (S.planos||[]).filter(p=>p.status==='aberto').forEach(p=>{ totPlano(p); const e=p.etapas.find(z=>z.status==='pendente'); if(e)pend.push({p,e}) });
     if(pend.length)card({tipo:'ac',ic:'file',tit:`${pend.length} ${pend.length>1?'tratamentos com etapa':'tratamento com etapa'} para agendar`,
       det:pend.slice(0,3).map(x=>`${nm(cl(x.p.clienteId))} (${esc(x.e.nome)})`).join(', ')+(pend.length>3?'…':''),acao:'Agendar a próxima',ir:()=>abrePlano(pend[0].p.id)}) }
+  /* psicologia: quem vinha toda semana e parou */
+  if(typeof pararamDeVir==='function'&&pode('clientes')){ const ps=pararamDeVir(); if(ps.length)card({tipo:'war',ic:'user',tit:`${ps.length} ${ps.length>1?'pacientes pararam':'paciente parou'} de vir`,
+    det:ps.slice(0,3).map(x=>`${nm(x.c)} (há ${x.sem} dias)`).join(', ')+(ps.length>3?'…':''),acao:'Ver sumidos',ir:()=>{ ordCli='sumidos'; ir('clientes') }}) }
   /* parcelas de tratamento atrasadas ou vencendo hoje */
   if(typeof parcAbertas==='function'&&pode('registrar')){ const ps=parcAbertas().filter(p=>p.venc<=h); if(ps.length){ const at=ps.filter(parcAtrasada).length;
     card({tipo:at?'bad':'war',ic:'coins',tit:at?`${at} ${at>1?'parcelas atrasadas':'parcela atrasada'}`:`${ps.length} ${ps.length>1?'parcelas vencem':'parcela vence'} hoje`,

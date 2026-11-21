@@ -145,7 +145,7 @@ T.fechamento=function(el){ fchMes=fchMes||mesAtual(); const mes=fchMes;
   $('#fc-m').onchange=()=>{ fchMes=$('#fc-m').value; render() };
   const acha=id=>linhas.find(l=>l.c.id===id);
   el.querySelectorAll('[data-fc-zap]').forEach(b=>b.onclick=()=>{ const l=acha(b.dataset.fcZap);
-    zapAbrir(zap(l.c.tel,`Oi, ${l.c.nome.split(' ')[0]}! Segue o fechamento de ${mesNome(mes).toLowerCase()}:\n\n• Sessões: ${l.fe.length}${l.fe.length?' (dias '+l.fe.map(a=>+a.data.slice(8)).join(', ')+')':''}${l.fa.length?`\n• Faltas: ${l.fa.length}`:''}\n• Já pago: ${brl(l.pago)}${l.aberto?`\n• Em aberto: *${brl(l.aberto)}*`:'\n\nTudo certo, obrigado!'}${l.aberto?'\n\nPode acertar pelo Pix quando puder. Qualquer dúvida, me chama!':''}`)) });
+    zapAbrir(zap(l.c.tel,`Oi, ${l.c.nome.split(' ')[0]}! Segue o fechamento de ${mesNome(mes).toLowerCase()}:\n\n• Sessões: ${l.fe.length}${l.fe.length?' (dias '+l.fe.map(a=>+a.data.slice(8)).join(', ')+')':''}${l.fa.length?`\n• Faltas: ${l.fa.length}`:''}\n• Já pago: ${brl(l.pago)}${l.aberto?`\n• Em aberto: *${brl(l.aberto)}*`:'\n\nTudo certo, obrigado!'}${l.aberto?`\n\nPode acertar pelo Pix quando puder.${(S.perfil||{}).pix?' Chave: '+S.perfil.pix:''} Qualquer dúvida, me chama!`:''}`)) });
   el.querySelectorAll('[data-fc-rec]').forEach(b=>b.onclick=()=>receberSheet(b.dataset.fcRec));
   el.querySelectorAll('[data-fc-recibo]').forEach(b=>b.onclick=()=>recibo(b.dataset.fcRecibo));
 };
@@ -165,3 +165,57 @@ function paginaQuest(tok,pub,pubRpc,cor,erro){
       catch(e){ b.disabled=false; toast(e.rede?'Sem internet. Tente de novo.':'Este link expirou ou já foi usado.') } } })
   .catch(e=>erro(e.rede?'Sem internet. Confira a conexão e recarregue.':'Este link de questionário não existe.'));
 }
+
+/* ── recibos de todos do mês, de uma vez ── */
+function recibosLote(mes){ const p=S.perfil||{};
+  if(!p.nome||!p.doc)return toast('Preencha seu nome e CPF ou CNPJ no recibo de qualquer paciente antes');
+  const ids=[...new Set(S.clientes.map(c=>c.id))].filter(id=>linhasRecibo(id,mes).length);
+  if(!ids.length)return toast('Ninguém pagou neste mês');
+  const semCpf=ids.filter(id=>!cli(id).cpf&&!cli(id).pagCpf).length;
+  confirmar(`Imprimir ${ids.length} recibo(s)?`,`Um por página, de ${mesNome(mes).toLowerCase()}.${semCpf?` <b>${semCpf} sem CPF</b> no cadastro: o recibo sai sem o CPF.`:''} Na janela de impressão, escolha "Salvar como PDF" para guardar.`,'Imprimir',()=>{
+    imprimir(ids.map(id=>`<div class="lote-pg">${reciboHTML(id,mes,cli(id).cpf||'')}</div>`).join('')) }) }
+
+/* ── fatura do mês: um extrato para o paciente, com a chave Pix ── */
+function faturaHTML(cid,mes){ const c=cli(cid), p=S.perfil||{}, ags=S.agenda.filter(a=>a.clienteId===cid&&mesDe(a.data)===mes).sort((a,b)=>a.data.localeCompare(b.data));
+  const feitas=ags.filter(a=>a.status==='concluido'), faltas=ags.filter(a=>a.status==='faltou');
+  const pago=linhasRecibo(cid,mes).reduce((a,l)=>a+l.valor,0), ab=(S.receber||[]).filter(r=>r.clienteId===cid&&mesDe(r.data)===mes), aberto=ab.reduce((a,r)=>a+num(r.valor),0);
+  return `<div class="recibo doc-imp"><div class="rc-cab"><b class="rc-t">Fatura · ${esc(mesNome(mes))}</b>${topoRecibo()?`<span>${esc(topoRecibo())}</span>`:''}${profLinha()?`<span>${esc(profLinha())}</span>`:''}</div>
+    <p class="doc-pac"><b>Paciente:</b> ${esc(c.nome)}</p>
+    <table class="doc-tab"><thead><tr><th>Data</th><th>Situação</th><th>Valor</th></tr></thead><tbody>
+      ${feitas.map(a=>{ const r=ab.find(x=>x.agId===a.id); return `<tr><td>${dataBR(a.data)}</td><td>Sessão realizada${r?' · em aberto':''}</td><td>${r?brl(num(r.valor)):''}</td></tr>` }).join('')}
+      ${faltas.map(a=>{ const r=ab.find(x=>x.agId===a.id); return `<tr><td>${dataBR(a.data)}</td><td>Falta${r?' (cobrada)':''}</td><td>${r?brl(num(r.valor)):''}</td></tr>` }).join('')}
+      ${ab.filter(r=>!ags.some(a=>a.id===r.agId)).map(r=>`<tr><td>${dataBR(r.data)}</td><td>${esc(r.desc||'Em aberto')}</td><td>${brl(num(r.valor))}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><td colspan="2">Já pago no mês</td><td>${brl(pago)}</td></tr><tr><td colspan="2">A pagar</td><td>${brl(aberto)}</td></tr></tfoot></table>
+    ${aberto&&p.pix?`<p class="doc-pac" style="margin-top:16px"><b>Pix:</b> ${esc(p.pix)}</p>`:''}
+    <p class="doc-dt">${esc((p.cidade?p.cidade+', ':'')+dataCheia(hojeISO()))}</p></div>` }
+const _fchT=T.fechamento;
+T.fechamento=function(el){ _fchT(el); const mes=fchMes, p=S.perfil||{};
+  const top=el.querySelector('.kpis'); if(top)top.insertAdjacentHTML('afterend',`<div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn soft" id="fc-lote">${ic('file',16)}Recibos de todos do mês</button>
+    <div class="field" style="flex:1;min-width:180px;margin:0"><label for="fc-pix" class="sr-only">Sua chave Pix</label><input id="fc-pix" placeholder="Sua chave Pix (vai na cobrança)" value="${esc(p.pix||'')}"></div></div>`);
+  if($('#fc-lote'))$('#fc-lote').onclick=()=>recibosLote(mes);
+  if($('#fc-pix'))$('#fc-pix').onchange=()=>{ S.perfil=Object.assign({},S.perfil,{pix:$('#fc-pix').value.trim()}); salvar(); toast('Chave Pix salva') };
+  el.querySelectorAll('[data-fc-zap]').forEach(b=>{ const id=b.dataset.fcZap; b.insertAdjacentHTML('afterend',`<button class="btn sm soft" data-fc-fat="${id}">Fatura</button>`) });
+  el.querySelectorAll('[data-fc-fat]').forEach(b=>b.onclick=()=>imprimir(faturaHTML(b.dataset.fcFat,mes)));
+};
+
+/* ── contato de emergência (psicologia) ── */
+const _cliEm=T.clientes;
+T.clientes=function(el){ _cliEm(el); const add=$('#c-add'); if(!add||!ehPsico())return;
+  const eid=edit.t==='cli'?edit.id:'', ed=eid&&cli(eid), obs=$('#c-obs'); if(!obs)return;
+  obs.closest('.field').insertAdjacentHTML('afterend',`<div class="grid2"><div class="field"><label for="c-emn">Contato de emergência</label><input id="c-emn" placeholder="Nome e parentesco" value="${esc(ed&&ed.emerg?ed.emerg.nome:'')}"></div>
+    <div class="field"><label for="c-emt">Telefone dele(a)</label><input id="c-emt" inputmode="tel" placeholder="(11) 90000-0000" value="${esc(ed&&ed.emerg?ed.emerg.tel:'')}"></div></div>`);
+  const orig=add.onclick;
+  add.onclick=()=>{ const n=$('#c-emn').value.trim(), t=$('#c-emt').value.trim(), antes=new Set(S.clientes.map(c=>c.id));
+    orig(); const alvo=eid?cli(eid):S.clientes.find(c=>!antes.has(c.id)); if(alvo){ if(n||t)alvo.emerg={nome:n,tel:t}; else delete alvo.emerg; salvar() } } };
+MASC.push(['#c-emt',v=>fmtTel(v)]);
+const _topoEm=topoHist;
+topoHist=c=>{ const h=_topoEm(c); if(!ehPsico()||!c.emerg||!(c.emerg.nome||c.emerg.tel))return h;
+  return `<div class="nota emerg-n"><b>Emergência:</b> ${esc(c.emerg.nome||'')}${c.emerg.tel?` · <a href="tel:+55${soDig(c.emerg.tel)}">${esc(c.emerg.tel)}</a>`:''}</div>`+h };
+
+/* ── quem parou de vir (psicologia): vinha com regularidade e sumiu sem nada marcado ── */
+function pararamDeVir(){ if(!ehPsico())return []; const h=hojeISO();
+  return S.clientes.map(c=>{ const as=S.agenda.filter(a=>a.clienteId===c.id), fe=as.filter(a=>a.status==='concluido').map(a=>a.data).sort();
+    if(fe.length<3||as.some(a=>a.status==='marcado'&&a.data>=h))return null;
+    if((prontPsiDe(c.id)||{}).fim)return null;
+    const ult=fe[fe.length-1], gaps=fe.slice(-6).map((d,i,l)=>i?diasEntre(l[i-1],d):null).filter(x=>x!=null).sort((a,b)=>a-b), med=gaps[Math.floor(gaps.length/2)]||7;
+    const sem=diasEntre(ult,h); return sem>=Math.max(14,med*2)&&sem<=120?{c,sem,med}:null }).filter(Boolean).sort((a,b)=>a.sem-b.sem) }

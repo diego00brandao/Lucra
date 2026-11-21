@@ -1067,3 +1067,5 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .pl-res small{display:block;font-size:11.5px;color:var(--tx3)}
 .recibo .pr-ptab{font-size:10.5px}.recibo .pr-ptab td,.recibo .pr-ptab th{text-align:center;padding:3px 2px}
 .un-l{display:grid;gap:8px;margin-top:14px}
+.lote-pg{break-after:page;page-break-after:always}.lote-pg:last-child{break-after:auto;page-break-after:auto}
+.emerg-n{margin-bottom:12px}.emerg-n a{font-weight:700;color:inherit}
