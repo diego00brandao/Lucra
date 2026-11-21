@@ -81,7 +81,7 @@ function abreDoc(cid,tipo,docId,volta){
       <div class="field"><label for="dc-tx">Texto</label><textarea id="dc-tx" rows="14"></textarea></div>
       <p class="sub" style="margin:-4px 0 10px">${tipo==='contrato'?'Ajuste os combinados ao seu jeito de trabalhar e guarde como modelo.':'Estrutura da Resolução CFP nº 06/2019. Preencha cada parte; o conteúdo é de responsabilidade técnica de quem assina.'}</p>
       <button class="btn-tx" id="dc-salvamod" type="button">Guardar este texto como modelo</button>
-      ${tipo==='contrato'?`<p class="eyebrow" style="margin-top:14px">Assinatura de ${esc(c.nome.split(' ')[0])}</p>
+      ${ASSINA.includes(tipo)?`<p class="eyebrow" style="margin-top:14px">Assinatura de ${esc(c.nome.split(' ')[0])}</p>
       <canvas id="dc-ass" class="ass-cv" aria-label="Espaço para assinar com o dedo"></canvas>
       <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Assine com o dedo ou a caneta</small><button class="btn-tx" id="dc-limpa" type="button">Limpar</button></div>`:''}`; }
   else { const ms=modelosDoc('termo');

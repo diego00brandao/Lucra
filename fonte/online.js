@@ -132,11 +132,12 @@ T.hoje=function(el){ _hojeOn(el);
 
 /* ══════════ PÁGINAS PÚBLICAS: ?agendar=código e ?avaliar=token ══════════ */
 function paginaPublica(){ let q; try{ q=new URLSearchParams(location.search) }catch(e){ return false }
-  const ag=q.get('agendar'), avl=q.get('avaliar'), rsp=q.get('responder'); if(!ag&&!avl&&!rsp)return false;
+  const ag=q.get('agendar'), avl=q.get('avaliar'), rsp=q.get('responder'), txt=q.has('privacidade')?'privacidade':q.has('termos')?'termos':''; if(!ag&&!avl&&!rsp&&!txt)return false;
   document.body.className='publico'; document.body.innerHTML=`<main class="pub" id="pub"><div class="pub-c"><p class="sub">Carregando…</p></div></main><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
   const pub=$('#pub'), pubRpc=(n,a)=>sb('/rest/v1/rpc/'+n,{metodo:'POST',corpo:a,auth:false});
   const cor=ar=>{ if(AREAS[ar])document.documentElement.style.setProperty('--ac',AREAS[ar].cor) };
   const erro=t=>{ pub.innerHTML=`<div class="pub-c"><h1>Ops</h1><p class="sub">${t}</p></div>` };
+  if(txt){ paginaTexto(txt,pub); document.title=(txt==='termos'?'Termos de uso':'Política de privacidade')+' · Lucra'; return true }
   if(rsp){ paginaQuest(rsp,pub,pubRpc,cor,erro); return true }
   if(ag){
     pubRpc('ver_vitrine',{p_codigo:ag}).then(v=>{ if(!v)return erro('Este link de agendamento não está ativo. Fale direto com a clínica.'); cor(v.area);

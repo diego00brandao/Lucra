@@ -16,7 +16,7 @@ async def main():
         cid=await pg.evaluate("S.clientes[0].id"); nome=await pg.evaluate("S.clientes[0].nome")
         await pg.evaluate(f"historico('{cid}')"); await pg.wait_for_timeout(500)
         tipos=await pg.evaluate("[...document.querySelectorAll('.sheet [data-doc-novo]')].map(b=>b.dataset.docNovo)")
-        assert tipos==['receita','atestado','declaracao','termo'], tipos
+        assert tipos==['receita','atestado','declaracao','termo','lgpd'], tipos
         # receita: texto + modelo + imprimir
         await pg.click('[data-doc-novo=receita]'); await pg.wait_for_timeout(500)
         await pg.fill('#dc-tx','Uso interno\n1. Medicamento X 500 mg ...... 1 caixa\nTomar 1 comprimido de 8 em 8 horas por 5 dias')
@@ -54,7 +54,7 @@ async def main():
         assert await pg.evaluate("CLINICO.includes('documentos')")
         # psicologia: só declaração
         await pg.evaluate("mudaArea('psico',true)"); c2=await pg.evaluate("(S.clientes.push({id:'p1',nome:'Paula',tel:'',email:'',nasc:'',obs:''}),'p1')"); await pg.evaluate(f"historico('{c2}')"); await pg.wait_for_timeout(400)
-        r=await pg.evaluate("[...document.querySelectorAll('.sheet [data-doc-novo]')].map(b=>b.dataset.docNovo)"); assert r==['declaracao','contrato','atestadoPsi','relatorio','laudo','parecer'], (r, er)
+        r=await pg.evaluate("[...document.querySelectorAll('.sheet [data-doc-novo]')].map(b=>b.dataset.docNovo)"); assert r==['declaracao','contrato','atestadoPsi','relatorio','laudo','parecer','lgpd'], (r, er)
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300); await pg.evaluate("mudaArea('odonto')"); cid=await pg.evaluate("S.clientes[0].id")
 
         # ── laboratório ──

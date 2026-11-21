@@ -3,7 +3,7 @@
    Aberto como arquivo (file://) ou com ?local, o Lucra continua funcionando só no aparelho, como antes. */
 const SB_URL='https://eilpdeyqrhtpfbrqjlqt.supabase.co', SB_KEY='sb_publishable_rhlQds-nbHwxNNHhz3qtIg_ENuHR4Bp';
 const NUVEM=(()=>{ try{ const q=new URLSearchParams(location.search); if(q.has('local'))return false; return location.protocol==='https:'||q.has('nuvem') }catch(e){ return false } })();
-const CLINICO=['anamneses','prontuario','evolucoes','odontogramas','fotosIdx','documentos','prontPsi','escalas'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
+const CLINICO=['anamneses','prontuario','evolucoes','odontogramas','fotosIdx','documentos','prontPsi','escalas','periogramas'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
 const K_SES='lucra:sessao', K_CONTA='lucra:conta';
 let SES=null, CONTA=null, BASE={}, syncEst='', syncFila=null, syncRodando=false, renderPendente=false;
 const lerJ=k=>{ try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){ return null } };
@@ -69,12 +69,12 @@ function porta(modo,aviso,extra){
   if(modo==='entrar')h=cab('Entrar','O financeiro da clínica em qualquer aparelho')+
     `<form id="pt-f" novalidate>${campo('pt-email','E-mail','email',e,'email')}${campo('pt-senha','Senha','password','','current-password')}
       <button class="btn pri full" id="pt-ok">Entrar</button></form>
-     <div class="pt-links"><button class="lnk" data-pt="esqueci">Esqueci a senha</button><button class="lnk" data-pt="criar">Criar conta</button></div>`;
+     <div class="pt-links"><button class="lnk" data-pt="esqueci">Esqueci a senha</button><button class="lnk" data-pt="criar">Criar conta</button></div><p class="pt-legal"><a href="?privacidade" target="_blank" rel="noopener">Privacidade</a> · <a href="?termos" target="_blank" rel="noopener">Termos de uso</a></p>`;
   else if(modo==='criar')h=cab('Criar conta','Se você recebeu um convite da sua clínica, use o mesmo e-mail do convite.')+
     `<form id="pt-f" novalidate>${campo('pt-nome','Seu nome','text',(extra&&extra.nome)||'','name')}${campo('pt-email','E-mail','email',e,'email')}
       ${campo('pt-senha','Crie uma senha','password','','new-password','pelo menos 6 caracteres')}
       <button class="btn pri full" id="pt-ok">Criar conta</button></form>
-     <div class="pt-links"><button class="lnk" data-pt="entrar">Já tenho conta</button></div>`;
+     <div class="pt-links"><button class="lnk" data-pt="entrar">Já tenho conta</button></div><p class="pt-legal">Ao criar a conta, você concorda com os <a href="?termos" target="_blank" rel="noopener">termos de uso</a> e a <a href="?privacidade" target="_blank" rel="noopener">política de privacidade</a>.</p>`;
   else if(modo==='esqueci')h=cab('Esqueci a senha','Mandamos um link para você criar uma senha nova.')+
     `<form id="pt-f" novalidate>${campo('pt-email','E-mail','email',e,'email')}<button class="btn pri full" id="pt-ok">Enviar link</button></form>
      <div class="pt-links"><button class="lnk" data-pt="entrar">Voltar</button></div>`;
@@ -120,13 +120,13 @@ function dadosDoAparelho(a){
     if(d&&((d.vendas||[]).length||(d.clientes||[]).length||(d.servicos||[]).length))return d }catch(e){}
   return null;
 }
-function criarClinica(aviso){
+function criarClinica(aviso,nova){
   let p=$('#porta'); if(!p){ porta('carregando'); p=$('#porta') }
   document.body.classList.add('porta-on');
   let ar=AREAS_OK.includes(UI.area)?UI.area:'';
   const pinta=()=>{ const loc=ar&&dadosDoAparelho(ar);
     p.innerHTML=`<div class="pt-caixa"><div class="pt-marca">${MARCA||''}<b>Lucra</b></div>
-      <h1>Sua clínica</h1><p class="sub">Você é o dono desta conta. Depois dá para chamar a sua equipe.</p>
+      <h1>${nova?'Nova unidade':'Sua clínica'}</h1><p class="sub">${nova?'Outra clínica ou consultório, com agenda, pacientes e caixa separados. Você troca entre elas em Ajustes.':'Você é o dono desta conta. Depois dá para chamar a sua equipe.'}</p>
       ${aviso?`<div class="pt-aviso" role="alert">${esc(aviso)}</div>`:''}
       <div class="field"><label for="cc-nome">Nome do consultório ou clínica</label><input id="cc-nome" value="${esc(UI.clinica||'')}" placeholder="ex.: Studio Bella"></div>
       <div class="field"><label for="cc-voce">Seu nome</label><input id="cc-voce" value="${esc(lerJ('lucra:nome-novo')||'')}"></div>
@@ -134,22 +134,38 @@ function criarClinica(aviso){
       <div class="areas" role="group" aria-labelledby="cc-al">${Object.keys(AREAS).map(k=>
         `<button type="button" class="area-op" data-livre data-cc="${k}" aria-pressed="${ar===k}" style="--c:${AREAS[k].cor}"><i></i><b>${AREAS[k].n}</b><small>${AREAS[k].d}</small></button>`).join('')}</div>
       <p class="sub" style="margin-top:8px">A área fica fixa nesta conta.</p>
-      ${loc?`<label class="pt-chk"><input type="checkbox" id="cc-levar" checked> Levar o que já está neste aparelho (${(loc.clientes||[]).length} cliente(s), ${(loc.vendas||[]).length} lançamento(s))</label>`:''}
+      ${loc&&!nova?`<label class="pt-chk"><input type="checkbox" id="cc-levar" checked> Levar o que já está neste aparelho (${(loc.clientes||[]).length} cliente(s), ${(loc.vendas||[]).length} lançamento(s))</label>`:''}
       <button class="btn pri full" id="cc-ok" style="margin-top:14px">Criar minha clínica</button>
-      <div class="pt-links"><button class="lnk" id="cc-sair">Entrar com outra conta</button></div></div>`;
+      <div class="pt-links">${nova?'<button class="lnk" id="cc-volta">Voltar</button>':'<button class="lnk" id="cc-sair">Entrar com outra conta</button>'}</div></div>`;
     p.querySelectorAll('[data-cc]').forEach(b=>b.onclick=()=>{ UI.clinica=$('#cc-nome').value; gravarJ('lucra:nome-novo',$('#cc-voce').value); ar=b.dataset.cc; pinta() });
-    $('#cc-sair').onclick=()=>sairDaConta(true);
+    if($('#cc-sair'))$('#cc-sair').onclick=()=>sairDaConta(true);
+    if($('#cc-volta'))$('#cc-volta').onclick=()=>entrar({cid:CONTA&&CONTA.cid});
     $('#cc-ok').onclick=async()=>{
       const nome=$('#cc-nome').value.trim(), voce=$('#cc-voce').value.trim();
       if(!ar){ aviso='Escolha a área de atendimento.'; UI.clinica=nome; return pinta() }
-      const levar=$('#cc-levar')&&$('#cc-levar').checked?dadosDoAparelho(ar):null;
+      const levar=!nova&&$('#cc-levar')&&$('#cc-levar').checked?dadosDoAparelho(ar):null;
       $('#cc-ok').disabled=true; $('#cc-ok').textContent='Criando…';
-      try{ await rpc('criar_clinica',{p_nome:nome,p_area:ar,p_pessoa:voce}); gravarJ('lucra:nome-novo',null); entrar({importar:levar}) }
-      catch(err){ aviso=msgErro(err); pinta() }
+      try{ const novoId=await rpc(nova?'criar_unidade':'criar_clinica',{p_nome:nome,p_area:ar,p_pessoa:voce}); gravarJ('lucra:nome-novo',null); entrar({importar:levar,cid:novoId}) }
+      catch(err){ aviso=/criar_unidade|PGRST202/.test(String(err.message))?'Falta rodar o script unidades.sql no Supabase.':msgErro(err); $('#cc-ok').disabled=false; pinta() }
     };
   };
   pinta();
 }
+/* ── várias unidades: escolher ao entrar e trocar depois ── */
+function escolherUnidade(uns){ let p=$('#porta'); if(!p){ porta('carregando'); p=$('#porta') } document.body.classList.add('porta-on');
+  p.innerHTML=`<div class="pt-caixa"><div class="pt-marca">${MARCA||''}<b>Lucra</b></div><h1>Qual unidade?</h1><p class="sub">Você tem acesso a mais de uma. Dá para trocar depois em Ajustes.</p>
+    <div class="un-l">${uns.map(u=>`<button class="area-op" data-un="${u.cid}" style="--c:${AREAS[u.area].cor}"><i></i><b>${esc(u.nome||'Sem nome')}</b><small>${AREAS[u.area].n} · ${PAPEL_N[u.papel]}</small></button>`).join('')}</div>
+    <div class="pt-links"><button class="lnk" id="un-sair">Sair</button></div></div>`;
+  p.querySelectorAll('[data-un]').forEach(b=>b.onclick=()=>entrar({cid:b.dataset.un}));
+  $('#un-sair').onclick=()=>sairDaConta(true) }
+function trocarUnidade(cid){ const vai=()=>{ S=JSON.parse(JSON.stringify(PAD)); $('#view').innerHTML=''; tela=telaInicial(); entrar({cid}) };
+  if(pendente())return confirmar('Ainda tem coisa para enviar','O que você lançou por último ainda não chegou na nuvem. Espere aparecer "Salvo na nuvem" antes de trocar de unidade.','Trocar mesmo assim',vai,true);
+  vai() }
+function sheetUnidades(){ const uns=CONTA.unidades||[];
+  abrirSheet('Unidades','Cada uma tem agenda, pacientes e caixa separados',`${uns.map(u=>`<button type="button" class="item pr-it" data-tu="${u.cid}" ${u.cid===CONTA.cid?'aria-current="true"':''}><div class="mn"><b>${esc(u.nome||'Sem nome')}${u.cid===CONTA.cid?' <span class="pill ok">aberta</span>':''}</b><small>${AREAS[u.area].n} · ${PAPEL_N[u.papel]}</small></div>${u.cid===CONTA.cid?'':ic('right',18)}</button>`).join('')}
+    <button class="btn soft full" id="tu-nova" style="margin-top:12px">${ic('plus')}Criar outra unidade</button>`,fechar=>{
+    document.querySelectorAll('[data-tu]').forEach(b=>b.onclick=()=>{ if(b.dataset.tu===CONTA.cid)return fechar(); fechar(); setTimeout(()=>trocarUnidade(b.dataset.tu),220) });
+    $('#tu-nova').onclick=()=>{ fechar(); setTimeout(()=>{ UI.clinica=''; criarClinica('',true) },220) } }) }
 
 /* ── entrar: descobre a clínica e o papel; sem internet usa o que ficou guardado ── */
 let depoisDeEntrar=()=>{};
@@ -158,13 +174,16 @@ async function entrar(op){
   let conta=null;
   try{
     await rpc('aceitar_convites');
-    const ms=await api(`/rest/v1/membros?select=clinica_id,papel,nome,email&user_id=eq.${SES.user.id}`);
-    const m=(ms||[])[0];
-    if(!m)return criarClinica();
-    const c=((await api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${m.clinica_id}`))||[])[0];
-    if(!c)return criarClinica();
-    conta={cid:c.id,area:c.area,clinica:c.nome,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id};
-    gravarJ(K_CONTA,conta);
+    const ms=(await api(`/rest/v1/membros?select=clinica_id,papel,nome,email&user_id=eq.${SES.user.id}`))||[];
+    if(!ms.length)return criarClinica();
+    const cs=(await Promise.all(ms.map(x=>api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${x.clinica_id}`).then(r=>(r||[])[0]).catch(()=>null)))).filter(Boolean);
+    const uns=ms.map(x=>{ const c=cs.find(z=>z.id===x.clinica_id); return c&&{cid:c.id,nome:c.nome,area:c.area,papel:x.papel} }).filter(Boolean);
+    if(!uns.length)return criarClinica();
+    const pref=op.cid||lerJ('lucra:unidade:'+SES.user.id);
+    if(uns.length>1&&!uns.some(u=>u.cid===pref))return escolherUnidade(uns);
+    const u=uns.find(z=>z.cid===pref)||uns[0], m=ms.find(x=>x.clinica_id===u.cid);
+    conta={cid:u.cid,area:u.area,clinica:u.nome,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id,unidades:uns};
+    gravarJ(K_CONTA,conta); gravarJ('lucra:unidade:'+SES.user.id,u.cid);
   }catch(e){
     if(e.status===401){ sairDaConta(true,'A sessão expirou. Entre de novo.'); return }
     const cache=lerJ(K_CONTA);
@@ -175,6 +194,7 @@ async function entrar(op){
 }
 function ativar(conta,op){
   CONTA=conta;
+  document.body.classList.remove('papel-dono','papel-profissional','papel-recepcao');
   document.body.classList.add('nuvem','papel-'+CONTA.papel);
   UI.area=CONTA.area; UI.clinica=CONTA.clinica||''; if(!ehDono())UI.boasVindas=true;
   CHAVE='lucra:nuvem:'+CONTA.cid;
@@ -301,7 +321,7 @@ ir=function(t){ if(CONTA&&!permitido(t)&&t!=='usuarios'){ toast('Essa tela é s�
 function sairDaConta(sem,aviso){
   const fazer=()=>{ const cid=CONTA&&CONTA.cid;
     if(SES)sb('/auth/v1/logout',{metodo:'POST'}).catch(()=>{});
-    if(cid){ try{ localStorage.removeItem('lucra:nuvem:'+cid); localStorage.removeItem('lucra:nuvem:'+cid+':base') }catch(e){} }
+    try{ Object.keys(localStorage).filter(k=>k.startsWith('lucra:nuvem:')).forEach(k=>localStorage.removeItem(k)) }catch(e){}
     gravarJ(K_SES,null); gravarJ(K_CONTA,null); SES=null; CONTA=null; BASE={};
     document.body.classList.remove('nuvem','papel-dono','papel-profissional','papel-recepcao'); pintaSync();
     document.querySelectorAll('#menu li[hidden]').forEach(li=>{ if(!li.querySelector('[data-t=usuarios]'))li.hidden=false });
@@ -357,11 +377,11 @@ function linkConvite(email){
 function secConta(){
   if(!CONTA)return '';
   return `<div class="sec" id="sec-conta"><div class="card"><h2 style="margin-bottom:10px">Sua conta</h2>
-    <div class="ficha"><div class="fi-l"><span>E-mail</span><b>${esc(CONTA.email||'')}</b></div><div class="fi-l"><span>Clínica</span><b>${esc(CONTA.clinica||'—')}</b></div>
+    <div class="ficha"><div class="fi-l"><span>E-mail</span><b>${esc(CONTA.email||'')}</b></div><div class="fi-l"><span>${(CONTA.unidades||[]).length>1?'Unidade':'Clínica'}</span><b>${esc(CONTA.clinica||'—')}</b></div>
       <div class="fi-l"><span>Área</span><b>${AREAS[CONTA.area].n}</b></div><div class="fi-l"><span>Seu papel</span><b>${PAPEL_N[CONTA.papel]}</b></div>
       <div class="fi-l"><span>Seus dados</span><b><span id="sync-aj" class="sync" role="status"></span></b></div></div>
     <div class="row" style="margin-top:12px;gap:8px">${CONTA.papel==='dono'?`<button class="btn soft" id="ct-us">${ic('user',16)}Usuários e acessos</button>`:''}
-      <button class="btn soft" id="ct-senha">Trocar senha</button><button class="btn danger" id="ct-sair">Sair da conta</button></div></div></div>`;
+      <button class="btn soft" id="ct-un">${(CONTA.unidades||[]).length>1?'Trocar de unidade':'Unidades'}</button><button class="btn soft" id="ct-senha">Trocar senha</button><button class="btn danger" id="ct-sair">Sair da conta</button></div></div></div>`;
 }
 const _posN=posRender;
 posRender=function(el){ _posN(el);
@@ -376,6 +396,7 @@ posRender=function(el){ _posN(el);
     if($('#ct-sair'))$('#ct-sair').onclick=()=>sairDaConta();
     if($('#ct-us'))$('#ct-us').onclick=()=>ir('usuarios');
     if($('#ct-senha'))$('#ct-senha').onclick=()=>porta('nova');
+    if($('#ct-un'))$('#ct-un').onclick=sheetUnidades;
   }
 };
 mudaArea=(function(orig){ return function(k,semRender){ if(CONTA&&k!==CONTA.area){ toast('A área fica fixa nesta conta'); return } return orig(k,semRender) } })(mudaArea);

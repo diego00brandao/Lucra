@@ -59,7 +59,7 @@ async def main():
         await pg.click('#ob-fim'); await pg.wait_for_timeout(900)
         st = json.loads(await pg.evaluate("localStorage.getItem('lucra:v1')"))
         assert len(st['servicos']) == 1 and st['meta'] == 10000 and st['servicos'][0]['custo'] == 24, st
-        assert set(st.keys()) == {'tema','meta','imposto','custoDomicilio','taxas','servicos','vendas','despesas','retiradas','clientes','agenda','contas','produtos','orcamentos','equipe','receber','evolucoes','anamneses','prontuario','planos','odontogramas','documentos','modelosDoc','lab','parcelas','convenios','guias','pesquisas','prontPsi','escalas','area','perfil'}, st.keys()
+        assert set(st.keys()) == {'tema','meta','imposto','custoDomicilio','taxas','servicos','vendas','despesas','retiradas','clientes','agenda','contas','produtos','orcamentos','equipe','receber','evolucoes','anamneses','prontuario','planos','odontogramas','documentos','modelosDoc','lab','parcelas','convenios','guias','pesquisas','prontPsi','escalas','periogramas','area','perfil'}, st.keys()
         await pg.screenshot(path=f'{SHOTS}/07-painel-1serv.png', full_page=True); await checa(pg, 'painel 1 serviço')
         # recarrega: não reabre boas-vindas
         await pg.reload(); await pg.wait_for_timeout(900)
@@ -127,7 +127,7 @@ async def main():
         await pv.evaluate('mesSel=mesDe(S.vendas[0].data);render()')
         assert igual(await pv.evaluate(RES), ajusta(orig,compras))
         await po.reload(); await po.wait_for_timeout(500)
-        assert json.loads(await pv.evaluate("JSON.stringify(Object.assign({},S,{contas:undefined,produtos:undefined,orcamentos:undefined,equipe:undefined,receber:undefined,evolucoes:undefined,anamneses:undefined,prontuario:undefined,planos:undefined,odontogramas:undefined,documentos:undefined,modelosDoc:undefined,lab:undefined,parcelas:undefined,convenios:undefined,guias:undefined,pesquisas:undefined,prontPsi:undefined,escalas:undefined,area:undefined,perfil:undefined}))")) == json.loads(await po.evaluate("JSON.stringify(S)")), 'dados antigos carregam diferente do original'
+        assert json.loads(await pv.evaluate("JSON.stringify(Object.assign({},S,{contas:undefined,produtos:undefined,orcamentos:undefined,equipe:undefined,receber:undefined,evolucoes:undefined,anamneses:undefined,prontuario:undefined,planos:undefined,odontogramas:undefined,documentos:undefined,modelosDoc:undefined,lab:undefined,parcelas:undefined,convenios:undefined,guias:undefined,pesquisas:undefined,prontPsi:undefined,escalas:undefined,periogramas:undefined,area:undefined,perfil:undefined}))")) == json.loads(await po.evaluate("JSON.stringify(S)")), 'dados antigos carregam diferente do original'
         await pv.screenshot(path=f'{SHOTS}/18-360.png'); await checa(pv, 'painel 360')
         for t in ['agenda', 'clientes', 'vendas', 'servicos', 'sim']:
             await pv.evaluate(f"ir('{t}')"); await pv.wait_for_timeout(500); await checa(pv, t + ' 360')

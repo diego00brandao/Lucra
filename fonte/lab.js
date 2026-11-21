@@ -25,7 +25,8 @@ T.lab=function(el){
       <div class="kpi"><span class="lb">No laboratório</span><div class="kv">${abertos.filter(l=>l.status==='enviado'||l.status==='refazer').length}</div><p class="kx">${abertos.filter(labAtrasado).length} atrasado(s)</p></div>
       <div class="kpi"><span class="lb">Voltou, falta instalar</span><div class="kv">${abertos.filter(l=>l.status==='voltou').length}</div><p class="kx">chame o paciente</p></div>
       <div class="kpi"><span class="lb">Gasto este mês</span><div class="kv">${brl(gasto)}</div><p class="kx">trabalhos enviados em ${mesNome(mes)}</p></div></section>
-    <div class="sec"><div class="card"><h2 style="margin-bottom:12px">Enviar trabalho</h2>
+    <details class="dobra" ${ls.length?'':'open'}><summary class="btn ${ls.length?'soft':'pri'} full">${ic('plus')}Enviar trabalho para o laboratório</summary>
+    <div class="sec"><div class="card">
       <div class="field"><label for="lb-cli">Paciente</label><select id="lb-cli"><option value="" disabled selected hidden>Escolha o paciente</option>${cs.map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('')}</select></div>
       <div class="grid2"><div class="field"><label for="lb-tr">Trabalho</label><input id="lb-tr" list="lb-trl" placeholder="ex.: Coroa"><datalist id="lb-trl">${TRAB_SUG.map(t=>`<option value="${t}">`).join('')}</datalist></div>
         <div class="field"><label for="lb-de">Dente ou região</label><input id="lb-de" placeholder="ex.: 36"></div></div>
@@ -35,7 +36,7 @@ T.lab=function(el){
         <div class="field"><label for="lb-prev">Volta em</label><input id="lb-prev" inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa" value="${dataBRano(somaDias(h,7))}"></div></div>
       <div class="grid2"><div class="field"><label for="lb-serv">Procedimento (para o lucro)</label><select id="lb-serv"><option value="">Nenhum</option>${S.servicos.map(s=>`<option value="${s.id}">${esc(s.nome)}</option>`).join('')}</select></div>
         <div class="field"><label for="lb-obs">Cor, observação</label><input id="lb-obs" placeholder="ex.: cor A2"></div></div>
-      <button class="btn pri full" id="lb-add">${ic('plus')}Registrar envio</button></div></div>
+      <button class="btn pri full" id="lb-add">${ic('plus')}Registrar envio</button></div></div></details>
     <div class="chips" role="group" aria-label="Mostrar" style="margin-top:6px"><button class="chip" data-lab-v="abertos" aria-pressed="${labVer==='abertos'}">Em andamento (${abertos.length})</button><button class="chip" data-lab-v="feitos" aria-pressed="${labVer==='feitos'}">Instalados (${feitos.length})</button></div>
     <div class="sec"><div class="card">${(labVer==='abertos'?abertos:feitos.slice(0,30)).map(linha).join('')||`<div class="vazio"><b>${labVer==='abertos'?'Nada no laboratório':'Nenhum instalado ainda'}</b><p>${labVer==='abertos'?'Registre acima quando mandar um trabalho. Se atrasar, o Lucra avisa no Hoje.':'Os trabalhos instalados aparecem aqui.'}</p></div>`}</div></div>`;
   $('#lb-serv').onchange=()=>{ const s=serv($('#lb-serv').value); if(s&&!$('#lb-tr').value)$('#lb-tr').value=s.nome };

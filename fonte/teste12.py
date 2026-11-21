@@ -59,6 +59,10 @@ def responder(metodo,url,h,corpo):
             cid=str(uuid.uuid4()); DB['clinicas'][cid]={'id':cid,'nome':b['p_nome'],'area':b['p_area']}
             DB['membros'].append({'clinica_id':cid,'user_id':me['id'],'papel':'dono','nome':b['p_pessoa'],'email':me['email']})
             DB['dados'][cid]={'estado':{},'versao':0}; DB['clinico'][cid]={'estado':{},'versao':0}; return ok(cid)
+        if f=='criar_unidade':
+            cid=str(uuid.uuid4()); DB['clinicas'][cid]={'id':cid,'nome':b['p_nome'],'area':b['p_area']}
+            DB['membros'].append({'clinica_id':cid,'user_id':me['id'],'papel':'dono','nome':b['p_pessoa'],'email':me['email']})
+            DB['dados'][cid]={'estado':{},'versao':0}; DB['clinico'][cid]={'estado':{},'versao':0}; return ok(cid)
         if f=='salvar':
             pp=papel(b['p_cid'],me)
             if not pp:return err('sem_acesso')

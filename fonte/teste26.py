@@ -17,7 +17,7 @@ async def main():
         await pg.evaluate(f"historico('{cid}')"); await pg.wait_for_timeout(500)
         assert await pg.locator('.sheet #h-pp').count()==1 and await pg.locator('.sheet [data-q-ag]').count()==2 and await pg.locator('.sheet #h-ir').count()==1
         docs=await pg.evaluate("[...document.querySelectorAll('.sheet [data-doc-novo]')].map(b=>b.dataset.docNovo)")
-        assert docs==['declaracao','contrato','atestadoPsi','relatorio','laudo','parecer'], docs
+        assert docs==['declaracao','contrato','atestadoPsi','relatorio','laudo','parecer','lgpd'], docs
         # prontuário
         await pg.click('.sheet #h-pp'); await pg.wait_for_timeout(500)
         await pg.select_option('#pp-ab','Terapia cognitivo-comportamental (TCC)'); await pg.fill('#pp-dem','Ansiedade no trabalho'); await pg.fill('#pp-obj','Reduzir crises')
