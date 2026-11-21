@@ -108,24 +108,10 @@ async def main():
         assert PED[0]['status']=='aceito' and await a.evaluate("S.agenda.length")==na+1
         ag=await a.evaluate("S.agenda.slice(-1)[0]"); c=await a.evaluate(f"cli('{ag['clienteId']}')")
         assert ag['data']==dia and ag['hora']=='10:00' and ag['servicoId']=='s1' and c['nome']=='João Pedro' and c['tel']=='(11) 98765-4321', (ag,c)
-        # ── pesquisa de satisfação ──
+        # pesquisa de satisfação foi retirada: nada no menu nem no Hoje
         await a.evaluate(f"S.agenda.push({{id:'z1',clienteId:'{ag['clienteId']}',servicoId:'s1',data:hojeISO(),hora:'08:00',status:'concluido'}});salvar();ir('hoje')"); await a.wait_for_timeout(500)
-        assert await a.locator('.aviso', has_text='Pedir avaliação').count()==1
-        await a.click('#av-aval'); await a.wait_for_timeout(400); await a.click('[data-av-ag="z1"]'); await a.wait_for_timeout(800)
-        assert len(PESQ)==1 and await a.evaluate("S.pesquisas.length")==1
-        tok=PESQ[0]['token']
-        await a.keyboard.press('Escape'); await a.wait_for_timeout(300); await a.evaluate("ir('hoje')"); await a.wait_for_timeout(300)
-        assert await a.locator('.aviso', has_text='Pedir avaliação').count()==0
-        await pc.goto(M.URL+'&avaliar='+tok); await pc.wait_for_timeout(800)
-        tx=await pc.inner_text('#pub'); assert 'CLÍNICA SORRISO' in tx.upper(), tx
-        assert await pc.is_disabled('#p-ok')
-        await pc.click('[data-p-n="9"]'); await pc.fill('#p-c','Atendimento ótimo'); await pc.screenshot(path=f'{SH}/avaliar-publico.png',full_page=True)
-        await pc.click('#p-ok'); await pc.wait_for_timeout(600)
-        assert 'Obrigado' in await pc.inner_text('#pub') and PESQ[0]['nota']==9
-        await pc.goto(M.URL+'&avaliar='+tok); await pc.wait_for_timeout(800); assert 'já foi enviada' in await pc.inner_text('#pub')
-        await a.evaluate("ir('satisfacao')"); await a.wait_for_timeout(1000)
-        t=await a.inner_text('#view'); assert '9,0' in t and 'Atendimento ótimo' in t and 'João Pedro' in t, t
-        await a.screenshot(path=f'{SH}/satisfacao.png',full_page=True)
+        assert await a.locator('.aviso', has_text='avaliação').count()==0 and not await a.evaluate("permitido('satisfacao')")
+        assert await a.locator('#menu button[data-t=satisfacao]').count()==0
         ov=await pc.evaluate("document.documentElement.scrollWidth-document.documentElement.clientWidth"); assert ov<=1, ov
         await br.close()
     srv.shutdown()

@@ -1,13 +1,13 @@
 # ── décima oitava leva: documentos, laboratório, parcelas, convênios, orçamentos, agenda online e satisfação ──
-js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + rd('psi.js') + rd('perio.js') + rd('lgpd.js') + rd('voltar.js') + """
+js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + rd('psi.js') + rd('perio.js') + rd('lgpd.js') + rd('voltar.js') + rd('persistir.js') + """
 /* transferência não tem taxa; entrada sem procedimento (parcela, convênio) mostra a descrição.
    As contas originais ficam intactas: só embrulhamos. */
 const _taxaDeT=taxaDe; taxaDe=function(f,p){ return f==='transf'?0:_taxaDeT(f,p) };
 const _contaN=conta; conta=function(v){ const k=_contaN(v); if(!serv(v.servicoId)&&v.desc)k.nome=String(v.desc).split(' · ')[0]; return k };
 /* telas que só fazem sentido em algumas áreas */
 const NAV_AREA={lab:['odonto'],convenios:['odonto','psico'],orcamentos:['estetica','odonto'],fechamento:['psico']};
-const SO_NUVEM=['online','satisfacao'];
-const areaOk=t=>(!NAV_AREA[t]||NAV_AREA[t].includes(area()))&&(!SO_NUVEM.includes(t)||(typeof CONTA!=='undefined'&&!!CONTA));
+const SO_NUVEM=['online'];
+const areaOk=t=>t!=='satisfacao'&&(!NAV_AREA[t]||NAV_AREA[t].includes(area()))&&(!SO_NUVEM.includes(t)||(typeof CONTA!=='undefined'&&!!CONTA));
 const _permA=permitido;
 permitido=function(t){ return areaOk(t)&&_permA(t) };
 const _aNavA=aplicaNav;

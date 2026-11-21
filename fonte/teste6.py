@@ -148,7 +148,7 @@ async def main():
         await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(400); await checa(pg,'ajustes psico')
         await pg.screenshot(path=f'{SH}/100-ajustes.png',full_page=True)
         assert 'Procedimentos, pacotes' in await pg.inner_text('.areas')
-        await pg.locator('.dobravel:has-text("Seus dados para recibo")').click(); await pg.fill('#pf-nome','Dra. Teste'); await pg.fill('#pf-reg','06/123456'); await pg.fill('#pf-doc','000.000.000-00'); await pg.click('#pf-ok')
+        await pg.locator('.dobravel:has-text("Seus dados profissionais")').click(); await pg.fill('#pf-nome','Dra. Teste'); await pg.fill('#pf-reg','06/123456'); await pg.fill('#pf-doc','000.000.000-00'); await pg.click('#pf-ok')
         assert await pg.evaluate("S.perfil.registro")=='06/123456'
         await pg.click('.areas [data-area=odonto]'); await pg.wait_for_timeout(400)
         assert await pg.locator('nav button[data-t=clientes] .rot').text_content()=='Pacientes'

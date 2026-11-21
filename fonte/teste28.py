@@ -12,9 +12,19 @@ async def main():
         await pg.goto(T.NOVO); await pg.wait_for_timeout(700)
         await pg.evaluate("UI.boasVindas=true;UI.zap='web';salvarUI();document.querySelector('.ob')&&document.querySelector('.ob').remove();document.body.style.overflow='';mudaArea('psico');demoArea();S.perfil={nome:'Crysthian Lima',doc:'12345678909',registro:'06/1'};salvar();window.open=(u)=>{abriuZap(String(u));return {closed:false,focus(){},location:{}}}")
         # fechamento: chave Pix, fatura e recibos em lote
+        # dados profissionais e assinatura em Configurações, uma vez só
+        await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(400)
+        if await pg.locator('#sec-perfil .dobravel[aria-expanded="false"]').count(): await pg.click('#sec-perfil .dobravel'); await pg.wait_for_timeout(200)
+        await pg.fill('#pf-pix','crys@pix.com'); await pg.fill('#pf-prof','Psicólogo clínico')
+        await pg.locator('#pf-ass').scroll_into_view_if_needed(); await pg.wait_for_timeout(150)
+        b=await pg.locator('#pf-ass').bounding_box(); await pg.mouse.move(b['x']+30,b['y']+80); await pg.mouse.down()
+        for i in range(6): await pg.mouse.move(b['x']+50+i*25,b['y']+40+(i%2)*50)
+        await pg.mouse.up(); await pg.click('#pf-ok'); await pg.wait_for_timeout(400)
+        assert await pg.evaluate("S.perfil.pix")=='crys@pix.com' and (await pg.evaluate("S.perfil.assinatura")).startswith('data:image') and await pg.evaluate("S.perfil.nome")=='Crysthian Lima'
+        assert await pg.locator('#pf-assv img').count()==1
+        await pg.evaluate("abreDoc(S.clientes[0].id,'declaracao')"); await pg.wait_for_timeout(400)
+        assert await pg.is_checked('#dc-euinc'); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
         await pg.evaluate("ir('fechamento')"); await pg.wait_for_timeout(400)
-        await pg.fill('#fc-pix','crys@pix.com'); await pg.dispatch_event('#fc-pix','change'); await pg.wait_for_timeout(200)
-        assert await pg.evaluate("S.perfil.pix")=='crys@pix.com'
         cid=await pg.evaluate("document.querySelector('[data-fc-rec]').dataset.fcRec")
         await pg.evaluate(f"cli('{cid}').tel='11955554444';salvar();render()"); await pg.wait_for_timeout(300)
         await pg.click(f'[data-fc-zap="{cid}"]'); await pg.wait_for_timeout(300)

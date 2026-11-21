@@ -83,7 +83,8 @@ const cliPorTel=t=>{ const d=soDig(t).slice(-9); return d.length>=8?S.clientes.f
 
 /* ── pesquisa de satisfação ── */
 const pesqFeitas=()=>new Set((S.pesquisas||[]).map(p=>p.agId));
-function paraAvaliar(){ if(!CONTA||onl().pesquisa===false)return []; const h=hojeISO(), ont=somaDias(h,-2), ja=pesqFeitas();
+function paraAvaliar(){ return [];   /* pesquisa de satisfação desligada: as avaliações ficam no Google */
+  if(!CONTA||onl().pesquisa===false)return []; const h=hojeISO(), ont=somaDias(h,-2), ja=pesqFeitas();
   return S.agenda.filter(a=>a.status==='concluido'&&a.data>=ont&&a.data<=h&&!ja.has(a.id)&&cli(a.clienteId)&&cli(a.clienteId).tel) }
 async function pedirAvaliacao(a,depois){ const c=cli(a.clienteId);
   try{ const t=await rpc('criar_pesquisa',{p_cid:CONTA.cid,p_cliente:c.id,p_ag:a.id});

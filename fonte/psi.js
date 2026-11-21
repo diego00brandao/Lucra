@@ -116,7 +116,7 @@ function abreInforme(cid){ const c=cli(cid), a0=+hojeISO().slice(0,4); let ano=n
     const pinta=()=>{ document.querySelectorAll('[data-ir-a]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.irA===ano)); const ms=pagosNoAno(cid,ano), tot=ms.reduce((a,m)=>a+m.total,0), p=S.perfil||{};
       $('#ir-c').innerHTML=tot?`<div class="card" style="padding:4px 14px">${ms.filter(m=>m.n).map(m=>`<div class="item"><div class="mn"><b>${esc(mesNome(m.mes))}</b><small>${m.n} atendimento(s)</small></div><div class="vr">${brl(m.total)}</div></div>`).join('')}</div>
         <div class="rap-sobra" style="margin-top:10px"><span>Total em ${ano}</span><b>${brl(tot)}</b></div>
-        ${!p.nome||!p.doc?`<div class="nota" style="margin-top:10px">Faltam seu nome e CPF ou CNPJ no app. Preencha em Recibo, na ficha, antes de imprimir.</div>`:''}
+        ${!p.nome||!p.doc?`<div class="nota" style="margin-top:10px">Faltam seu nome e CPF ou CNPJ. Preencha em Configurações → Seus dados profissionais.</div>`:''}
         ${!c.cpf&&!c.pagCpf?`<div class="nota" style="margin-top:10px">Sem o CPF de ${esc(c.nome.split(' ')[0])} no cadastro. A Receita pede o CPF de quem pagou.</div>`:''}
         <button class="btn pri full" id="ir-imp" style="margin-top:12px">${ic('file')}Imprimir ou salvar PDF</button>`
         :`<p class="sub">Nenhum pagamento de ${esc(c.nome.split(' ')[0])} em ${ano}.</p>`;
@@ -168,7 +168,7 @@ function paginaQuest(tok,pub,pubRpc,cor,erro){
 
 /* ── recibos de todos do mês, de uma vez ── */
 function recibosLote(mes){ const p=S.perfil||{};
-  if(!p.nome||!p.doc)return toast('Preencha seu nome e CPF ou CNPJ no recibo de qualquer paciente antes');
+  if(!p.nome||!p.doc)return toast('Preencha seus dados profissionais em Configurações antes');
   const ids=[...new Set(S.clientes.map(c=>c.id))].filter(id=>linhasRecibo(id,mes).length);
   if(!ids.length)return toast('Ninguém pagou neste mês');
   const semCpf=ids.filter(id=>!cli(id).cpf&&!cli(id).pagCpf).length;
@@ -191,9 +191,8 @@ function faturaHTML(cid,mes){ const c=cli(cid), p=S.perfil||{}, ags=S.agenda.fil
 const _fchT=T.fechamento;
 T.fechamento=function(el){ _fchT(el); const mes=fchMes, p=S.perfil||{};
   const top=el.querySelector('.kpis'); if(top)top.insertAdjacentHTML('afterend',`<div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn soft" id="fc-lote">${ic('file',16)}Recibos de todos do mês</button>
-    <div class="field" style="flex:1;min-width:180px;margin:0"><label for="fc-pix" class="sr-only">Sua chave Pix</label><input id="fc-pix" placeholder="Sua chave Pix (vai na cobrança)" value="${esc(p.pix||'')}"></div></div>`);
+    ${p.pix?'':`<small class="sub" style="align-self:center">Cadastre sua chave Pix em Configurações para ela ir nas cobranças.</small>`}</div>`);
   if($('#fc-lote'))$('#fc-lote').onclick=()=>recibosLote(mes);
-  if($('#fc-pix'))$('#fc-pix').onchange=()=>{ S.perfil=Object.assign({},S.perfil,{pix:$('#fc-pix').value.trim()}); salvar(); toast('Chave Pix salva') };
   el.querySelectorAll('[data-fc-zap]').forEach(b=>{ const id=b.dataset.fcZap; b.insertAdjacentHTML('afterend',`<button class="btn sm soft" data-fc-fat="${id}">Fatura</button>`) });
   el.querySelectorAll('[data-fc-fat]').forEach(b=>b.onclick=()=>imprimir(faturaHTML(b.dataset.fcFat,mes)));
 };

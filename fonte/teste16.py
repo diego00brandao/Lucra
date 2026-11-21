@@ -16,8 +16,8 @@ async def main():
         await pg.click('#m-ok'); await pg.wait_for_timeout(300); assert await pg.evaluate("S.meta")==25000
         # CRP com barra
         await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(400)
-        await pg.evaluate("document.querySelectorAll('.dobravel').forEach(b=>{ if(/recibo/i.test(b.textContent)&&b.getAttribute('aria-expanded')!=='true')b.click() })"); await pg.wait_for_timeout(300)
-        await pg.type('#pf-reg','06123456'); assert await pg.input_value('#pf-reg')=='06/123456'
+        await pg.evaluate("document.querySelectorAll('.dobravel').forEach(b=>{ if(/dados profissionais/i.test(b.textContent)&&b.getAttribute('aria-expanded')!=='true')b.click() })"); await pg.wait_for_timeout(300)
+        await pg.type('#pf-reg','06123456'); v=await pg.input_value('#pf-reg'); assert v=='06/123456', v
         tx=await pg.text_content('#view'); assert 'versão' not in tx and 'Estoque de produtos' not in tx and 'fotos de antes' not in tx, 'texto errado na psicologia'
         assert 'Lucra' in tx
         assert not await pg.evaluate("modOn('estoque')")

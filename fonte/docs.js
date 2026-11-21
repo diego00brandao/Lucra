@@ -99,7 +99,7 @@ function abreDoc(cid,tipo,docId,volta){
       <div class="field"><label for="dc-tx">Texto do termo</label><textarea id="dc-tx" rows="10"></textarea></div>
       <p class="sub" style="margin:-4px 0 10px">O modelo padrão é genérico. Inclua os riscos e cuidados de cada procedimento e guarde como modelo para usar de novo.</p>`; }
   abrirSheet(T_.n,`${esc(c.nome)}${d?' · '+dataBR(d.data):''}`,
-    `${falta?`<div class="nota" style="margin-bottom:12px">Seu nome e ${AREAS[area()].reg} ainda não estão no app. <button class="btn-tx" id="dc-perfil" type="button">Preencher agora</button></div>`:''}
+    `${falta?`<div class="nota" style="margin-bottom:12px">Seus dados profissionais ainda não estão no app. <button class="btn-tx" id="dc-perfil" type="button">Preencher em Configurações</button></div>`:''}
      ${campos}
      ${d?'':`<div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><button class="btn-tx" id="dc-salvamod" type="button">Guardar este texto como meu modelo</button><small class="sub">Marcadores: ${MARCADORES}</small></div>`}
      ${blocoAssinaturas(c,d,tipo)}
@@ -118,7 +118,7 @@ function abreDoc(cid,tipo,docId,volta){
       ['#dc-d','#dc-de','#dc-ate','#dc-dias','#dc-cid','#dc-ac','#dc-proc','#dc-mod','#dc-fr','#dc-vl','#dc-pg'].forEach(q=>{ const e=$(q); if(e){ e.addEventListener('input',gera); e.addEventListener('change',gera) } });
       gera();
       const A=ligaAssinaturas();
-      if($('#dc-perfil'))$('#dc-perfil').onclick=()=>{ fechar(); setTimeout(()=>ir('ajustes'),220) };
+      if($('#dc-perfil'))$('#dc-perfil').onclick=()=>{ fechar(); setTimeout(()=>{ ir('ajustes'); setTimeout(()=>{ const e=$('#sec-perfil'); if(e)e.scrollIntoView({block:'start'}) },150) },220) };
       if($('#dc-salvamod'))$('#dc-salvamod').onclick=()=>{ const t=tx.value.trim(); if(!t)return toast('Escreva o texto antes');
         const o=opc(), ex={procedimento:o.procedimento,valor:$('#dc-vl')?brl(num($('#dc-vl').value)):''}, at=$('#dc-mod')&&modelosDoc(tipo).find(z=>z.id===$('#dc-mod').value);
         pedeTexto('Nome do modelo',tipo==='termo'?'ex.: Clareamento':tipo==='receita'?'ex.: Pós-extração':'ex.: Meu modelo',nome=>{ if(!S.modelosDoc)S.modelosDoc=[];
@@ -181,9 +181,9 @@ function blocoAssinaturas(c,d,tipo){ const p=S.perfil||{}, nm=esc(c.nome.split('
       <div id="dc-asswrap" ${d&&d.assinatura?'hidden':''}><canvas id="dc-ass" class="ass-cv" aria-label="Espaço para ${nm} assinar com o dedo"></canvas>
         <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Assine com o dedo ou a caneta</small><button class="btn-tx" id="dc-limpa" type="button">Limpar</button></div></div></details>
     <details class="ass-b" id="dc-eu" open><summary><b>Sua assinatura</b><small>${p.assinatura?'guardada no app':'desenhe uma vez'}</small></summary>
-      ${p.assinatura?`<div class="doc-assv" id="dc-euv"><img src="${p.assinatura}" alt="Sua assinatura"><label class="sw" style="min-height:36px"><input type="checkbox" id="dc-euinc" ${!d||d.assProf?'checked':''}><span>Incluir neste documento</span></label><button class="btn-tx" id="dc-eutroca" type="button">Trocar minha assinatura</button></div>`:''}
+      ${p.assinatura?`<div class="doc-assv" id="dc-euv"><img src="${p.assinatura}" alt="Sua assinatura"><label class="sw" style="min-height:36px"><input type="checkbox" id="dc-euinc" ${!d||d.assProf?'checked':''}><span>Incluir neste documento</span></label><small class="sub">Para trocar, vá em Configurações → Seus dados profissionais</small></div>`:''}
       <div id="dc-euwrap" ${p.assinatura?'hidden':''}><canvas id="dc-eucv" class="ass-cv" aria-label="Espaço para você assinar"></canvas>
-        <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Fica guardada para os próximos documentos</small><button class="btn-tx" id="dc-eulimpa" type="button">Limpar</button></div></div></details></div>` }
+        <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Fica guardada em Configurações para os próximos</small><button class="btn-tx" id="dc-eulimpa" type="button">Limpar</button></div></div></details></div>` }
 function ligaAssinaturas(){ let pac=null, eu=null;
   const abre=(wrap,cv)=>{ const w=$(wrap); if(w)w.hidden=false; return quadroAssinatura($(cv)) };
   const iniPac=()=>{ if(!pac&&$('#dc-asswrap')&&!$('#dc-asswrap').hidden&&$('#dc-pac').open)pac=quadroAssinatura($('#dc-ass')) };
@@ -192,7 +192,6 @@ function ligaAssinaturas(){ let pac=null, eu=null;
   if($('#dc-pac'))$('#dc-pac').addEventListener('toggle',()=>setTimeout(iniPac,10));
   if($('#dc-eu'))$('#dc-eu').addEventListener('toggle',()=>setTimeout(iniEu,10));
   if($('#dc-refaz'))$('#dc-refaz').onclick=()=>{ $('#dc-assv').hidden=true; pac=abre('#dc-asswrap','#dc-ass') };
-  if($('#dc-eutroca'))$('#dc-eutroca').onclick=()=>{ $('#dc-euv').hidden=true; eu=abre('#dc-euwrap','#dc-eucv') };
   if($('#dc-limpa'))$('#dc-limpa').onclick=()=>{ iniPac(); pac&&pac.limpa() };
   if($('#dc-eulimpa'))$('#dc-eulimpa').onclick=()=>{ iniEu(); eu&&eu.limpa() };
   return { aplica(d){
@@ -229,3 +228,35 @@ const _posMd=posRender;
 posRender=function(el){ _posMd(el); if(tela!=='ajustes'||$('#sec-modelos')||!podeClinico()||!tiposDoc().length)return;
   const html=`<div class="sec" id="sec-modelos"><div class="card row" style="justify-content:space-between;gap:10px;align-items:center"><div><b>Modelos de documentos</b><br><small class="sub">Personalize o texto de receitas, atestados, termos e os demais</small></div><button class="btn sm soft" id="md-abre">${ic('edit',16)}Abrir</button></div></div>`;
   const ref=$('#sec-conta')||el.querySelector('h1'); if(ref)ref.insertAdjacentHTML('afterend',html); $('#md-abre').onclick=sheetModelos };
+
+/* ── Configurações: seus dados profissionais e sua assinatura, num lugar só ── */
+secPerfil=function(){ const p=S.perfil||{}, ar=area();
+  return `<div class="sec" id="sec-perfil"><div class="card">
+    <h2 style="margin-bottom:4px">Seus dados profissionais</h2>
+    <p class="sub" style="margin-bottom:12px">Preencha uma vez. Saem em recibos, receitas, atestados, termos, contratos, laudos e no informe do IR.</p>
+    <div class="field"><label for="pf-nome">Nome completo</label><input id="pf-nome" value="${esc(p.nome||'')}" autocomplete="name"></div>
+    <div class="grid2">
+      <div class="field"><label for="pf-reg">${AREAS[ar].reg}</label><input id="pf-reg" value="${esc(p.registro||'')}" placeholder="${ar==='psico'?'06/123456':ar==='odonto'?'SP 12345':''}"></div>
+      <div class="field"><label for="pf-doc">CPF ou CNPJ</label><input id="pf-doc" inputmode="numeric" value="${esc(p.doc||'')}"></div></div>
+    <div class="grid2">
+      <div class="field"><label for="pf-prof">Profissão</label><input id="pf-prof" value="${esc(p.profissao||'')}" placeholder="${PROFISSAO[ar]||'Esteticista'}"></div>
+      <div class="field"><label for="pf-pix">Chave Pix</label><input id="pf-pix" value="${esc(p.pix||'')}" placeholder="vai nas cobranças"></div></div>
+    <div class="grid2">
+      <div class="field"><label for="pf-cid">Cidade</label><input id="pf-cid" value="${esc(p.cidade||'')}" placeholder="São Paulo"></div>
+      <div class="field"><label for="pf-end">Endereço (opcional)</label><input id="pf-end" value="${esc(p.endereco||'')}"></div></div>
+    <p class="eyebrow" style="margin-top:6px">Sua assinatura</p>
+    ${p.assinatura?`<div class="doc-assv" id="pf-assv"><img src="${p.assinatura}" alt="Sua assinatura"><button class="btn-tx" id="pf-troca" type="button">Trocar assinatura</button></div>`:''}
+    <div id="pf-asswrap" ${p.assinatura?'hidden':''}><canvas id="pf-ass" class="ass-cv" aria-label="Espaço para você assinar com o dedo"></canvas>
+      <div class="row" style="justify-content:space-between;margin-top:4px"><small class="sub">Assine com o dedo ou a caneta</small><button class="btn-tx" id="pf-limpa" type="button">Limpar</button></div></div>
+    <button class="btn pri full" id="pf-ok" style="margin-top:12px">${ic('check')}Salvar meus dados</button>
+  </div></div>` };
+DOBRAS.ajustes.push('Seus dados profissionais');
+const _ligAjPf=ligarAjustesArea;
+ligarAjustesArea=function(){ _ligAjPf(); if(!$('#pf-ok'))return; let q=null;
+  const ini=()=>{ const w=$('#pf-asswrap'), cv=$('#pf-ass'); if(!q&&w&&!w.hidden&&cv&&cv.clientWidth>0)q=quadroAssinatura(cv) }; setTimeout(ini,30);
+  if($('#sec-perfil'))$('#sec-perfil').addEventListener('click',()=>setTimeout(ini,60));
+  if($('#pf-troca'))$('#pf-troca').onclick=()=>{ $('#pf-assv').hidden=true; $('#pf-asswrap').hidden=false; ini() };
+  $('#pf-limpa').onclick=()=>{ ini(); q&&q.limpa() };
+  $('#pf-ok').onclick=()=>{ S.perfil=Object.assign({},S.perfil,{nome:$('#pf-nome').value.trim(),registro:$('#pf-reg').value.trim(),doc:$('#pf-doc').value.trim(),
+      profissao:$('#pf-prof').value.trim(),pix:$('#pf-pix').value.trim(),cidade:$('#pf-cid').value.trim(),endereco:$('#pf-end').value.trim()});
+    if(q&&q.tem())S.perfil.assinatura=q.imagem(); salvar(); toast('Dados salvos'); render() } };
