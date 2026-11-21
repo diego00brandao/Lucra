@@ -46,9 +46,18 @@ T.hoje=function(el){
   const ret=typeof retornos==='function'?retornos():[];
   if(ret.length&&pode('retornos'))card({tipo:'ac',ic:'undo',tit:`${ret.length} ${ret.length>1?'pessoas':'pessoa'} na hora de voltar`,
     det:ret.slice(0,3).map(r=>nm(r.cliente)).join(', ')+(ret.length>3?'…':''),acao:'Chamar de volta',ir:()=>ir('retornos')});
+  /* etapas de tratamento esperando data */
+  if(typeof planosDe==='function'&&temPlano()&&pode('novoag')){ const pend=[]; (S.planos||[]).filter(p=>p.status==='aberto').forEach(p=>{ totPlano(p); const e=p.etapas.find(z=>z.status==='pendente'); if(e)pend.push({p,e}) });
+    if(pend.length)card({tipo:'ac',ic:'file',tit:`${pend.length} ${pend.length>1?'tratamentos com etapa':'tratamento com etapa'} para agendar`,
+      det:pend.slice(0,3).map(x=>`${nm(cl(x.p.clienteId))} (${esc(x.e.nome)})`).join(', ')+(pend.length>3?'…':''),acao:'Agendar a próxima',ir:()=>abrePlano(pend[0].p.id)}) }
+  /* validade */
+  const venc=typeof vencendo==='function'?vencendo():[];
+  if(venc.length&&ehDono()){ const ja=venc.filter(p=>diasParaVencer(p)<0).length;
+    card({tipo:ja?'bad':'war',ic:'box',tit:ja?`${ja} ${ja>1?'produtos vencidos':'produto vencido'}`:`${venc.length} ${venc.length>1?'produtos vencem':'produto vence'} em até 30 dias`,
+      det:venc.slice(0,3).map(p=>`${esc(p.nome)} (${dataBRano(p.validade)})`).join(', '),acao:'Ver estoque',ir:()=>ir('reserva')}) }
   /* estoque */
   const est=typeof estoqueBaixo==='function'?estoqueBaixo():[];
-  if(est.length&&ehDono())card({tipo:'war',ic:'box',tit:`${est.length} ${est.length>1?'produtos acabando':'produto acabando'}`,det:est.slice(0,3).map(p=>esc(p.nome)).join(', '),acao:'Ver estoque',ir:()=>ir('servicos')});
+  if(est.length&&ehDono())card({tipo:'war',ic:'box',tit:`${est.length} ${est.length>1?'produtos acabando':'produto acabando'}`,det:est.slice(0,3).map(p=>esc(p.nome)).join(', '),acao:'Ver estoque',ir:()=>ir('reserva')});
 
   const dia=`${DOW_L[dowDe(h)]}, ${+h.slice(8)} de ${MES_L[+h.slice(5,7)-1]}`;
   el.innerHTML=`<h1>${sauda}${quem?', '+esc(quem.split(' ')[0]):''}</h1><p class="sub">${dia[0].toUpperCase()+dia.slice(1)}</p>

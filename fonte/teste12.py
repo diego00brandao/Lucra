@@ -250,4 +250,4 @@ async def main():
         await br.close()
     srv.shutdown()
     print('\n'.join(erros) if erros else 'SEM ERROS (12)')
-asyncio.run(main())
+if __name__=="__main__": asyncio.run(main())

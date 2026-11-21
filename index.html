@@ -949,6 +949,55 @@ body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
 .av-l small{color:var(--tx3)}
 .aviso>.btn{margin-top:10px}
 .aviso>.btn svg{margin-left:4px}
+/* ══ plano de tratamento ══ */
+.pl-res{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pl-res>div{background:var(--surf2);border-radius:10px;padding:10px 12px;min-width:0}
+.pl-res span{display:block;font-size:12px;color:var(--tx3);font-weight:600}
+.pl-res b{font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.pl-bar{height:8px;border-radius:4px;background:var(--surf2);margin-top:12px;overflow:hidden}
+.pl-bar i{display:block;height:100%;background:var(--ok);border-radius:4px}
+.pl-et{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pl-et li{display:grid;grid-template-columns:28px 1fr auto;gap:4px 10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surf)}
+.pl-et li.feito{opacity:.75}
+.pl-n{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--surf2);font-size:13px;font-weight:700}
+.pl-et li.feito .pl-n{background:var(--ok-soft);color:var(--ok)} .pl-et li.agendado .pl-n{background:var(--ac-soft);color:var(--ac)}
+.pl-mn{min-width:0} .pl-mn b{display:block;font-size:15px} .pl-mn small{color:var(--tx3);font-size:13px}
+.pl-acts{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:4px}
+.pl-acts .ibtn{margin-left:auto} .pl-acts .ibtn+.ibtn{margin-left:0}
+.pl-acts [data-pl-sobe] svg{transform:rotate(90deg)}
+.pl-add{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+/* ══ odontograma ══ */
+.odg{margin:0 -10px;padding:10px 6px;border:1px solid var(--line);border-radius:14px;background:var(--surf)}
+.odg-r{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:2px}
+.odg.leite .odg-r{grid-template-columns:repeat(5,minmax(0,1fr));max-width:280px;margin:0 auto}
+.odg-r+.odg-r{margin-top:4px}
+.odg-sep{height:1px;background:var(--line);margin:10px 4px}
+.odg-lb{font-size:11.5px;color:var(--tx3);font-weight:600;margin:6px 6px 2px}
+
+.dt{display:flex;flex-direction:column;align-items:center;gap:3px;min-height:52px;min-width:44px;padding:4px 0;border-radius:9px;font-size:12px;font-weight:700;color:var(--tx2);font-variant-numeric:tabular-nums}
+.dt i{width:24px;height:22px;border-radius:6px 6px 9px 9px;border:2px solid var(--line2);background:var(--surf)}
+.dt[aria-pressed="true"]{background:var(--ac-soft);box-shadow:inset 0 0 0 2px var(--ac)}
+.dt.bad i,.odg-leg .bad i{background:#E5484D;border-color:#E5484D} .dt.ac i,.odg-leg .ac i{background:#3E7BFA;border-color:#3E7BFA}
+.dt.war i,.odg-leg .war i{background:#E8A33D;border-color:#E8A33D} .dt.roxo i,.odg-leg .roxo i{background:#8E6CEF;border-color:#8E6CEF}
+.dt.ok i,.odg-leg .ok i{background:#2E9E6B;border-color:#2E9E6B} .dt.cinza i,.odg-leg .cinza i{background:repeating-linear-gradient(45deg,var(--line2) 0 3px,transparent 3px 6px);border-style:dashed}
+.dt.bad2 i,.odg-leg .bad2 i{background:var(--surf);border-color:#E5484D;border-style:dashed;box-shadow:inset 0 0 0 3px #E5484D33}
+.odg-leg{display:flex;flex-wrap:wrap;gap:6px 12px;margin:10px 0 0;font-size:12.5px;color:var(--tx2)}
+.odg-leg span{display:inline-flex;align-items:center;gap:5px}
+.odg-leg i{width:14px;height:14px;border-radius:4px;border:2px solid var(--line2);display:inline-block}
+.og-det{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.og-det h3{margin:0 0 8px;font-size:17px}
+@media (max-width:380px){ .dt{min-width:40px} }
+/* ══ ocupação ══ */
+.oc-b{display:block;height:8px;border-radius:4px;background:var(--surf2);overflow:hidden;margin-top:8px}
+.oc-b i{display:block;height:100%;border-radius:4px;background:var(--ac)}
+.oc-b i.ok{background:var(--ok)} .oc-b i.war{background:var(--war)}
+.oc-l{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:7px 0;font-size:14px}
+.oc-l .oc-b{margin:0} .oc-l b{font-variant-numeric:tabular-nums;font-size:13.5px}
+.oc-l span:first-child{color:var(--tx2);font-weight:600}
+.im-prev{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:4px;display:grid;gap:8px}
+.im-prev>div{display:grid}
+.im-prev small{color:var(--tx3);font-size:13px}
+body.papel-recepcao #h-fotos{display:none!important}
 </style>
 </head>
 <body>
@@ -980,6 +1029,7 @@ body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
   <li><button data-t="painel"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><rect x="5" y="12" width="3.5" height="5" rx="1"/><rect x="10.25" y="8" width="3.5" height="9" rx="1"/><rect x="15.5" y="4.5" width="3.5" height="12.5" rx="1"/></svg></span><span class="rot">Painel</span></button></li>
   <li><button data-t="lucro"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17l5-5 4 4 7-7"/><path d="M15 9h5v5"/></svg></span><span class="rot">Lucro</span></button></li>
   <li><button data-t="caixa"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8A2.5 2.5 0 0 1 6 5.5h10.5a2 2 0 0 1 2 2V9"/><path d="M3.5 8v9A2.5 2.5 0 0 0 6 19.5h12.5a2 2 0 0 0 2-2V11a2 2 0 0 0-2-2H6A2.5 2.5 0 0 1 3.5 8Z"/><circle cx="16.5" cy="14.25" r="1.15" fill="currentColor" stroke="none"/></svg></span><span class="rot">Caixa do dia</span></button></li>
+  <li><button data-t="ocupacao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5H12Z"/><path d="M15 3.8A8.5 8.5 0 0 1 20.2 9H15Z"/></svg></span><span class="rot">Ocupação da agenda</span></button></li>
   <li class="nav-grupo" aria-hidden="true"><span>Atendimento</span></li>
   <li><button data-t="novoag"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4m8-4v4M3.5 10h17"/><path d="M12 12.8v5M9.5 15.3h5"/></svg></span><span class="rot">Novo agendamento</span></button></li>
   <li><button data-t="agenda"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4m8-4v4M3.5 10h17"/><path d="M8.5 15.2l2.2 2.2 4.3-4.3"/></svg></span><span class="rot">Agenda</span></button></li>
@@ -1029,7 +1079,7 @@ const PAD={
   taxas:{pix:0, dinheiro:0, debito:1.37, cred1:3.15, parc:5.39, parcExtra:0.70},
   servicos:[], vendas:[], despesas:[], retiradas:[], clientes:[], agenda:[],
   contas:[], produtos:[], orcamentos:[], equipe:[],  /* listas novas: backups antigos abrem com elas vazias */
-  receber:[], evolucoes:[], anamneses:[], prontuario:[], area:'estetica', perfil:{}
+  receber:[], evolucoes:[], anamneses:[], prontuario:[], planos:[], odontogramas:[], area:'estetica', perfil:{}
 };
 let S=JSON.parse(JSON.stringify(PAD));
 
@@ -1044,7 +1094,7 @@ function carregar(){
 function salvar(){ try{ localStorage.setItem(CHAVE,JSON.stringify(S)); if(falhaSalvar){ falhaSalvar=false; avisoSalvar() } }catch(e){ falhaSalvar=true; avisoSalvar() } }
 function normalizar(){
   S.taxas=Object.assign({},PAD.taxas,S.taxas||{});
-  ['servicos','vendas','despesas','retiradas','clientes','agenda','contas','produtos','orcamentos','equipe','receber','evolucoes','anamneses','prontuario'].forEach(k=>{ if(!Array.isArray(S[k]))S[k]=[] });
+  ['servicos','vendas','despesas','retiradas','clientes','agenda','contas','produtos','orcamentos','equipe','receber','evolucoes','anamneses','prontuario','planos','odontogramas'].forEach(k=>{ if(!Array.isArray(S[k]))S[k]=[] });
   if(!['estetica','odonto','psico'].includes(S.area))S.area='estetica';
   if(!S.perfil||typeof S.perfil!=='object'||Array.isArray(S.perfil))S.perfil={};
   if(S.falta&&(typeof S.falta!=='object'||Array.isArray(S.falta)))delete S.falta;
@@ -2154,7 +2204,7 @@ T.clientes=function(el){
   document.querySelectorAll('[data-del-c]').forEach(b=>b.onclick=()=>{
     const id=b.dataset.delC, usado=S.vendas.some(v=>v.clienteId===id);
     confirmar('Excluir este cliente?',usado?'Esse cliente tem atendimentos registrados. O histórico financeiro continua; os horários marcados, as fotos e as anotações de sessão dele são apagados.':'O cadastro e os horários marcados dele saem do sistema. Não dá para desfazer.','Excluir',()=>{
-    S.clientes=S.clientes.filter(c=>c.id!==id); apagaFotosDe(id); S.evolucoes=S.evolucoes.filter(e=>e.clienteId!==id); S.anamneses=S.anamneses.filter(e=>e.clienteId!==id); S.prontuario=S.prontuario.filter(e=>e.clienteId!==id);
+    S.clientes=S.clientes.filter(c=>c.id!==id); apagaFotosDe(id); S.evolucoes=S.evolucoes.filter(e=>e.clienteId!==id); S.anamneses=S.anamneses.filter(e=>e.clienteId!==id); S.prontuario=S.prontuario.filter(e=>e.clienteId!==id); S.planos=S.planos.filter(e=>e.clienteId!==id); S.odontogramas=S.odontogramas.filter(e=>e.clienteId!==id);
     S.agenda=S.agenda.filter(a=>!(a.clienteId===id&&a.status==='marcado'));
     salvar(); render(); toast('Cliente excluído')},true)});
 };
@@ -2548,7 +2598,7 @@ function secEstoque(){
   if(!S.produtos.length)x+=`<div class="vazio"><b>Nenhum produto no estoque</b><p>Cadastre os produtos que não podem faltar e a quantidade que você tem hoje. Ligando o produto a um serviço, o Lucra desconta sozinho a cada atendimento e avisa quando chegar no mínimo.</p></div>`;
   else S.produtos.forEach(p=>{ const q=saldo(p), s=serv(p.servicoId), baixo=q<=num(p.min);
     x+=`<div class="item"><div class="mn"><b>${esc(p.nome)} ${baixo?'<span class="pill war">repor</span>':''}</b>
-      <small>mínimo ${qtdBR(p.min)}${s&&num(p.porAtend)?` · gasta ${qtdBR(p.porAtend)} por atendimento de ${esc(s.nome)}`:' · ajuste manual'}${p.contadoEm?' · contado em '+dataBR(p.contadoEm):''}</small></div>
+      <small>${pillValidade(p)}${p.lote?'lote '+esc(p.lote)+' · ':''}mínimo ${qtdBR(p.min)}${s&&num(p.porAtend)?` · gasta ${qtdBR(p.porAtend)} por atendimento de ${esc(s.nome)}`:' · ajuste manual'}${p.contadoEm?' · contado em '+dataBR(p.contadoEm):''}</small></div>
       <div class="vr ${baixo?'v-war':''}">${qtdBR(q)}<small>em estoque</small></div>
       <div class="acts"><button class="btn sm soft" data-pr-conta="${p.id}">${ic('edit',16)}Contar</button>
         <button class="btn sm danger ic" data-pr-del="${p.id}" aria-label="Excluir">${ic('trash',18)}</button></div></div>` });
@@ -2557,6 +2607,9 @@ function secEstoque(){
     <div class="grid2">
       <div class="field"><label>Tenho hoje</label><input id="pr-qtd" inputmode="decimal" placeholder="0"></div>
       <div class="field"><label>Avisar quando chegar em</label><input id="pr-min" inputmode="decimal" placeholder="0"></div></div>
+    <div class="grid2">
+      <div class="field"><label for="pr-lote">Lote (opcional)</label><input id="pr-lote" autocomplete="off"></div>
+      <div class="field"><label for="pr-val">Validade (opcional)</label><input id="pr-val" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10"></div></div>
     <div class="grid2">
       <div class="field"><label>Usado em qual serviço? (opcional)</label><select id="pr-serv"><option value="">Nenhum, eu ajusto na mão</option>
         ${S.servicos.map(s=>`<option value="${s.id}">${esc(s.nome)}</option>`).join('')}</select></div>
@@ -2569,16 +2622,20 @@ function ligarEstoque(){
   if(!$('#pr-add'))return;
   const contar=(p,q)=>{ p.qtd=q; p.contadoEm=hojeISO(); p.jaNoDia=p.servicoId?sessoesFeitas(p.servicoId,p.contadoEm):0 };
   $('#pr-add').onclick=()=>{ const n=$('#pr-nome').value.trim(); if(!n)return toast('Dê um nome ao produto');
-    const sid=$('#pr-serv').value||'', p={id:uid(),nome:n,min:num($('#pr-min').value),servicoId:sid,porAtend:sid?(num($('#pr-por').value)||1):0};
+    const sid=$('#pr-serv').value||'', p={id:uid(),nome:n,min:num($('#pr-min').value),servicoId:sid,porAtend:sid?(num($('#pr-por').value)||1):0,lote:$('#pr-lote').value.trim(),validade:dataDeBR($('#pr-val').value)};
+    if($('#pr-val').value&&!p.validade)return toast('Confira a validade: use dd/mm/aaaa');
     contar(p,num($('#pr-qtd').value)); S.produtos.push(p); salvar(); toast('Produto cadastrado'); render() };
   document.querySelectorAll('[data-pr-conta]').forEach(b=>b.onclick=()=>{ const p=S.produtos.find(z=>z.id===b.dataset.prConta); if(!p)return;
     abrirSheet('Contar estoque',esc(p.nome)+' · o sistema calcula '+qtdBR(saldo(p)),
       `<div class="field"><label>Quantidade que você tem agora</label><input id="pc-qtd" inputmode="decimal" value="${String(Math.round(saldo(p)*100)/100).replace('.',',')}"></div>
        <div class="field"><label>Avisar quando chegar em</label><input id="pc-min" inputmode="decimal" value="${String(num(p.min)).replace('.',',')}"></div>
+       <div class="grid2"><div class="field"><label for="pc-lote">Lote</label><input id="pc-lote" value="${esc(p.lote||'')}"></div>
+         <div class="field"><label for="pc-val">Validade</label><input id="pc-val" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10" value="${p.validade?dataBRano(p.validade):''}"></div></div>
        <p class="sub" style="margin:-2px 0 12px">Comprou mais ou a contagem não bateu? Digite o número real. A partir de agora o desconto recomeça dele.</p>
        <div class="row"><button class="btn pri" id="pc-ok" style="flex:1">${ic('check')}Salvar contagem</button><button class="btn soft" id="pc-no">Cancelar</button></div>`,
       fechar=>{ const i=$('#pc-qtd'); i.focus(); i.select(); $('#pc-no').onclick=fechar;
-        $('#pc-ok').onclick=()=>{ p.min=num($('#pc-min').value); contar(p,num(i.value)); salvar(); fechar(); toast('Estoque atualizado'); render() } }) });
+        $('#pc-ok').onclick=()=>{ if($('#pc-val').value&&!dataDeBR($('#pc-val').value))return toast('Confira a validade: use dd/mm/aaaa');
+          p.lote=$('#pc-lote').value.trim(); p.validade=dataDeBR($('#pc-val').value); p.min=num($('#pc-min').value); contar(p,num(i.value)); salvar(); fechar(); toast('Estoque atualizado'); render() } }) });
   document.querySelectorAll('[data-pr-del]').forEach(b=>b.onclick=()=>{ const id=b.dataset.prDel;
     confirmar('Excluir este produto?','Ele sai do controle de estoque. As saídas e reservas não mudam.','Excluir',
       ()=>{ S.produtos=S.produtos.filter(z=>z.id!==id); salvar(); render(); toast('Produto excluído') },true) });
@@ -4120,7 +4177,7 @@ posAtender=function(a){ _posAt(a); if(temPront()&&a.clienteId)setTimeout(()=>pro
    Aberto como arquivo (file://) ou com ?local, o Lucra continua funcionando só no aparelho, como antes. */
 const SB_URL='https://eilpdeyqrhtpfbrqjlqt.supabase.co', SB_KEY='sb_publishable_rhlQds-nbHwxNNHhz3qtIg_ENuHR4Bp';
 const NUVEM=(()=>{ try{ const q=new URLSearchParams(location.search); if(q.has('local'))return false; return location.protocol==='https:'||q.has('nuvem') }catch(e){ return false } })();
-const CLINICO=['anamneses','prontuario','evolucoes'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
+const CLINICO=['anamneses','prontuario','evolucoes','odontogramas','fotosIdx'];          /* dados de saúde: ficam numa tabela que a recepção não lê */
 const K_SES='lucra:sessao', K_CONTA='lucra:conta';
 let SES=null, CONTA=null, BASE={}, syncEst='', syncFila=null, syncRodando=false, renderPendente=false;
 const lerJ=k=>{ try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){ return null } };
@@ -4398,8 +4455,8 @@ salvar=function(){ salvarLocal(); if(CONTA)agendaSync() };
 
 /* ── papéis: o que cada um vê ── */
 const NAV_PAPEL={
-  profissional:['hoje','novoag','agenda','retornos','clientes','registrar','ajustes'],
-  recepcao:['hoje','novoag','agenda','retornos','clientes','caixa','registrar','saida','ajustes']};
+  profissional:['hoje','ocupacao','novoag','agenda','retornos','clientes','registrar','ajustes'],
+  recepcao:['hoje','ocupacao','novoag','agenda','retornos','clientes','caixa','registrar','saida','ajustes']};
 const EXTRA_PAPEL={profissional:[],recepcao:[]};
 function permitido(t){ if(!CONTA||CONTA.papel==='dono')return true; return NAV_PAPEL[CONTA.papel].includes(t)||EXTRA_PAPEL[CONTA.papel].includes(t) }
 const telaInicial=()=>'hoje';
@@ -4688,9 +4745,18 @@ T.hoje=function(el){
   const ret=typeof retornos==='function'?retornos():[];
   if(ret.length&&pode('retornos'))card({tipo:'ac',ic:'undo',tit:`${ret.length} ${ret.length>1?'pessoas':'pessoa'} na hora de voltar`,
     det:ret.slice(0,3).map(r=>nm(r.cliente)).join(', ')+(ret.length>3?'…':''),acao:'Chamar de volta',ir:()=>ir('retornos')});
+  /* etapas de tratamento esperando data */
+  if(typeof planosDe==='function'&&temPlano()&&pode('novoag')){ const pend=[]; (S.planos||[]).filter(p=>p.status==='aberto').forEach(p=>{ totPlano(p); const e=p.etapas.find(z=>z.status==='pendente'); if(e)pend.push({p,e}) });
+    if(pend.length)card({tipo:'ac',ic:'file',tit:`${pend.length} ${pend.length>1?'tratamentos com etapa':'tratamento com etapa'} para agendar`,
+      det:pend.slice(0,3).map(x=>`${nm(cl(x.p.clienteId))} (${esc(x.e.nome)})`).join(', ')+(pend.length>3?'…':''),acao:'Agendar a próxima',ir:()=>abrePlano(pend[0].p.id)}) }
+  /* validade */
+  const venc=typeof vencendo==='function'?vencendo():[];
+  if(venc.length&&ehDono()){ const ja=venc.filter(p=>diasParaVencer(p)<0).length;
+    card({tipo:ja?'bad':'war',ic:'box',tit:ja?`${ja} ${ja>1?'produtos vencidos':'produto vencido'}`:`${venc.length} ${venc.length>1?'produtos vencem':'produto vence'} em até 30 dias`,
+      det:venc.slice(0,3).map(p=>`${esc(p.nome)} (${dataBRano(p.validade)})`).join(', '),acao:'Ver estoque',ir:()=>ir('reserva')}) }
   /* estoque */
   const est=typeof estoqueBaixo==='function'?estoqueBaixo():[];
-  if(est.length&&ehDono())card({tipo:'war',ic:'box',tit:`${est.length} ${est.length>1?'produtos acabando':'produto acabando'}`,det:est.slice(0,3).map(p=>esc(p.nome)).join(', '),acao:'Ver estoque',ir:()=>ir('servicos')});
+  if(est.length&&ehDono())card({tipo:'war',ic:'box',tit:`${est.length} ${est.length>1?'produtos acabando':'produto acabando'}`,det:est.slice(0,3).map(p=>esc(p.nome)).join(', '),acao:'Ver estoque',ir:()=>ir('reserva')});
 
   const dia=`${DOW_L[dowDe(h)]}, ${+h.slice(8)} de ${MES_L[+h.slice(5,7)-1]}`;
   el.innerHTML=`<h1>${sauda}${quem?', '+esc(quem.split(' ')[0]):''}</h1><p class="sub">${dia[0].toUpperCase()+dia.slice(1)}</p>
@@ -4701,6 +4767,378 @@ T.hoje=function(el){
     :`<div class="card" style="margin-top:16px"><div class="vazio"><span class="av-ic ok" style="margin:0 auto 10px">${ic('check',22)}</span><b>Tudo em dia</b><p>Nenhum atendimento, cobrança ou conta pedindo atenção hoje.</p></div></div>`}`;
   el.querySelectorAll('[data-av]').forEach(b=>b.onclick=()=>av[+b.dataset.av].ir());
 };
+/* ══════════ PLANO DE TRATAMENTO E ODONTOGRAMA ══════════
+   Plano: etapas em ordem, cada uma com dente/região, valor e situação (a fazer, agendada, feita).
+   Odontograma: situação de cada dente; tocar no dente já põe o procedimento no plano. */
+const temPlano=()=>area()==='odonto'||area()==='estetica';
+const planosDe=cid=>(S.planos||[]).filter(p=>p.clienteId===cid);
+const ETAPA_ST={pendente:['A fazer',''],agendado:['Agendada','ac'],feito:['Feita','ok']};
+function arrumaEtapas(p){   /* agendamento apagado, cancelado ou falta: a etapa volta para "a fazer" */
+  p.etapas.forEach(e=>{ if(e.status==='agendado'){ const a=S.agenda.find(z=>z.id===e.agId);
+    if(!a||a.status==='cancelado'||a.status==='faltou'){ e.status='pendente'; e.agId='' } else if(a.status==='concluido'){ e.status='feito'; e.feitoEm=a.data } } }) }
+function totPlano(p){ arrumaEtapas(p);
+  const t=p.etapas.reduce((a,e)=>a+num(e.valor),0), feitas=p.etapas.filter(e=>e.status==='feito');
+  const f=feitas.reduce((a,e)=>a+num(e.valor),0); return {t,f,falta:t-f,n:p.etapas.length,nf:feitas.length} }
+function novoPlano(cid,etapas){ if(!S.planos)S.planos=[];
+  const p={id:uid(),clienteId:cid,criado:hojeISO(),status:'aberto',etapas:etapas||[]}; S.planos.push(p); return p }
+const planoAberto=cid=>planosDe(cid).find(p=>p.status==='aberto');
+function etapaDe(s,regiao,valor){ return {id:uid(),servicoId:s?s.id:'',nome:s?s.nome:'Procedimento',regiao:regiao||'',valor:valor!=null?num(valor):(s?num(s.preco):0),status:'pendente',agId:''} }
+
+/* ── folha do plano ── */
+function abrePlano(pid,voltaFicha){
+  const p=(S.planos||[]).find(z=>z.id===pid); if(!p)return; const c=cli(p.clienteId);
+  abrirSheet('Plano de tratamento',`${esc(c?c.nome:'')} · começou em ${dataBR(p.criado)}`,`<div id="pl-corpo"></div>`,fechar=>{
+    const pinta=()=>{ const t=totPlano(p), b=$('#pl-corpo'); if(!b)return;
+      b.innerHTML=`<div class="pl-res"><div><span>Total</span><b>${brl(t.t)}</b></div><div><span>Já feito</span><b class="v-ok">${brl(t.f)}</b></div><div><span>Falta</span><b>${brl(t.falta)}</b></div></div>
+        <div class="pl-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${t.n}" aria-valuenow="${t.nf}" aria-label="${t.nf} de ${t.n} etapas feitas"><i style="width:${t.n?Math.round(t.nf/t.n*100):0}%"></i></div>
+        <p class="sub" style="margin:6px 0 12px">${t.nf} de ${t.n} ${t.n===1?'etapa feita':'etapas feitas'}</p>
+        ${p.etapas.length?`<ol class="pl-et">${p.etapas.map((e,i)=>{ const a=e.agId&&S.agenda.find(z=>z.id===e.agId);
+          return `<li class="${e.status}"><span class="pl-n">${e.status==='feito'?ic('check',14):i+1}</span>
+            <div class="pl-mn"><b>${esc(e.nome)}</b><small>${e.regiao?esc((area()==='odonto'&&/^\d+$/.test(e.regiao)?'dente ':'')+e.regiao)+' · ':''}${brl(num(e.valor))}${a&&e.status==='agendado'?` · ${dataBR(a.data)}${a.hora?' às '+a.hora:''}`:''}${e.status==='feito'&&e.feitoEm?' · feita em '+dataBR(e.feitoEm):''}</small></div>
+            <span class="pill ${ETAPA_ST[e.status][1]}">${ETAPA_ST[e.status][0]}</span>
+            <div class="pl-acts">${e.status==='pendente'&&p.status==='aberto'?`<button class="btn sm pri" data-pl-ag="${e.id}">${ic('calendar',16)}Agendar</button>`:''}
+              ${e.status!=='feito'?`<button class="btn sm soft" data-pl-ok="${e.id}">${ic('check',16)}Feita</button>`:`<button class="btn sm soft" data-pl-volta="${e.id}">Desfazer</button>`}
+              <button class="ibtn" data-pl-sobe="${i}" aria-label="Subir ${esc(e.nome)}" ${i?'':'disabled'}>${ic('left',16)}</button>
+              <button class="ibtn" data-pl-x="${e.id}" aria-label="Tirar ${esc(e.nome)} do plano">${ic('trash',16)}</button></div></li>` }).join('')}</ol>`
+          :`<div class="vazio"><b>Nenhuma etapa ainda</b><p>Adicione os procedimentos na ordem em que vão ser feitos.</p></div>`}
+        ${p.status==='aberto'?`<div class="pl-add"><p class="eyebrow">Adicionar etapa</p>
+          <div class="field"><label for="pl-s">Procedimento</label><select id="pl-s">${S.servicos.map(s=>`<option value="${s.id}">${esc(s.nome)}</option>`).join('')}</select></div>
+          <div class="grid2"><div class="field"><label for="pl-r">${area()==='odonto'?'Dente ou região':'Região'}</label><input id="pl-r" placeholder="${area()==='odonto'?'ex.: 36':'ex.: rosto'}"></div>
+            <div class="field"><label for="pl-v">Valor (R$)</label><input id="pl-v" inputmode="decimal" value="${S.servicos[0]?String(S.servicos[0].preco).replace('.',','):''}"></div></div>
+          <button class="btn soft full" id="pl-add">${ic('plus')}Adicionar ao plano</button></div>`:''}
+        <div class="row" style="margin-top:14px;gap:8px">${c&&c.tel?`<button class="btn soft" id="pl-zap">${ic('chat',16)}Mandar o plano</button>`:''}
+          ${p.status==='aberto'?`<button class="btn soft" id="pl-fim">Encerrar plano</button>`:`<button class="btn soft" id="pl-reabre">Reabrir plano</button>`}
+          <button class="btn danger ic" id="pl-del" aria-label="Excluir plano">${ic('trash',18)}</button></div>`;
+      const acha=id=>p.etapas.find(e=>e.id===id), muda=()=>{ salvar(); pinta() };
+      b.querySelectorAll('[data-pl-ok]').forEach(x=>x.onclick=()=>{ const e=acha(x.dataset.plOk); e.status='feito'; e.feitoEm=hojeISO(); muda(); toast('Etapa feita') });
+      b.querySelectorAll('[data-pl-volta]').forEach(x=>x.onclick=()=>{ const e=acha(x.dataset.plVolta); e.status=e.agId&&S.agenda.some(a=>a.id===e.agId&&a.status==='marcado')?'agendado':'pendente'; e.feitoEm=''; muda() });
+      b.querySelectorAll('[data-pl-sobe]').forEach(x=>x.onclick=()=>{ const i=+x.dataset.plSobe; if(i<1)return; [p.etapas[i-1],p.etapas[i]]=[p.etapas[i],p.etapas[i-1]]; muda() });
+      b.querySelectorAll('[data-pl-x]').forEach(x=>x.onclick=()=>{ p.etapas=p.etapas.filter(e=>e.id!==x.dataset.plX); muda() });
+      b.querySelectorAll('[data-pl-ag]').forEach(x=>x.onclick=()=>{ const e=acha(x.dataset.plAg); preAg={clienteId:p.clienteId,servicoId:e.servicoId,pid:p.id,eid:e.id,nome:e.nome}; fechar(); setTimeout(()=>ir('novoag'),220) });
+      if($('#pl-s'))$('#pl-s').onchange=()=>{ const s=serv($('#pl-s').value); if(s)$('#pl-v').value=String(s.preco).replace('.',',') };
+      if($('#pl-add'))$('#pl-add').onclick=()=>{ const s=serv($('#pl-s').value); if(!s)return toast('Cadastre um serviço antes');
+        p.etapas.push(etapaDe(s,$('#pl-r').value.trim(),$('#pl-v').value)); muda(); toast('Etapa adicionada') };
+      if($('#pl-zap'))$('#pl-zap').onclick=()=>{ const t=totPlano(p);
+        const tx=`Oi, ${c.nome.split(' ')[0]}! Este é o seu plano de tratamento${UI.clinica?' · '+UI.clinica:''}:\n\n`+p.etapas.map((e,i)=>`${i+1}. ${e.nome}${e.regiao?' ('+e.regiao+')':''}: ${brl(num(e.valor))}${e.status==='feito'?' ✓':''}`).join('\n')+`\n\nTotal: ${brl(t.t)}`;
+        zapAbrir(zap(c.tel,tx)) };
+      if($('#pl-fim'))$('#pl-fim').onclick=()=>{ p.status='concluido'; muda(); toast('Plano encerrado') };
+      if($('#pl-reabre'))$('#pl-reabre').onclick=()=>{ p.status='aberto'; muda() };
+      $('#pl-del').onclick=()=>confirmar('Excluir este plano?','As etapas somem. Os atendimentos e pagamentos já lançados continuam.','Excluir',()=>{ S.planos=S.planos.filter(z=>z.id!==p.id); salvar(); fechar(); toast('Plano excluído'); if(voltaFicha)setTimeout(()=>historico(p.clienteId),300) });
+    };
+    pinta();
+  });
+}
+
+/* ── agendar uma etapa: o Novo agendamento já vem com paciente e procedimento ── */
+let preAg=null;
+const _novoP=T.novoag;
+T.novoag=function(el){ const pa=preAg; _novoP(el); if(!pa||!$('#a-add'))return;
+  if($('#a-cli')){ $('#a-cli').value=pa.clienteId; $('#a-cli').dataset.ant=pa.clienteId }
+  if($('#a-serv')&&pa.servicoId)$('#a-serv').value=pa.servicoId;
+  const card=el.querySelector('[data-parte=novo] .card'); if(card)card.insertAdjacentHTML('afterbegin',`<div class="nota" style="margin-bottom:12px">Etapa do plano: <b>${esc(pa.nome)}</b></div>`);
+  const add=$('#a-add'), orig=add.onclick;
+  add.onclick=()=>{ const antes=new Set(S.agenda.map(a=>a.id)); orig();
+    const novo=S.agenda.find(a=>!antes.has(a.id));
+    if(novo){ const p=(S.planos||[]).find(z=>z.id===pa.pid), e=p&&p.etapas.find(z=>z.id===pa.eid);
+      if(e){ e.agId=novo.id; e.status='agendado'; salvar() } preAg=null } };
+};
+const _irP=ir;
+ir=function(t){ if(t!=='novoag')preAg=null; _irP(t) };
+/* atendeu: a etapa ligada ao horário fica feita */
+const _posP=posAtender;
+posAtender=function(a){ (S.planos||[]).forEach(p=>p.etapas.forEach(e=>{ if(e.agId===a.id&&e.status!=='feito'){ e.status='feito'; e.feitoEm=a.data } })); salvar(); _posP(a) };
+
+/* ── orçamento vira plano ── */
+const _simP=T.sim;
+T.sim=function(el){ _simP(el); if(!temPlano())return;
+  el.querySelectorAll('[data-o-apaga]').forEach(b=>{ const o=S.orcamentos.find(z=>z.id===b.dataset.oApaga); if(!o||!o.clienteId)return;
+    const ja=(S.planos||[]).find(p=>p.orcId===o.id);
+    b.insertAdjacentHTML('beforebegin',`<button class="btn sm soft" data-o-plano="${o.id}">${ic('file',16)}${ja?'Ver plano':'Virar plano'}</button>`) });
+  el.querySelectorAll('[data-o-plano]').forEach(b=>b.onclick=()=>{ const o=S.orcamentos.find(z=>z.id===b.dataset.oPlano);
+    let p=(S.planos||[]).find(z=>z.orcId===o.id);
+    if(!p){ const f=calcOrc(o).f; const ets=[]; o.itens.forEach(i=>{ const s=serv(i.servicoId), n=Math.max(1,parseInt(i.sessoes)||1);
+        for(let k=0;k<n;k++)ets.push(etapaDe(s,'',num(i.valor)*f/n)) });
+      p=novoPlano(o.clienteId,ets); p.orcId=o.id; if(o.status!=='fechado')o.status='fechado'; salvar(); toast('Plano criado') }
+    abrePlano(p.id) });
+};
+
+/* ── odontograma ── */
+const DENTES={perm:[[18,17,16,15,14,13,12,11],[21,22,23,24,25,26,27,28],[48,47,46,45,44,43,42,41],[31,32,33,34,35,36,37,38]],
+  dec:[[55,54,53,52,51],[61,62,63,64,65],[85,84,83,82,81],[71,72,73,74,75]]};
+const EST_D={carie:['Cárie','bad'],rest:['Restaurado','ac'],canal:['Canal','war'],coroa:['Coroa','roxo'],impl:['Implante','ok'],aus:['Ausente','cinza'],extr:['Extrair','bad2']};
+const odgDe=cid=>{ if(!S.odontogramas)S.odontogramas=[]; let o=S.odontogramas.find(z=>z.clienteId===cid); if(!o){ o={clienteId:cid,dentes:{},leite:false}; S.odontogramas.push(o) } return o };
+function abreOdonto(cid,voltaFicha){
+  const c=cli(cid); if(!c)return; const o=odgDe(cid); let sel=null;
+  abrirSheet('Odontograma',esc(c.nome),`<div id="og-corpo"></div>`,fechar=>{
+    const pinta=()=>{ const b=$('#og-corpo'); if(!b)return; const ds=o.leite?DENTES.dec:DENTES.perm;
+      const dente=n=>{ const d=o.dentes[n]||{}, e=EST_D[d.e];
+        return `<button type="button" class="dt ${e?e[1]:''}" data-dt="${n}" aria-pressed="${sel===n}" aria-label="Dente ${n}${e?': '+e[0]:''}"><span>${n}</span><i></i></button>` };
+      const cont={}; Object.values(o.dentes).forEach(d=>{ if(d.e)cont[d.e]=(cont[d.e]||0)+1 });
+      b.innerHTML=`<div class="chips" role="group" aria-label="Dentição" style="margin-bottom:10px">
+          <button class="chip" data-og-l="0" aria-pressed="${!o.leite}">Permanentes</button><button class="chip" data-og-l="1" aria-pressed="${!!o.leite}">De leite</button></div>
+        <div class="odg ${o.leite?'leite':''}">
+          <p class="odg-lb">Superior direito</p><div class="odg-r">${ds[0].map(dente).join('')}</div>
+          <p class="odg-lb">Superior esquerdo</p><div class="odg-r">${ds[1].map(dente).join('')}</div>
+          <div class="odg-sep"></div>
+          <p class="odg-lb">Inferior direito</p><div class="odg-r">${ds[2].map(dente).join('')}</div>
+          <p class="odg-lb">Inferior esquerdo</p><div class="odg-r">${ds[3].map(dente).join('')}</div></div>
+        <div class="odg-leg">${Object.keys(EST_D).map(k=>`<span class="${EST_D[k][1]}"><i></i>${EST_D[k][0]}${cont[k]?' ('+cont[k]+')':''}</span>`).join('')}</div>
+        <div id="og-dt"></div>`;
+      b.querySelectorAll('[data-og-l]').forEach(x=>x.onclick=()=>{ o.leite=x.dataset.ogL==='1'; sel=null; salvar(); pinta() });
+      b.querySelectorAll('[data-dt]').forEach(x=>x.onclick=()=>{ sel=+x.dataset.dt; pinta(); const f=$('#og-dt'); if(f)f.scrollIntoView({behavior:'smooth',block:'nearest'}) });
+      if(sel==null){ $('#og-dt').innerHTML=`<p class="sub" style="margin-top:12px">Toque num dente para marcar o que ele tem ou o que vai ser feito.</p>`; return }
+      const d=o.dentes[sel]||{}, pl=planoAberto(cid), noPlano=pl?pl.etapas.filter(e=>e.regiao===String(sel)):[];
+      $('#og-dt').innerHTML=`<div class="og-det"><h3>Dente ${sel}</h3>
+        <div class="chips" role="group" aria-label="Situação do dente ${sel}"><button class="chip" data-og-e="" aria-pressed="${!d.e}">Saudável</button>${Object.keys(EST_D).map(k=>`<button class="chip" data-og-e="${k}" aria-pressed="${d.e===k}">${EST_D[k][0]}</button>`).join('')}</div>
+        <div class="field" style="margin-top:10px"><label for="og-obs">Observação</label><input id="og-obs" value="${esc(d.obs||'')}" placeholder="ex.: face oclusal, dor ao frio"></div>
+        ${noPlano.length?`<p class="sub">No plano: ${noPlano.map(e=>esc(e.nome)+' ('+ETAPA_ST[e.status][0].toLowerCase()+')').join(', ')}</p>`:''}
+        <p class="eyebrow" style="margin-top:12px">Pôr no plano de tratamento</p>
+        <div class="grid2"><div class="field"><label for="og-s">Procedimento</label><select id="og-s">${S.servicos.map(s=>`<option value="${s.id}">${esc(s.nome)}</option>`).join('')}</select></div>
+          <div class="field"><label for="og-v">Valor (R$)</label><input id="og-v" inputmode="decimal" value="${S.servicos[0]?String(S.servicos[0].preco).replace('.',','):''}"></div></div>
+        <button class="btn pri full" id="og-pl">${ic('plus')}Pôr no plano</button></div>`;
+      b.querySelectorAll('[data-og-e]').forEach(x=>x.onclick=()=>{ const k=x.dataset.ogE; o.dentes[sel]=Object.assign({},o.dentes[sel]||{},{e:k||''}); if(!k&&!o.dentes[sel].obs)delete o.dentes[sel];
+        o.atualizado=hojeISO(); salvar(); pinta() });
+      $('#og-obs').onchange=()=>{ o.dentes[sel]=Object.assign({},o.dentes[sel]||{},{obs:$('#og-obs').value.trim()}); o.atualizado=hojeISO(); salvar() };
+      $('#og-s').onchange=()=>{ const s=serv($('#og-s').value); if(s)$('#og-v').value=String(s.preco).replace('.',',') };
+      $('#og-pl').onclick=()=>{ const s=serv($('#og-s').value); if(!s)return toast('Cadastre um serviço antes');
+        const p=planoAberto(cid)||novoPlano(cid); p.etapas.push(etapaDe(s,String(sel),$('#og-v').value)); salvar(); toast(`${s.nome} no dente ${sel} foi para o plano`); pinta() };
+    };
+    pinta();
+  });
+}
+
+/* ── na ficha do paciente ── */
+function secPlanoFicha(cid){
+  if(!temPlano())return '';
+  const ps=planosDe(cid).sort((a,b)=>(a.status==='aberto'?0:1)-(b.status==='aberto'?0:1)||b.criado.localeCompare(a.criado));
+  const og=area()==='odonto'&&podeClinico()?(S.odontogramas||[]).find(z=>z.clienteId===cid):null, marc=og?Object.values(og.dentes).filter(d=>d.e).length:0;
+  return `<div class="sec" id="h-plano"><div class="sec-top"><h2>Plano de tratamento</h2>${ps.length?`<span class="pill">${ps.length}</span>`:''}</div><div class="card">
+      ${ps.map(p=>{ const t=totPlano(p); return `<button type="button" class="item pr-it" data-pl="${p.id}"><div class="mn"><b>${p.status==='aberto'?'Em andamento':'Encerrado'} · ${t.nf} de ${t.n} ${t.n===1?'etapa':'etapas'}</b>
+        <small>${brl(t.t)} no total · falta ${brl(t.falta)} · começou em ${dataBR(p.criado)}</small></div>${ic('right',18)}</button>` }).join('')||`<p class="sub" style="margin:0 0 10px">Monte as etapas do tratamento na ordem e acompanhe o que já foi feito.</p>`}
+      <div class="row" style="gap:8px;margin-top:8px">${!planoAberto(cid)?`<button class="btn sm soft" id="h-pl-novo">${ic('plus',16)}Novo plano</button>`:''}
+        ${area()==='odonto'&&podeClinico()?`<button class="btn sm soft" id="h-odg">${ic('spark',16)}Odontograma${marc?' · '+marc+' marcado(s)':''}</button>`:''}</div></div></div>`;
+}
+const _topoPl=topoHist, _ligaPl=ligarTopoHist;
+topoHist=c=>_topoPl(c)+secPlanoFicha(c.id);
+ligarTopoHist=function(id,fechar){ _ligaPl(id,fechar);
+  const s=$('#h-plano'), pr=$('#h-pr-novo')&&$('#h-pr-novo').closest('.sec'); if(s&&pr)pr.after(s);
+  const volta=()=>setTimeout(()=>historico(id),300);
+  document.querySelectorAll('.sheet [data-pl]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>abrePlano(b.dataset.pl,true),260) });
+  if($('#h-pl-novo'))$('#h-pl-novo').onclick=()=>{ const p=novoPlano(id); salvar(); fechar(); setTimeout(()=>abrePlano(p.id,true),260) };
+  if($('#h-odg'))$('#h-odg').onclick=()=>{ fechar(); setTimeout(()=>abreOdonto(id,true),260) };
+};
+/* ══════════ OCUPAÇÃO DA AGENDA ══════════
+   Quanto do horário de trabalho virou atendimento, onde sobram horários e quanto se perde com falta. */
+const EXP_PAD={dias:[1,2,3,4,5],ini:'08:00',fim:'18:00',dur:60};
+const exped=()=>Object.assign({},EXP_PAD,S.expediente||{});
+const minDe=h=>{ const [a,b]=String(h||'0:0').split(':').map(Number); return a*60+(b||0) };
+let ocPer='semana';
+function periodoOc(){ const h=hojeISO(), ini=somaDias(h,-dowDe(h));
+  if(ocPer==='passada')return [somaDias(ini,-7),somaDias(ini,-1),'Semana passada'];
+  if(ocPer==='proxima')return [somaDias(ini,7),somaDias(ini,13),'Próxima semana'];
+  if(ocPer==='mes'){ const [a,m]=h.split('-').map(Number), f=new Date(a,m,0).getDate(); return [`${h.slice(0,7)}-01`,`${h.slice(0,7)}-${String(f).padStart(2,'0')}`,MES_L[m-1][0].toUpperCase()+MES_L[m-1].slice(1)] }
+  return [ini,somaDias(ini,6),'Esta semana'];
+}
+function calcOcupacao(de,ate){
+  const e=exped(), porDia=Math.max(0,Math.floor((minDe(e.fim)-minDe(e.ini))/Math.max(15,num(e.dur)||60)));
+  const r={cap:0,ocup:0,falta:0,feito:0,dow:Array.from({length:7},()=>({cap:0,ocup:0})),faixa:{manha:0,tarde:0,noite:0},dias:[]};
+  for(let d=de;d<=ate;d=somaDias(d,1)){ const w=dowDe(d), trab=e.dias.includes(w);
+    const ags=S.agenda.filter(a=>a.data===d&&['marcado','concluido','faltou'].includes(a.status));
+    const cap=trab?porDia:0, oc=ags.length;
+    r.cap+=cap; r.ocup+=Math.min(oc,cap||oc); r.falta+=ags.filter(a=>a.status==='faltou').length; r.feito+=ags.filter(a=>a.status==='concluido').length;
+    r.dow[w].cap+=cap; r.dow[w].ocup+=oc;
+    ags.forEach(a=>{ const m=minDe(a.hora); r.faixa[m<12*60?'manha':m<18*60?'tarde':'noite']++ });
+    if(trab)r.dias.push({d,cap,oc,vagos:Math.max(0,cap-oc)});
+  }
+  r.taxa=r.cap?Math.min(100,r.ocup/r.cap*100):0; r.vagos=Math.max(0,r.cap-r.ocup); r.taxaFalta=(r.feito+r.falta)?r.falta/(r.feito+r.falta)*100:0;
+  return r;
+}
+T.ocupacao=function(el){
+  const e=exped(), [de,ate,nome]=periodoOc(), r=calcOcupacao(de,ate), h=hojeISO();
+  const preco=S.servicos.length?S.servicos.reduce((a,s)=>a+num(s.preco),0)/S.servicos.length:0;
+  const barra=(p,cl)=>`<span class="oc-b"><i class="${cl||''}" style="width:${Math.max(0,Math.min(100,p)).toFixed(0)}%"></i></span>`;
+  const DOWC=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const futuros=r.dias.filter(x=>x.d>=h&&x.vagos>0);
+  el.innerHTML=`<h1>Ocupação da agenda</h1><p class="sub">Quanto do seu horário de trabalho virou atendimento</p>
+    <div class="chips" role="group" aria-label="Período" style="margin-top:12px">${[['passada','Semana passada'],['semana','Esta semana'],['proxima','Próxima semana'],['mes','Este mês']].map(([k,n])=>`<button class="chip" data-oc="${k}" aria-pressed="${ocPer===k}">${n}</button>`).join('')}</div>
+    <section class="kpis cx-k" aria-label="Resumo">
+      <div class="kpi dest"><span class="lb">Agenda ocupada · ${nome.toLowerCase()}</span><div class="kv">${r.taxa.toFixed(0)}%</div>${barra(r.taxa)}
+        <p class="kx">${r.ocup} de ${r.cap} horários (${dataBR(de)} a ${dataBR(ate)})</p></div>
+      <div class="kpi"><span class="lb">Horários vagos</span><div class="kv">${r.vagos}</div><p class="kx">${preco&&r.vagos?'até '+brl(r.vagos*preco)+' a mais':'com o expediente abaixo'}</p></div>
+      <div class="kpi"><span class="lb">Faltas</span><div class="kv ${r.taxaFalta>15?'v-bad':''}">${r.taxaFalta.toFixed(0)}%</div><p class="kx">${r.falta} de ${r.feito+r.falta} que já passaram</p></div></section>
+    <div class="sec"><div class="sec-top"><h2>Por dia da semana</h2></div><div class="card">${[1,2,3,4,5,6,0].filter(w=>e.dias.includes(w)||r.dow[w].ocup).map(w=>{ const x=r.dow[w], p=x.cap?x.ocup/x.cap*100:0;
+      return `<div class="oc-l"><span>${DOWC[w]}</span>${barra(p,p>=85?'ok':p<40?'war':'')}<b>${x.cap?p.toFixed(0)+'%':x.ocup+' fora do expediente'}</b></div>` }).join('')}
+      <p class="sub" style="margin-top:8px">Dias com barra laranja têm muito horário livre: bons para promoção ou para chamar quem está na hora de voltar.</p></div></div>
+    <div class="sec"><div class="sec-top"><h2>Por período do dia</h2></div><div class="card">${[['manha','Manhã'],['tarde','Tarde'],['noite','Noite']].map(([k,n])=>{ const t=r.faixa.manha+r.faixa.tarde+r.faixa.noite, p=t?r.faixa[k]/t*100:0;
+      return `<div class="oc-l"><span>${n}</span>${barra(p)}<b>${r.faixa[k]}</b></div>` }).join('')}</div></div>
+    ${futuros.length?`<div class="sec"><div class="sec-top"><h2>Dias com horário livre</h2></div><div class="card">${futuros.slice(0,7).map(x=>`<div class="item"><div class="mn"><b>${DOW_L[dowDe(x.d)]}, ${dataBR(x.d)}</b><small>${x.oc} marcado(s) · ${x.vagos} ${x.vagos>1?'horários livres':'horário livre'}</small></div>
+      <div class="acts"><button class="btn sm soft" data-oc-ag="${x.d}">${ic('calendar',16)}Ver o dia</button></div></div>`).join('')}</div></div>`:''}
+    <div class="sec"><div class="card"><h2 style="margin-bottom:4px">Seu horário de trabalho</h2><p class="sub" style="margin-bottom:12px">É a base da conta. Ajuste para o seu expediente de verdade.</p>
+      <div class="chips" role="group" aria-label="Dias de trabalho">${[1,2,3,4,5,6,0].map(w=>`<button class="chip" data-oc-d="${w}" aria-pressed="${e.dias.includes(w)}">${DOWC[w]}</button>`).join('')}</div>
+      <div class="grid3" style="margin-top:10px"><div class="field"><label for="oc-i">Começa</label><select id="oc-i">${Array.from({length:17},(_,i)=>String(i+5).padStart(2,'0')+':00').map(t=>`<option ${t===e.ini?'selected':''}>${t}</option>`).join('')}</select></div>
+        <div class="field"><label for="oc-f">Termina</label><select id="oc-f">${Array.from({length:17},(_,i)=>String(i+8).padStart(2,'0')+':00').map(t=>`<option ${t===e.fim?'selected':''}>${t}</option>`).join('')}</select></div>
+        <div class="field"><label for="oc-dur">Cada horário</label><select id="oc-dur">${[30,40,45,50,60,90].map(m=>`<option value="${m}" ${m===num(e.dur)?'selected':''}>${m} min</option>`).join('')}</select></div></div></div></div>`;
+  const guarda=()=>{ S.expediente=exped(); S.expediente.ini=$('#oc-i').value; S.expediente.fim=$('#oc-f').value; S.expediente.dur=+$('#oc-dur').value; salvar(); render() };
+  el.querySelectorAll('[data-oc]').forEach(b=>b.onclick=()=>{ ocPer=b.dataset.oc; render() });
+  el.querySelectorAll('[data-oc-d]').forEach(b=>b.onclick=()=>{ const w=+b.dataset.ocD, x=exped(); x.dias=x.dias.includes(w)?x.dias.filter(z=>z!==w):x.dias.concat(w); S.expediente=x; salvar(); render() });
+  ['#oc-i','#oc-f','#oc-dur'].forEach(q=>$(q).onchange=guarda);
+  el.querySelectorAll('[data-oc-ag]').forEach(b=>b.onclick=()=>{ agDia=b.dataset.ocAg; ir('agenda') });
+};
+
+/* ══════════ VALIDADE NO ESTOQUE ══════════ */
+function dataDeBR(t){ const d=soDig(t); if(d.length!==8)return ''; const dd=+d.slice(0,2), mm=+d.slice(2,4), aa=+d.slice(4), x=new Date(aa,mm-1,dd);
+  return aa>1999&&x.getDate()===dd&&x.getMonth()===mm-1?`${aa}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`:'' }
+const dataBRano=iso=>iso?iso.slice(8)+'/'+iso.slice(5,7)+'/'+iso.slice(0,4):'';
+const diasParaVencer=p=>p.validade?diasEntre(hojeISO(),p.validade):null;
+function pillValidade(p){ const d=diasParaVencer(p); if(d==null)return '';
+  if(d<0)return `<span class="pill bad">venceu em ${dataBRano(p.validade)}</span> `;
+  if(d<=30)return `<span class="pill war">vence em ${dataBRano(p.validade)}</span> `;
+  return `validade ${dataBRano(p.validade)} · ` }
+const vencendo=()=>modOn('estoque')?S.produtos.filter(p=>{ const d=diasParaVencer(p); return d!=null&&d<=30 }):[];
+MASC.push(['#pr-val,#pc-val',v=>molde(soDig(v).slice(0,8),'##/##/####')]);
+/* ══════════ IMPORTAR PACIENTES (Clinicorp, outro sistema ou planilha) ══════════
+   Lê .xlsx (Excel) e .csv sem biblioteca: o .xlsx é um zip, aberto com o descompactador do navegador. */
+async function lerZip(buf){
+  const v=new DataView(buf), u8=new Uint8Array(buf); let fim=-1;
+  for(let i=u8.length-22;i>=Math.max(0,u8.length-65557);i--)if(v.getUint32(i,true)===0x06054b50){ fim=i; break }
+  if(fim<0)throw new Error('zip');
+  const n=v.getUint16(fim+10,true); let p=v.getUint32(fim+16,true); const arqs={};
+  for(let k=0;k<n;k++){ const met=v.getUint16(p+10,true), tam=v.getUint32(p+20,true), ln=v.getUint16(p+28,true), lx=v.getUint16(p+30,true), lc=v.getUint16(p+32,true), off=v.getUint32(p+42,true);
+    const nome=new TextDecoder().decode(u8.subarray(p+46,p+46+ln)); arqs[nome]={met,tam,off}; p+=46+ln+lx+lc }
+  const abre=async nome=>{ const a=arqs[nome]; if(!a)return null; const lo=a.off, ini=lo+30+v.getUint16(lo+26,true)+v.getUint16(lo+28,true), dado=u8.subarray(ini,ini+a.tam);
+    if(a.met===0)return new TextDecoder().decode(dado);
+    const s=new Blob([dado]).stream().pipeThrough(new DecompressionStream('deflate-raw')); return await new Response(s).text() };
+  return {arqs:Object.keys(arqs),abre};
+}
+const colNum=ref=>{ const m=/^([A-Z]+)/.exec(ref||''); let n=0; if(m)for(const ch of m[1])n=n*26+ch.charCodeAt(0)-64; return n-1 };
+async function lerXlsx(buf){
+  const z=await lerZip(buf), xml=t=>new DOMParser().parseFromString(t,'application/xml');
+  const ss=[]; const tss=await z.abre('xl/sharedStrings.xml');
+  if(tss)xml(tss).querySelectorAll('si').forEach(si=>ss.push([...si.getElementsByTagName('t')].map(t=>t.textContent).join('')));
+  const folha=z.arqs.filter(a=>/^xl\/worksheets\/sheet\d+\.xml$/.test(a)).sort((a,b)=>parseInt(a.match(/\d+/)[0])-parseInt(b.match(/\d+/)[0]))[0];
+  if(!folha)throw new Error('sem planilha');
+  const linhas=[];
+  xml(await z.abre(folha)).querySelectorAll('sheetData > row').forEach(r=>{ const l=[];
+    r.querySelectorAll('c').forEach(c=>{ const t=c.getAttribute('t'), vv=c.getElementsByTagName('v')[0], is=c.getElementsByTagName('is')[0];
+      let val=t==='s'?ss[+(vv&&vv.textContent)]:t==='inlineStr'?(is?is.textContent:''):(vv?vv.textContent:'');
+      l[colNum(c.getAttribute('r'))]=val==null?'':String(val) });
+    linhas.push(Array.from(l,x=>x==null?'':x)) });
+  return linhas;
+}
+function lerCsv(txt){
+  const pl=txt.split(/\r?\n/,1)[0]||'', sep=[';',',','\t'].sort((a,b)=>pl.split(b).length-pl.split(a).length)[0];
+  const linhas=[]; let l=[], c='', q=false;
+  for(let i=0;i<txt.length;i++){ const ch=txt[i];
+    if(q){ if(ch==='"'){ if(txt[i+1]==='"'){ c+='"'; i++ } else q=false } else c+=ch; continue }
+    if(ch==='"')q=true; else if(ch===sep){ l.push(c); c='' } else if(ch==='\n'||ch==='\r'){ if(ch==='\r'&&txt[i+1]==='\n')i++; l.push(c); linhas.push(l); l=[]; c='' } else c+=ch }
+  if(c||l.length){ l.push(c); linhas.push(l) }
+  return linhas.filter(x=>x.some(y=>String(y).trim()));
+}
+async function lerPlanilha(arq){
+  const buf=await arq.arrayBuffer();
+  if(/\.xlsx$/i.test(arq.name)||(new Uint8Array(buf)[0]===0x50&&new Uint8Array(buf)[1]===0x4b))return lerXlsx(buf);
+  if(/\.xls$/i.test(arq.name))throw new Error('xls');
+  let t=new TextDecoder('utf-8').decode(buf); if(t.includes('�'))t=new TextDecoder('windows-1252').decode(buf);
+  return lerCsv(t.replace(/^﻿/,''));
+}
+const CAMPOS_IMP=[['nome','Nome',/^(nome|paciente|cliente|nome completo|nome do paciente)/i],['tel','WhatsApp ou celular',/(celular|whats|telefone|fone|contato)/i],
+  ['email','E-mail',/e-?mail/i],['nasc','Nascimento',/(nasc|anivers)/i],['cpf','CPF',/^cpf/i],['obs','Observação',/(obs|nota|anota)/i]];
+function dataImp(v){ v=String(v||'').trim(); if(!v)return '';
+  if(/^\d{4,5}(\.\d+)?$/.test(v)){ const d=new Date(Math.round((+v-25569)*864e5)); return isNaN(d)?'':d.toISOString().slice(0,10) }   /* data do Excel */
+  let m=/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/.exec(v); if(m){ let a=+m[3]; if(a<100)a+=a>30?1900:2000; return `${a}-${String(+m[2]).padStart(2,'0')}-${String(+m[1]).padStart(2,'0')}` }
+  m=/^(\d{4})-(\d{2})-(\d{2})/.exec(v); return m?m[0]:'' }
+const exImp=(h,v)=>{ v=String(v); return /^\d{4,5}(\.\d+)?$/.test(v)&&/(nasc|data|anivers)/i.test(h)?dataBR(dataImp(v)):v.slice(0,24) };
+const chaveCli=c=>(soDig(c.cpf)||'')||(String(c.nome||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim()+'|'+soDig(c.tel).slice(-8));
+function importarPacientes(){
+  const pac=quemTx().replace(/^o /,'');
+  abrirSheet('Trazer '+pac+'s de outro sistema','Planilha do Excel (.xlsx) ou arquivo .csv',`<div id="im-corpo">
+    <p class="sub" style="margin-bottom:12px">No Clinicorp ou no seu sistema atual, exporte a lista de ${pac}s em Excel ou CSV. Depois escolha o arquivo aqui.</p>
+    <button class="btn pri full" id="im-arq">${ic('upload')}Escolher arquivo</button></div>`,fechar=>{
+    const corpo=$('#im-corpo');
+    const passo2=(linhas,nomeArq)=>{
+      let iH=linhas.findIndex(l=>l.filter(x=>String(x).trim()).length>=2); if(iH<0)iH=0;
+      const cab=linhas[iH].map((x,i)=>String(x).trim()||'Coluna '+(i+1)), dados=linhas.slice(iH+1).filter(l=>l.some(x=>String(x).trim()));
+      const mapa={}; CAMPOS_IMP.forEach(([k,,re])=>{ const i=cab.findIndex((h,j)=>re.test(h)&&!Object.values(mapa).includes(j)); if(i>=0)mapa[k]=i });
+      const pinta=()=>{
+        const lista=dados.map(l=>{ const g=k=>mapa[k]!=null?String(l[mapa[k]]||'').trim():'';
+          return {nome:g('nome'),tel:g('tel')?fmtTel(g('tel')):'',email:g('email'),nasc:dataImp(g('nasc')),cpf:g('cpf')?fmtCpf(g('cpf')):'',obs:g('obs')} }).filter(c=>c.nome);
+        const ja=new Set(S.clientes.map(chaveCli)), novos=[], vistos=new Set(); let rep=0;
+        lista.forEach(c=>{ const k=chaveCli(c); if(ja.has(k)||vistos.has(k)){ rep++; return } vistos.add(k); novos.push(c) });
+        corpo.innerHTML=`<p class="sub" style="margin-bottom:10px"><b>${esc(nomeArq)}</b> · ${dados.length} linha(s). Diga qual coluna é cada informação:</p>
+          ${CAMPOS_IMP.map(([k,n])=>`<div class="field"><label for="im-${k}">${n}${k==='nome'?'':' (opcional)'}</label><select id="im-${k}" data-im="${k}"><option value="">${k==='nome'?'Escolha a coluna':'Não trazer'}</option>
+            ${cab.map((h,i)=>`<option value="${i}" ${mapa[k]===i?'selected':''}>${esc(h)}${dados[0]&&dados[0][i]?' · ex.: '+esc(exImp(h,dados[0][i])):''}</option>`).join('')}</select></div>`).join('')}
+          ${novos.length?`<div class="im-prev"><p class="eyebrow">Prévia</p>${novos.slice(0,4).map(c=>`<div><b>${esc(c.nome)}</b><small>${[c.tel,c.nasc?dataBR(c.nasc):'',c.email].filter(Boolean).map(esc).join(' · ')||'só o nome'}</small></div>`).join('')}</div>`:''}
+          <p class="sub" style="margin:10px 0">${mapa.nome==null?'Escolha a coluna do nome para continuar.':`${novos.length} ${novos.length===1?'novo cadastro':'novos cadastros'}${rep?` · ${rep} já ${rep===1?'existia':'existiam'} e ${rep===1?'fica':'ficam'} de fora`:''}.`}</p>
+          <button class="btn pri full" id="im-ok" ${mapa.nome==null||!novos.length?'disabled':''}>${ic('check')}Trazer ${novos.length} ${novos.length===1?pac:pac+'s'}</button>`;
+        corpo.querySelectorAll('[data-im]').forEach(s=>s.onchange=()=>{ const k=s.dataset.im; if(s.value==='')delete mapa[k]; else mapa[k]=+s.value; pinta() });
+        $('#im-ok').onclick=()=>{ novos.forEach(c=>S.clientes.push(Object.assign({id:uid()},c))); salvar(); fechar(); toast(`${novos.length} ${novos.length===1?pac+' trazido':pac+'s trazidos'}`); render() };
+      };
+      pinta();
+    };
+    $('#im-arq').onclick=()=>{ const i=document.createElement('input'); i.type='file'; i.accept='.xlsx,.csv,.txt,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      i.onchange=async()=>{ const f=i.files&&i.files[0]; if(!f)return; corpo.innerHTML='<p class="sub">Lendo o arquivo…</p>';
+        try{ const ls=await lerPlanilha(f); if(!ls.length)throw new Error('vazio'); passo2(ls,f.name) }
+        catch(e){ corpo.innerHTML=`<div class="pt-aviso">${/xls/.test(e.message)?'Esse arquivo é do Excel antigo (.xls). Abra no Excel e salve como .xlsx ou .csv.':'Não consegui ler esse arquivo. Tente salvar a planilha como .xlsx ou .csv.'}</div>
+          <button class="btn pri full" id="im-arq2">${ic('upload')}Escolher outro arquivo</button>`; $('#im-arq2').onclick=()=>{ fechar(); setTimeout(importarPacientes,250) } } };
+      i.click() };
+  });
+}
+/* em Ajustes, logo depois do Backup (só para quem pode mexer em tudo) */
+const _posImp=posRender;
+posRender=function(el){ _posImp(el);
+  if(tela!=='ajustes'||!ehDono()||$('#sec-imp'))return;
+  const h=[...el.querySelectorAll(':scope > .sec h2')].find(z=>z.textContent.trim()==='Backup'), alvo=h?h.closest('.sec'):null;
+  const x=`<div class="sec" id="sec-imp"><div class="card"><h2 style="margin-bottom:4px">Trazer de outro sistema</h2>
+    <p class="sub" style="margin-bottom:12px">Veio do Clinicorp ou de outro programa? Traga a lista de ${quemTx().replace(/^o /,'')}s de uma planilha.</p>
+    <button class="btn soft full" id="a-impcli">${ic('upload')}Importar planilha</button></div></div>`;
+  if(alvo)alvo.insertAdjacentHTML('afterend',x); else el.insertAdjacentHTML('beforeend',x);
+  $('#a-impcli').onclick=importarPacientes;
+};
+/* ══════════ FOTOS NA NUVEM ══════════
+   O aparelho continua guardando as fotos (abre rápido e funciona sem internet).
+   Com conta, cada foto também vai para o Supabase Storage, na pasta da clínica; outro aparelho baixa quando abre a ficha.
+   Só dono e profissional leem as fotos: a regra fica no servidor (supabase/fotos.sql). */
+const FCAMPOS=['antes','depois'];
+const fHash=s=>s?s.length+':'+s.slice(-32):'';
+const fNuvem=()=>NUVEM&&CONTA&&SES&&podeClinico();
+const fPath=(r,c)=>`${CONTA.cid}/${r.clienteId}/${r.id}-${c}.jpg`;
+function fIdx(){ if(!S.fotosIdx)S.fotosIdx=[]; return S.fotosIdx }
+async function fSobe(path,url){ await garanteToken(); const blob=await (await fetch(url)).blob();
+  const r=await fetch(`${SB_URL}/storage/v1/object/fotos/${path}`,{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SES.access_token,'Content-Type':'image/jpeg','x-upsert':'true'},body:blob});
+  if(!r.ok)throw new Error('envio '+r.status) }
+async function fBaixa(path){ await garanteToken();
+  const r=await fetch(`${SB_URL}/storage/v1/object/authenticated/fotos/${path}`,{headers:{apikey:SB_KEY,Authorization:'Bearer '+SES.access_token}});
+  if(!r.ok)throw new Error('baixa '+r.status); const b=await r.blob();
+  return await new Promise((ok,er)=>{ const f=new FileReader(); f.onload=()=>ok(f.result); f.onerror=er; f.readAsDataURL(b) }) }
+function fApagaN(paths){ if(!paths.length)return Promise.resolve();
+  return garanteToken().then(()=>fetch(`${SB_URL}/storage/v1/object/fotos`,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:'Bearer '+SES.access_token,'Content-Type':'application/json'},body:JSON.stringify({prefixes:paths})})).catch(()=>{}) }
+/* manda um registro: só as fotos que mudaram */
+async function fEnvia(r){
+  const idx=fIdx(); let e=idx.find(z=>z.id===r.id); const novo=!e; if(!e)e={id:r.id,clienteId:r.clienteId,tem:{}};
+  for(const c of FCAMPOS){ const h=fHash(fotoOk(r[c])?r[c]:'');
+    if(h&&e.tem[c]!==h){ await fSobe(fPath(r,c),r[c]); e.tem[c]=h }
+    else if(!h&&e.tem[c]){ await fApagaN([fPath(r,c)]); delete e.tem[c] } }
+  Object.assign(e,{titulo:r.titulo||'',data:r.data||''}); if(novo)idx.push(e); salvar();
+  r._nuvem=true; await _FOTOS.salvar.call(FOTOS,r);
+}
+const _FOTOS={salvar:FOTOS.salvar,apagar:FOTOS.apagar,doCliente:FOTOS.doCliente};
+FOTOS.salvar=function(r){ return _FOTOS.salvar.call(this,r).then(x=>{ if(fNuvem())fEnvia(r).catch(()=>toast('Foto guardada no aparelho. Envio para a nuvem falhou: tento de novo ao abrir a ficha')); return x }) };
+FOTOS.apagar=function(id){ return _FOTOS.apagar.call(this,id).then(x=>{ if(fNuvem()){ const e=fIdx().find(z=>z.id===id);
+    if(e){ S.fotosIdx=fIdx().filter(z=>z.id!==id); salvar(); fApagaN(Object.keys(e.tem).map(c=>`${CONTA.cid}/${e.clienteId}/${e.id}-${c}.jpg`)) } } return x }) };
+FOTOS.doCliente=function(cid){ return _FOTOS.doCliente.call(this,cid).then(async loc=>{
+  if(!fNuvem())return loc;
+  const idx=fIdx().filter(e=>e.clienteId===cid), porId=new Map(loc.map(r=>[r.id,r])), out=[];
+  for(const e of idx){ let r=porId.get(e.id);
+    const falta=FCAMPOS.some(c=>e.tem[c]&&(!r||fHash(fotoOk(r[c])?r[c]:'')!==e.tem[c]));
+    if(falta){ try{ r=Object.assign({id:e.id,clienteId:cid,antes:'',depois:''},r||{},{titulo:e.titulo,data:e.data,_nuvem:true});
+        for(const c of FCAMPOS){ if(e.tem[c]&&fHash(fotoOk(r[c])?r[c]:'')!==e.tem[c])r[c]=await fBaixa(`${CONTA.cid}/${cid}/${e.id}-${c}.jpg`); if(!e.tem[c])r[c]='' }
+        await _FOTOS.salvar.call(FOTOS,r) }catch(err){ if(!r)continue } }
+    else if(r&&(r.titulo!==e.titulo||r.data!==e.data)){ r.titulo=e.titulo; r.data=e.data; await _FOTOS.salvar.call(FOTOS,r) }
+    if(r){ out.push(r); porId.delete(e.id) } }
+  for(const r of porId.values()){
+    if(r._nuvem){ await _FOTOS.apagar.call(FOTOS,r.id); continue }   /* apagada em outro aparelho */
+    out.push(r); fEnvia(r).catch(()=>{}) }                           /* ainda não tinha subido */
+  return out }) };
 /* ══════════ BOAS-VINDAS ══════════
    Quatro passos: nome, meta, primeiro serviço, taxas. Cada passo grava na hora,
    então quem sair no meio não perde o que já preencheu. */
