@@ -89,7 +89,7 @@ function secPsiFicha(cid){ if(!ehPsico()||!podeClinico())return ''; const p=pron
           ${graficoEsc(l.slice(-10),ESCALAS[k].max)}
           <div class="row" style="gap:8px;margin-top:6px"><button class="btn sm soft" data-q-ag="${k}">Aplicar agora</button>${CONTA&&cli(cid).tel?`<button class="btn sm soft" data-q-link="${k}">${ic('chat',16)}Mandar por link</button>`:''}</div></div>` }).join('')}
       ${pend.length?`<p class="sub" style="margin:8px 0 0">Esperando resposta: ${pend.map(e=>ESCALAS[e.instr].curto+' de '+dataBR(e.data)).join(', ')}</p>`:''}
-      <p class="sub" style="margin:8px 0 0;font-size:12.5px">PHQ-9 e GAD-7 são questionários de rastreio de uso livre. Não substituem a avaliação clínica.</p></div></div>` }
+      <p class="sub" style="margin:8px 0 0;font-size:12.5px">PHQ-9 e GAD-7 são questionários de rastreio de uso livre. Não substituem a avaliação do profissional.</p></div></div>` }
 function secInformeFicha(cid){ if(!(ehPsico()||area()==='odonto'))return ''; if(typeof permitido==='function'&&!permitido('registrar'))return '';
   return `<div class="sec"><div class="card row" style="justify-content:space-between;gap:10px;align-items:center"><div><b>Informe para o Imposto de Renda</b><br><small class="sub">Tudo o que ${esc(cli(cid).nome.split(' ')[0])} pagou no ano, para declarar</small></div><button class="btn sm soft" id="h-ir">${ic('file',16)}Gerar</button></div></div>` }
 const _topoPsi=topoHist, _ligaPsi=ligarTopoHist;
@@ -103,18 +103,20 @@ ligarTopoHist=function(id,fechar){ _ligaPsi(id,fechar); const volta=()=>setTimeo
 };
 
 /* ── 3. Informe anual para o IR ── */
-function pagosNoAno(cid,ano){ const r=[]; for(let m=1;m<=12;m++){ const mes=`${ano}-${String(m).padStart(2,'0')}`, ls=linhasRecibo(cid,mes); r.push({mes,n:ls.length,total:ls.reduce((a,l)=>a+l.valor,0)}) } return r }
+/* o que a pessoa pagou em cada mês, pela data do pagamento (é o que vale para o IR): pacote pago à vista entra inteiro no mês em que foi pago */
+function pagosDoMes(cid,mes){ return S.vendas.filter(v=>v.clienteId===cid&&mesDe(v.data)===mes).map(v=>{ const k=conta(v); return {v,valor:Math.max(0,k.bruto-(k.devolvido||0))} }).filter(x=>x.valor>0) }
+function pagosNoAno(cid,ano){ const r=[]; for(let m=1;m<=12;m++){ const mes=`${ano}-${String(m).padStart(2,'0')}`, ls=pagosDoMes(cid,mes); r.push({mes,n:ls.length,total:ls.reduce((a,l)=>a+l.valor,0)}) } return r }
 function informeHTML(cid,ano){ const c=cli(cid), p=S.perfil||{}, ms=pagosNoAno(cid,ano), tot=ms.reduce((a,m)=>a+m.total,0), pag=(c.pagNome||'').trim();
   return `<div class="recibo doc-imp"><div class="rc-cab"><b class="rc-t">Declaração de pagamentos · ${ano}</b>${topoRecibo()?`<span>${esc(topoRecibo())}</span>`:''}${profLinha()?`<span>${esc(profLinha())}</span>`:''}</div>
     <div class="doc-tx">Declaro, para fins de Imposto de Renda, que recebi${pag?` de ${esc(pag)}${c.pagCpf?', CPF '+esc(fmtDoc(c.pagCpf)):''}, referente a ${esc(c.nome)}${c.cpf?', CPF '+esc(fmtDoc(c.cpf)):''},`:` de ${esc(c.nome)}${c.cpf?', CPF '+esc(fmtDoc(c.cpf)):''},`} o valor total de <b>${brl(tot)}</b> por ${DESCR[area()]||'atendimentos'} prestados no ano de ${ano}.</div>
-    <table class="doc-tab"><thead><tr><th>Mês</th><th>Atendimentos</th><th>Valor</th></tr></thead><tbody>${ms.filter(m=>m.n).map(m=>`<tr><td>${esc(mesNome(m.mes))}</td><td>${m.n}</td><td>${brl(m.total)}</td></tr>`).join('')}</tbody>
+    <table class="doc-tab"><thead><tr><th>Mês</th><th>Pagamentos</th><th>Valor</th></tr></thead><tbody>${ms.filter(m=>m.n).map(m=>`<tr><td>${esc(mesNome(m.mes))}</td><td>${m.n}</td><td>${brl(m.total)}</td></tr>`).join('')}</tbody>
       <tfoot><tr><td>Total</td><td>${ms.reduce((a,m)=>a+m.n,0)}</td><td>${brl(tot)}</td></tr></tfoot></table>
     <p class="doc-dt">${esc((p.cidade?p.cidade+', ':'')+dataCheia(hojeISO()))}</p>
     <div class="rc-ass">${assProfImg()}<span></span><small>${esc(p.nome||'Profissional')}${p.doc?' · CPF/CNPJ '+esc(fmtDoc(p.doc)):''}${p.registro?' · '+esc(AREAS[area()].reg)+' '+esc(p.registro):''}</small></div></div>` }
 function abreInforme(cid){ const c=cli(cid), a0=+hojeISO().slice(0,4); let ano=new Date().getMonth()<4?a0-1:a0;
   abrirSheet('Informe para o IR',esc(c.nome),`<div class="chips" role="group" aria-label="Ano">${[a0-2,a0-1,a0].map(a=>`<button class="chip" data-ir-a="${a}">${a}</button>`).join('')}</div><div id="ir-c" style="margin-top:12px"></div>`,fechar=>{
     const pinta=()=>{ document.querySelectorAll('[data-ir-a]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.irA===ano)); const ms=pagosNoAno(cid,ano), tot=ms.reduce((a,m)=>a+m.total,0), p=S.perfil||{};
-      $('#ir-c').innerHTML=tot?`<div class="card" style="padding:4px 14px">${ms.filter(m=>m.n).map(m=>`<div class="item"><div class="mn"><b>${esc(mesNome(m.mes))}</b><small>${m.n} atendimento(s)</small></div><div class="vr">${brl(m.total)}</div></div>`).join('')}</div>
+      $('#ir-c').innerHTML=tot?`<div class="card" style="padding:4px 14px">${ms.filter(m=>m.n).map(m=>`<div class="item"><div class="mn"><b>${esc(mesNome(m.mes))}</b><small>${m.n} pagamento(s)</small></div><div class="vr">${brl(m.total)}</div></div>`).join('')}</div>
         <div class="rap-sobra" style="margin-top:10px"><span>Total em ${ano}</span><b>${brl(tot)}</b></div>
         ${!p.nome||!p.doc?`<div class="nota" style="margin-top:10px">Faltam seu nome e CPF ou CNPJ. Preencha em Configurações → Seus dados profissionais.</div>`:''}
         ${!c.cpf&&!c.pagCpf?`<div class="nota" style="margin-top:10px">Sem o CPF de ${esc(c.nome.split(' ')[0])} no cadastro. A Receita pede o CPF de quem pagou.</div>`:''}
@@ -129,7 +131,7 @@ T.fechamento=function(el){ fchMes=fchMes||mesAtual(); const mes=fchMes;
   const ags=S.agenda.filter(a=>mesDe(a.data)===mes&&a.clienteId);
   const ids=[...new Set(ags.map(a=>a.clienteId).concat(S.vendas.filter(v=>mesDe(v.data)===mes&&v.clienteId).map(v=>v.clienteId),(S.receber||[]).filter(r=>mesDe(r.data)===mes&&r.clienteId).map(r=>r.clienteId)))].filter(id=>cli(id));
   const linhas=ids.map(id=>{ const c=cli(id), as=ags.filter(a=>a.clienteId===id), fe=as.filter(a=>a.status==='concluido').sort((a,b)=>a.data.localeCompare(b.data)), fa=as.filter(a=>a.status==='faltou'), mar=as.filter(a=>a.status==='marcado');
-    const pago=linhasRecibo(id,mes).reduce((a,l)=>a+l.valor,0), aberto=(S.receber||[]).filter(r=>r.clienteId===id&&mesDe(r.data)===mes).reduce((a,r)=>a+num(r.valor),0);
+    const pago=pagosDoMes(id,mes).reduce((a,l)=>a+l.valor,0), aberto=(S.receber||[]).filter(r=>r.clienteId===id&&mesDe(r.data)===mes).reduce((a,r)=>a+num(r.valor),0);
     return {c,fe,fa,mar,pago,aberto} }).sort((a,b)=>(b.aberto-a.aberto)||a.c.nome.localeCompare(b.c.nome));
   const tot=k=>linhas.reduce((a,l)=>a+l[k],0);
   const meses=[]; for(let i=0;i<6;i++){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-i); meses.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')) }
@@ -178,7 +180,7 @@ function recibosLote(mes){ const p=S.perfil||{};
 /* ── fatura do mês: um extrato para o paciente, com a chave Pix ── */
 function faturaHTML(cid,mes){ const c=cli(cid), p=S.perfil||{}, ags=S.agenda.filter(a=>a.clienteId===cid&&mesDe(a.data)===mes).sort((a,b)=>a.data.localeCompare(b.data));
   const feitas=ags.filter(a=>a.status==='concluido'), faltas=ags.filter(a=>a.status==='faltou');
-  const pago=linhasRecibo(cid,mes).reduce((a,l)=>a+l.valor,0), ab=(S.receber||[]).filter(r=>r.clienteId===cid&&mesDe(r.data)===mes), aberto=ab.reduce((a,r)=>a+num(r.valor),0);
+  const pago=pagosDoMes(cid,mes).reduce((a,l)=>a+l.valor,0), ab=(S.receber||[]).filter(r=>r.clienteId===cid&&mesDe(r.data)===mes), aberto=ab.reduce((a,r)=>a+num(r.valor),0);
   return `<div class="recibo doc-imp"><div class="rc-cab"><b class="rc-t">Fatura · ${esc(mesNome(mes))}</b>${topoRecibo()?`<span>${esc(topoRecibo())}</span>`:''}${profLinha()?`<span>${esc(profLinha())}</span>`:''}</div>
     <p class="doc-pac"><b>Paciente:</b> ${esc(c.nome)}</p>
     <table class="doc-tab"><thead><tr><th>Data</th><th>Situação</th><th>Valor</th></tr></thead><tbody>
