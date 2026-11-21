@@ -894,3 +894,4 @@ body.papel-recepcao #h-evo,body.papel-recepcao [data-nota-a]{display:none!import
 @media (max-width:480px){ .ob-esc-l{grid-template-columns:1fr 1fr 44px} .ob-esc-l>b{grid-column:1/-1} }
 /* com conta, a área já foi escolhida ao criar a clínica */
 body.nuvem #ob-la,body.nuvem #ob-la+.chips{display:none!important}
+.invalido{border-color:var(--bad)!important}

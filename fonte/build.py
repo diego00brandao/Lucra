@@ -161,6 +161,7 @@ exec(rd('patches12.py'))
 exec(rd('patches13.py'))
 exec(rd('patches14.py'))
 exec(rd('patches15.py'))
+exec(rd('patches16.py'))
 
 # ── monta o arquivo ──
 body = rd('body.html')

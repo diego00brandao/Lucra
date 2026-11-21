@@ -152,7 +152,9 @@ async def main():
         await espera(a,"syncEst==='ok'")
         cid=await a.evaluate("CONTA.cid")
         assert any(c['nome']=='Paciente Antigo' for c in DB['dados'][cid]['estado']['clientes']), 'não subiu para a nuvem'
-        assert 'Salvo na nuvem' in await a.inner_text('#sync-st')
+        assert await a.locator('#sync-st').count()==0, 'status no topo com tudo certo'
+        await a.evaluate("ir('ajustes')"); await a.wait_for_timeout(300); assert 'Salvo na nuvem' in await a.inner_text('#sync-aj')
+        await a.evaluate("ir('painel')"); await a.wait_for_timeout(200)
         # área fixa
         await a.evaluate("mudaArea('psico')"); assert await a.evaluate("UI.area")=='odonto'
         await a.evaluate("ir('ajustes')"); await a.wait_for_timeout(300)

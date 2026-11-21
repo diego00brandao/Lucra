@@ -262,9 +262,15 @@ setInterval(()=>{ if(renderPendente)renderSeguro() },2500);
 setInterval(()=>{ if(CONTA&&!document.hidden)sincronizar() },30000);
 addEventListener('online',()=>{ if(CONTA)sincronizar() });
 document.addEventListener('visibilitychange',()=>{ if(CONTA&&!document.hidden)sincronizar() });
+let ultSync='';
 function pintaSync(){
   let s=$('#sync-st');
-  if(!CONTA){ if(s)s.remove(); return }
+  if(syncEst==='ok')ultSync=new Date().toTimeString().slice(0,5);
+  const aj=$('#sync-aj');
+  if(aj){ const t={ok:'Salvo na nuvem'+(ultSync?' · às '+ultSync:''),indo:'Sincronizando…',espera:'Salvando…',off:'Sem internet · salvo neste aparelho',erro:'Não sincronizou · tento de novo'}[syncEst]||'Conectando…';
+    aj.textContent=t; aj.className='sync '+({ok:'ok',off:'off',erro:'erro'}[syncEst]||'indo') }
+  /* no topo, só quando tem problema */
+  if(!CONTA||!['off','erro'].includes(syncEst)){ if(s)s.remove(); return }
   if(!s){ const l=$('.logo-tx'); if(!l)return; s=document.createElement('span'); s.id='sync-st'; s.setAttribute('role','status'); l.appendChild(s) }
   const m={ok:['ok','Salvo na nuvem'],indo:['indo','Sincronizando…'],espera:['indo','Salvando…'],off:['off','Sem internet · salvo neste aparelho'],erro:['erro','Não sincronizou · tento de novo']}[syncEst]||['indo','Conectando…'];
   s.className='sync '+m[0]; s.textContent=m[1];
@@ -350,7 +356,8 @@ function secConta(){
   if(!CONTA)return '';
   return `<div class="sec" id="sec-conta"><div class="card"><h2 style="margin-bottom:10px">Sua conta</h2>
     <div class="ficha"><div class="fi-l"><span>E-mail</span><b>${esc(CONTA.email||'')}</b></div><div class="fi-l"><span>Clínica</span><b>${esc(CONTA.clinica||'—')}</b></div>
-      <div class="fi-l"><span>Área</span><b>${AREAS[CONTA.area].n}</b></div><div class="fi-l"><span>Seu papel</span><b>${PAPEL_N[CONTA.papel]}</b></div></div>
+      <div class="fi-l"><span>Área</span><b>${AREAS[CONTA.area].n}</b></div><div class="fi-l"><span>Seu papel</span><b>${PAPEL_N[CONTA.papel]}</b></div>
+      <div class="fi-l"><span>Seus dados</span><b><span id="sync-aj" class="sync" role="status"></span></b></div></div>
     <div class="row" style="margin-top:12px;gap:8px">${CONTA.papel==='dono'?`<button class="btn soft" id="ct-us">${ic('user',16)}Usuários e acessos</button>`:''}
       <button class="btn soft" id="ct-senha">Trocar senha</button><button class="btn danger" id="ct-sair">Sair da conta</button></div></div></div>`;
 }
@@ -363,6 +370,7 @@ posRender=function(el){ _posN(el);
       el.querySelectorAll(':scope > .sec').forEach(s=>{ const h=s.querySelector('h2'); if(!h||!fica.test(h.textContent.trim()))s.remove() }) }
     { const t=el.querySelector('h1'), sb=t&&t.nextElementSibling; if(sb&&sb.classList.contains('sub'))sb.textContent=ehDono()?'Conta, equipe, aparência e regras da clínica':'Sua conta, aparência e WhatsApp' }
     if(!$('#sec-conta')){ const t=el.querySelector('h1'); const sub=t&&t.nextElementSibling&&t.nextElementSibling.classList.contains('sub')?t.nextElementSibling:t; if(sub)sub.insertAdjacentHTML('afterend',secConta()) }
+    pintaSync();
     if($('#ct-sair'))$('#ct-sair').onclick=()=>sairDaConta();
     if($('#ct-us'))$('#ct-us').onclick=()=>ir('usuarios');
     if($('#ct-senha'))$('#ct-senha').onclick=()=>porta('nova');
