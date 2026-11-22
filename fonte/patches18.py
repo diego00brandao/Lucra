@@ -1,5 +1,5 @@
 # ── décima oitava leva: documentos, laboratório, parcelas, convênios, orçamentos, agenda online e satisfação ──
-js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + rd('psi.js') + rd('perio.js') + rd('lgpd.js') + rd('voltar.js') + rd('persistir.js') + """
+js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + rd('psi.js') + rd('pacote.js') + rd('perio.js') + rd('lgpd.js') + rd('voltar.js') + rd('persistir.js') + """
 /* transferência não tem taxa; entrada sem procedimento (parcela, convênio) mostra a descrição.
    As contas originais ficam intactas: só embrulhamos. */
 const _taxaDeT=taxaDe; taxaDe=function(f,p){ return f==='transf'?0:_taxaDeT(f,p) };

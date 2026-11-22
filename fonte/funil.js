@@ -45,7 +45,7 @@ T.orcamentos=function(el){
 };
 function fechouOrc(o){ const t=calcOrc(o), c=cli(o.clienteId);
   const lanca=()=>{ o.itens.forEach(i=>{ if(!serv(i.servicoId))return;
-      S.vendas.push({id:uid(),data:hojeISO(),servicoId:i.servicoId,valor:Math.round(num(i.valor)*t.f*100)/100,forma:o.forma,parcelas:o.forma==='parc'?o.parcelas:1,sessoes:i.sessoes,usadas:[],desloc:0,clienteId:o.clienteId||'',cliente:c?c.nome:''}) });
+      S.vendas.push({id:uid(),data:hojeISO(),servicoId:i.servicoId,valor:Math.round(num(i.valor)*t.f*100)/100,forma:o.forma,parcelas:o.forma==='parc'?o.parcelas:1,sessoes:i.sessoes,usadas:[],desloc:0,pagoConf:1,clienteId:o.clienteId||'',cliente:c?c.nome:''}) });
     o.status='fechado'; o.decidido=hojeISO(); mesSel=mesAtual(); salvar(); toast('Lançado no caixa'); render() };
   if(!temPlano()||!o.clienteId)return confirmar('Fechou!',`Isso lança <b>${brl(t.total)}</b> no caixa com a data de hoje.`,'Lançar no caixa',lanca);
   abrirSheet('Fechou!',`${esc(c?c.nome:'')} · ${brl(t.total)}`,`<p class="conf-tx">Como você quer seguir?</p>

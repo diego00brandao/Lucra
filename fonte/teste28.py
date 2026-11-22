@@ -29,9 +29,7 @@ async def main():
         await pg.evaluate(f"cli('{cid}').tel='11955554444';salvar();render()"); await pg.wait_for_timeout(300)
         await pg.click(f'[data-fc-zap="{cid}"]'); await pg.wait_for_timeout(300)
         assert abriu and 'crys%40pix.com' in abriu[-1], abriu[-1:]
-        await pg.click(f'[data-fc-fat="{cid}"]'); await pg.wait_for_timeout(300)
-        t=await pg.inner_text('#impressao'); assert 'Fatura' in t and 'A pagar' in t and 'crys@pix.com' in t, t[:300]
-        await pg.evaluate("document.body.classList.remove('imprime')")
+        assert await pg.locator('[data-fc-fat]').count()==0
         await pg.click('#fc-lote'); await pg.wait_for_timeout(400); await pg.click('.sheet .btn.pri'); await pg.wait_for_timeout(400)
         n=await pg.locator('#impressao .lote-pg').count(); assert n>=2, n
         assert await pg.locator('#impressao .lote-pg .recibo').count()==n

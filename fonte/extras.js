@@ -195,7 +195,7 @@ function telaOrc(el,x){
     confirmar('A cliente fechou?',`Isso lança <b>${brl(t.total)}</b> no Caixa com a data de hoje. Pacotes entram com todas as sessões ainda por fazer.`,'Lançar no Caixa',()=>{
       o.itens.forEach(i=>{ if(!serv(i.servicoId))return;
         S.vendas.push({id:uid(),data:hojeISO(),servicoId:i.servicoId,valor:Math.round(num(i.valor)*t.f*100)/100,forma:o.forma,
-          parcelas:o.forma==='parc'?o.parcelas:1,sessoes:i.sessoes,usadas:[],desloc:0,clienteId:o.clienteId||'',cliente:c?c.nome:''}) });
+          parcelas:o.forma==='parc'?o.parcelas:1,sessoes:i.sessoes,usadas:[],desloc:0,pagoConf:1,clienteId:o.clienteId||'',cliente:c?c.nome:''}) });
       o.status='fechado'; mesSel=mesAtual(); salvar(); toast('Lançado no Caixa'); render() }) });
   document.querySelectorAll('[data-o-apaga]').forEach(b=>b.onclick=()=>{ const id=b.dataset.oApaga;
     confirmar('Excluir este orçamento?','Só o orçamento é apagado. O que já foi lançado no Caixa continua lá.','Excluir',

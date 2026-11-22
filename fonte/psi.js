@@ -195,8 +195,6 @@ T.fechamento=function(el){ _fchT(el); const mes=fchMes, p=S.perfil||{};
   const top=el.querySelector('.kpis'); if(top)top.insertAdjacentHTML('afterend',`<div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn soft" id="fc-lote">${ic('file',16)}Recibos de todos do mês</button>
     ${p.pix?'':`<small class="sub" style="align-self:center">Cadastre sua chave Pix em Configurações para ela ir nas cobranças.</small>`}</div>`);
   if($('#fc-lote'))$('#fc-lote').onclick=()=>recibosLote(mes);
-  el.querySelectorAll('[data-fc-zap]').forEach(b=>{ const id=b.dataset.fcZap; b.insertAdjacentHTML('afterend',`<button class="btn sm soft" data-fc-fat="${id}">Fatura</button>`) });
-  el.querySelectorAll('[data-fc-fat]').forEach(b=>b.onclick=()=>imprimir(faturaHTML(b.dataset.fcFat,mes)));
 };
 
 /* ── contato de emergência (psicologia) ── */
