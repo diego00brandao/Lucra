@@ -134,15 +134,15 @@ async def main():
         await pg.click('#h-rec'); await pg.wait_for_timeout(500)
         await pg.fill('#rb-cpf','123.456.789-00'); await pg.wait_for_timeout(200)
         rt=await pg.inner_text('#rb-prev'); print(rt)
-        assert '23/11/2026' not in rt and 'ANA RIBEIRO' in rt and '123.456.789-00' in rt and 'Atendimento no dia' in rt and 'psicoterapêuticos' in rt and 'Pagador' in rt, rt
+        assert '23/11/2026' not in rt and 'ANA RIBEIRO' in rt and '123.456.789-00' in rt and ('Atendimento no dia' in rt or 'Pacote de' in rt) and 'psicoterapêuticos' in rt and 'Pagador' in rt, rt
         await pg.fill('#rb-n','Laerte Teste'); await pg.fill('#rb-d','229.211.058-02'); await pg.fill('#rb-r','06/146968'); await pg.wait_for_timeout(200)
         rt=await pg.inner_text('#rb-prev'); assert 'LAERTE TESTE' in rt and 'Psicólogo(a) - 06/146968' in rt and 'por 229.211.058-02' in rt, rt
         assert await pg.evaluate("S.perfil.registro")=='06/146968'
         await pg.screenshot(path=f'{SH}/99-recibo.png'); await checa(pg,'recibo')
         await pg.click('#rb-pr'); await pg.wait_for_timeout(300)
-        assert 'Atendimento no dia' in (await pg.evaluate('window.__printed||""')) and await pg.evaluate("S.clientes[0].cpf")=='123.456.789-00'
+        pr=await pg.evaluate('window.__printed||""'); assert ('Atendimento no dia' in pr or 'Pacote de' in pr) and await pg.evaluate("S.clientes[0].cpf")=='123.456.789-00'
         await pg.click('#rb-zap'); await pg.wait_for_timeout(300)
-        h=U.unquote((await pg.evaluate('window.__hrefs'))[-1]); assert '*RECIBO*' in h and 'ANA RIBEIRO' in h and 'Atendimento no dia' in h, h
+        h=U.unquote((await pg.evaluate('window.__hrefs'))[-1]); assert '*RECIBO*' in h and 'ANA RIBEIRO' in h and ('Atendimento no dia' in h or 'Pacote de' in h), h
         await pg.keyboard.press('Escape'); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(400)
         # ajustes: dados, troca de área e volta
         await pg.evaluate("ir('ajustes')"); await pg.wait_for_timeout(400); await checa(pg,'ajustes psico')

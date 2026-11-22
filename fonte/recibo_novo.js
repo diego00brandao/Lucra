@@ -2,12 +2,12 @@ const dataLonga=iso=>{ const [a,m,d]=iso.split('-'); return `${+d} de ${MESES[+m
 const dataCheia=iso=>{ const [a,m,d]=String(iso).split('-'); return `${d}/${m}/${a}` };
 const PROFISSAO={estetica:'',odonto:'Cirurgião-dentista',psico:'Psicólogo(a)'};
 const DESCR={estetica:'procedimentos estéticos',odonto:'atendimentos odontológicos',psico:'atendimentos psicoterapêuticos'};
-/* uma linha por sessão do mês: avulsa pelo valor pago, pacote pelo valor de cada sessão */
+/* uma linha por pagamento do mês: sessão avulsa pelo dia, pacote inteiro no mês em que foi pago */
 function linhasRecibo(cid,mes){
   const hj=hojeISO(), ls=[];
   S.vendas.filter(v=>v.clienteId===cid).forEach(v=>{ const k=conta(v); if(k.estornado&&k.devolvido>=k.bruto)return;
     const fator=k.bruto?(k.bruto-k.devolvido)/k.bruto:1;
-    if(k.sessoes>1)(v.usadas||[]).forEach(d=>{ if(mesDe(d)===mes&&d<=hj)ls.push({data:d,valor:k.porSessao*fator}) });
+    if(k.sessoes>1){ if(mesDe(v.data)===mes)ls.push({data:v.data,valor:k.bruto*fator,desc:`Pacote de ${k.sessoes} sessões pago em ${dataCheia(v.data)}`}) }
     else { const d=v.sessao||v.data; if(mesDe(d)===mes)ls.push({data:d,valor:k.bruto*fator}) } });
   return ls.sort((a,b)=>a.data.localeCompare(b.data));
 }
@@ -25,7 +25,7 @@ function reciboHTML(cid,mes,cpf){
     ${bloco('Profissional',[esc(p.doc||''),esc((p.nome||UI.clinica||'Nome do profissional').toUpperCase()),esc(prof),esc([p.endereco,p.cidade].filter(Boolean).join(' · '))])}
     <div class="rc-b"><span class="rc-l">Data do atendimento e descrição</span>
       <span>Correspondente a ${DESCR[ar]} conforme abaixo</span>
-      <div class="rc-lin">${r.linhas.length?r.linhas.map(l=>`<span>Atendimento no dia ${dataCheia(l.data)} - ${brl(l.valor)}</span>`).join(''):`<span>Nenhum atendimento pago em ${mesNome(mes)}</span>`}</div>
+      <div class="rc-lin">${r.linhas.length?r.linhas.map(l=>`<span>${l.desc?esc(l.desc):'Atendimento no dia '+dataCheia(l.data)} - ${brl(l.valor)}</span>`).join(''):`<span>Nenhum atendimento pago em ${mesNome(mes)}</span>`}</div>
       <span class="rc-ext">Total: ${brl(r.total)} (${extenso(r.total)})</span></div>
     ${bloco('Emissão',[`${dataCheia(hojeISO())}${p.doc?' por '+esc(p.doc):''}`])}
     ${p.assinatura?`<div class="rc-ass"><img src="${p.assinatura}" alt="Assinatura do profissional"><span></span><small>${esc(p.nome||'')}</small></div>`:''}
@@ -46,7 +46,7 @@ function imprimir(html){
 }
 function recibo(cid){
   const c=cli(cid); if(!c)return;
-  const meses=[...new Set(S.vendas.filter(v=>v.clienteId===cid).flatMap(v=>[mesDe(v.sessao||v.data)].concat((v.usadas||[]).map(mesDe))))].sort().reverse();
+  const meses=[...new Set(S.vendas.filter(v=>v.clienteId===cid).flatMap(v=>[mesDe(Math.max(1,parseInt(v.sessoes)||1)>1?v.data:(v.sessao||v.data))]))].sort().reverse();
   if(!meses.length)return toast('Ainda não há pagamento para gerar recibo');
   const p=S.perfil||{}, falta=!p.nome||!p.doc, ar=area();
   abrirSheet('Recibo',esc(c.nome),
