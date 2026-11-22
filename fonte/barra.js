@@ -6,7 +6,7 @@ function gruposMenu(){
   document.querySelectorAll('#menu ul > li').forEach(li=>{
     if(li.classList.contains('nav-grupo')){ g={nome:li.textContent.trim(),itens:[]}; gs.push(g); return }
     const b=li.querySelector('button'); if(!g||!b||li.hidden)return;
-    g.itens.push({t:b.dataset.t||'',id:b.id||'',rot:b.querySelector('.rot').textContent,ico:b.querySelector('.ico').innerHTML}) });
+    g.itens.push({t:b.dataset.t||'',id:b.id||'',rot:b.querySelector('.rot').textContent,ico:b.querySelector('.ico').innerHTML,cad:b.querySelector('.cad')?b.querySelector('.cad').textContent:''}) });
   return gs.filter(x=>x.itens.length);
 }
 const ICO_GRUPO={'Analítico':'<path d="M4 20h16"/><rect x="5" y="12" width="3.5" height="5" rx="1"/><rect x="10.25" y="8" width="3.5" height="9" rx="1"/><rect x="15.5" y="4.5" width="3.5" height="12.5" rx="1"/>',
@@ -25,7 +25,7 @@ function abreGrupo(g){
   const vai=x=>{ if(x.id==='b-sair')return sair(); ir(x.t) };
   if(g.itens.length===1)return vai(g.itens[0]);
   abrirSheet(g.nome,'',`<div class="grupo-l">${g.itens.map((x,i)=>`<button type="button" data-gi="${i}" ${x.t&&x.t===tela?'aria-current="true"':''}>
-      <span class="ico">${x.ico}</span><span>${esc(x.rot)}</span>${ic('right',18)}</button>`).join('')}</div>`,
+      <span class="ico">${x.ico}</span><span>${esc(x.rot)}</span>${x.cad?`<span class="cad">${esc(x.cad)}</span>`:''}${ic('right',18)}</button>`).join('')}</div>`,
     fechar=>document.querySelectorAll('.sheet [data-gi]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>vai(g.itens[+b.dataset.gi]),180) }));
 }
 const _marcaB=marcaMenu;

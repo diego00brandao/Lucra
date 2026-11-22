@@ -64,7 +64,7 @@ function perioHTML(p,ant){ const c=cli(p.clienteId), r=resumoPerio(p), pf=S.perf
     <div class="rc-ass">${assProfImg()}<span></span><small>${esc(pf.nome||'Profissional')}${pf.registro?' · CRO '+esc(pf.registro):''}</small></div></div>` }
 /* na ficha, junto do odontograma */
 const _topoPr=topoHist, _ligaPr=ligarTopoHist;
-topoHist=c=>{ let h=_topoPr(c); if(area()!=='odonto'||!podeClinico())return h; const ps=periosDe(c.id), u=ps[ps.length-1], r=u&&resumoPerio(u);
+topoHist=c=>{ let h=_topoPr(c); if(area()!=='odonto'||!podeClinico()||!temRecurso('prontuario'))return h; const ps=periosDe(c.id), u=ps[ps.length-1], r=u&&resumoPerio(u);
   return h+`<div class="sec"><div class="sec-top"><h2>Periograma</h2>${u?`<span class="pill ${r.sang>=30||r.b6?'bad':r.b4?'war':'ok'}">${r.sang.toFixed(0)}% sangra</span>`:''}</div><div class="card">
     ${ps.slice(-3).reverse().map(p=>{ const x=resumoPerio(p); return `<button type="button" class="item pr-it" data-pr-ex="${p.id}"><div class="mn"><b>${dataBR(p.data)}</b><small>${x.dentes} dentes · sangramento ${x.sang.toFixed(0)}% · ${x.b4} bolsa(s) ≥ 4 mm</small></div>${ic('right',18)}</button>` }).join('')}
     <button class="btn sm ${u?'soft':'pri'}" id="h-pr" style="margin-top:${u?8:0}px">${ic('plus',16)}Novo periograma</button></div></div>` };

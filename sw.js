@@ -1,5 +1,5 @@
 /* Lucra · service worker: guarda o app no aparelho para abrir sem internet */
-const V='lucra-ba23224394';
+const V='lucra-923a882528';
 const BASE=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./apple-touch-icon.png'];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(V).then(c=>c.addAll(BASE)).then(()=>self.skipWaiting())) });
 self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim())) });

@@ -12,7 +12,7 @@ const TIPOS_DOC={
   laudo:{n:'Laudo psicológico',areas:['psico'],modelo:1},
   parecer:{n:'Parecer psicológico',areas:['psico'],modelo:1}};
 const ASSINA=['termo','contrato'];
-const tiposDoc=()=>Object.keys(TIPOS_DOC).filter(k=>TIPOS_DOC[k].areas.includes(area()));
+const tiposDoc=()=>typeof temRecurso==='function'&&!temRecurso('documentos')?[]:Object.keys(TIPOS_DOC).filter(k=>TIPOS_DOC[k].areas.includes(area()));
 const docsDe=cid=>(S.documentos||[]).filter(d=>d.clienteId===cid).sort((a,b)=>b.data.localeCompare(a.data)||String(b.id).localeCompare(String(a.id)));
 const TERMO_PAD='Eu, {paciente}{cpf}, declaro que fui informado(a) de forma clara sobre o procedimento {procedimento}: seus objetivos, benefícios, riscos, cuidados antes e depois, e as alternativas de tratamento.\n\nTive a oportunidade de fazer perguntas e todas foram respondidas. Estou ciente de que o resultado pode variar de pessoa para pessoa e de que devo seguir as orientações recebidas.\n\nAutorizo a realização do procedimento e o registro de fotos para acompanhamento clínico, que não serão divulgadas sem a minha autorização. Sei que posso retirar este consentimento a qualquer momento.';
 const modelosDoc=t=>(S.modelosDoc||[]).filter(m=>m.tipo===t);

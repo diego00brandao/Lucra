@@ -1,7 +1,7 @@
 /* ══════════ PLANO DE TRATAMENTO E ODONTOGRAMA ══════════
    Plano: etapas em ordem, cada uma com dente/região, valor e situação (a fazer, agendada, feita).
    Odontograma: situação de cada dente; tocar no dente já põe o procedimento no plano. */
-const temPlano=()=>area()==='odonto'||area()==='estetica';
+const temPlano=()=>(area()==='odonto'||area()==='estetica')&&(typeof temRecurso!=='function'||temRecurso('prontuario'));
 const planosDe=cid=>(S.planos||[]).filter(p=>p.clienteId===cid);
 const ETAPA_ST={pendente:['A fazer',''],agendado:['Agendada','ac'],feito:['Feita','ok']};
 function arrumaEtapas(p){   /* agendamento apagado, cancelado ou falta: a etapa volta para "a fazer" */

@@ -1102,6 +1102,17 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .pt-links .lnk{margin:0}
 .pt-links .lnk:only-child{margin:0 auto}
 .a-pac{margin:4px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--ac-soft)}
+/* planos */
+#menu button.bloq .rot{opacity:.65}
+#menu .cad,.grupo-l .cad{margin-left:auto;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--ac-soft);color:var(--ac);white-space:nowrap}
+.pl-lista{margin:8px 0 0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.pl-grid{display:grid;gap:10px;margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.pl-c{border:1px solid var(--line);border-radius:var(--r-s);padding:12px;display:grid;gap:4px;align-content:start}
+.pl-c.atual{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac) inset}
+.pl-p{font-size:20px;font-weight:700}.pl-p small{font-size:12px;font-weight:500;color:var(--tx3)}
+.pl-trava{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.pl-trava span{flex:1;display:grid}.pl-trava small{color:var(--tx3)}
+.grupo-l .cad{margin-left:auto}
 </style>
 </head>
 <body>
@@ -2969,7 +2980,7 @@ function ligarMsgs(){
 const MODS={equipe:['Equipe e comissões','Quem atendeu cada cliente e quanto repassar de comissão.',()=>S.equipe.length>0],
   estoque:['Estoque de produtos','Quantidade de cada produto e aviso quando estiver acabando.',()=>S.produtos.length>0],
   contas:['Contas a pagar','Boletos e contas com vencimento, com aviso na semana.',()=>S.contas.length>0]};
-const modOn=k=>k==='estoque'&&area()==='psico'?false:UI.mod[k]!=null?!!UI.mod[k]:MODS[k][2]();
+const modOn=k=>k==='estoque'&&area()==='psico'?false:(k==='estoque'||k==='equipe')&&typeof temRecurso==='function'&&!temRecurso(k)?false:UI.mod[k]!=null?!!UI.mod[k]:MODS[k][2]();
 function secMods(){
   return `<div class="sec"><div class="card">
     <h2 style="margin-bottom:4px">O que aparece no app</h2>
@@ -4160,7 +4171,7 @@ T.caixa=function(el){
 IC.alert='<path d="M12 4 2.8 19.5h18.4Z"/><path d="M12 10v4.200M12 16.900h.010"/>';
 /* ══════════ PRONTUÁRIO E ANAMNESE (odontologia e estética) ══════════
    Psicologia continua com as anotações de sessão próprias. */
-const temPront=()=>(area()==='odonto'||area()==='estetica')&&podeClinico();
+const temPront=()=>(area()==='odonto'||area()==='estetica')&&podeClinico()&&(typeof temRecurso!=='function'||temRecurso('prontuario'));
 /* perguntas de saúde; "al" = vira alerta quando a resposta é sim */
 const ANAM={
   odonto:[
@@ -4328,6 +4339,8 @@ function msgErro(e){
   const m=String(e&&e.message||'');
   if(e&&e.rede)return 'Sem conexão com a internet. Confira e tente de novo.';
   if(/Invalid login/i.test(m))return 'E-mail ou senha não conferem.';
+  if(/limite_plano/.test(m))return 'Seu plano já está com o número máximo de pessoas na equipe.';
+  if(/so_premium/.test(m))return 'Várias unidades fazem parte do plano Premium.';
   if(/not confirmed/i.test(m))return 'Falta confirmar o e-mail: abra o link que enviamos para você.';
   if(/already registered|already been registered|user_already_exists/i.test(m))return 'Já existe uma conta com esse e-mail. Entre com a sua senha.';
   if(/at least 6|weak_password|Password should/i.test(m))return 'A senha precisa ter pelo menos 6 caracteres.';
@@ -4430,7 +4443,7 @@ function criarClinica(aviso,nova){
       const levar=!nova&&$('#cc-levar')&&$('#cc-levar').checked?dadosDoAparelho(ar):null;
       $('#cc-ok').disabled=true; $('#cc-ok').textContent='Criando…';
       try{ const novoId=await rpc(nova?'criar_unidade':'criar_clinica',{p_nome:nome,p_area:ar,p_pessoa:voce}); gravarJ('lucra:nome-novo',null); entrar({importar:levar,cid:novoId}) }
-      catch(err){ aviso=/criar_unidade|PGRST202/.test(String(err.message))?'Falta rodar o script unidades.sql no Supabase.':msgErro(err); $('#cc-ok').disabled=false; pinta() }
+      catch(err){ aviso=/criar_unidade|PGRST202/.test(String(err.message))?'Falta rodar o script unidades.sql no Supabase.':/so_premium/.test(String(err.message))?'Várias unidades fazem parte do plano Premium.':msgErro(err); $('#cc-ok').disabled=false; pinta() }
     };
   };
   pinta();
@@ -4460,13 +4473,14 @@ async function entrar(op){
     await rpc('aceitar_convites');
     const ms=(await api(`/rest/v1/membros?select=clinica_id,papel,nome,email&user_id=eq.${SES.user.id}`))||[];
     if(!ms.length)return criarClinica();
-    const cs=(await Promise.all(ms.map(x=>api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${x.clinica_id}`).then(r=>(r||[])[0]).catch(()=>null)))).filter(Boolean);
-    const uns=ms.map(x=>{ const c=cs.find(z=>z.id===x.clinica_id); return c&&{cid:c.id,nome:c.nome,area:c.area,papel:x.papel} }).filter(Boolean);
+    const busca=id=>api(`/rest/v1/clinicas?select=id,nome,area,plano&id=eq.${id}`).catch(()=>api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${id}`)).then(r=>(r||[])[0]).catch(()=>null);
+    const cs=(await Promise.all(ms.map(x=>busca(x.clinica_id)))).filter(Boolean);
+    const uns=ms.map(x=>{ const c=cs.find(z=>z.id===x.clinica_id); return c&&{cid:c.id,nome:c.nome,area:c.area,plano:c.plano||'premium',papel:x.papel} }).filter(Boolean);
     if(!uns.length)return criarClinica();
     const pref=op.cid||lerJ('lucra:unidade:'+SES.user.id);
     if(uns.length>1&&!uns.some(u=>u.cid===pref))return escolherUnidade(uns);
     const u=uns.find(z=>z.cid===pref)||uns[0], m=ms.find(x=>x.clinica_id===u.cid);
-    conta={cid:u.cid,area:u.area,clinica:u.nome,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id,unidades:uns};
+    conta={cid:u.cid,area:u.area,clinica:u.nome,plano:u.plano,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id,unidades:uns};
     gravarJ(K_CONTA,conta); gravarJ('lucra:unidade:'+SES.user.id,u.cid);
   }catch(e){
     if(e.status===401){ sairDaConta(true,'A sessão expirou. Entre de novo.'); return }
@@ -4804,7 +4818,7 @@ function gruposMenu(){
   document.querySelectorAll('#menu ul > li').forEach(li=>{
     if(li.classList.contains('nav-grupo')){ g={nome:li.textContent.trim(),itens:[]}; gs.push(g); return }
     const b=li.querySelector('button'); if(!g||!b||li.hidden)return;
-    g.itens.push({t:b.dataset.t||'',id:b.id||'',rot:b.querySelector('.rot').textContent,ico:b.querySelector('.ico').innerHTML}) });
+    g.itens.push({t:b.dataset.t||'',id:b.id||'',rot:b.querySelector('.rot').textContent,ico:b.querySelector('.ico').innerHTML,cad:b.querySelector('.cad')?b.querySelector('.cad').textContent:''}) });
   return gs.filter(x=>x.itens.length);
 }
 const ICO_GRUPO={'Analítico':'<path d="M4 20h16"/><rect x="5" y="12" width="3.5" height="5" rx="1"/><rect x="10.25" y="8" width="3.5" height="9" rx="1"/><rect x="15.5" y="4.5" width="3.5" height="12.5" rx="1"/>',
@@ -4823,7 +4837,7 @@ function abreGrupo(g){
   const vai=x=>{ if(x.id==='b-sair')return sair(); ir(x.t) };
   if(g.itens.length===1)return vai(g.itens[0]);
   abrirSheet(g.nome,'',`<div class="grupo-l">${g.itens.map((x,i)=>`<button type="button" data-gi="${i}" ${x.t&&x.t===tela?'aria-current="true"':''}>
-      <span class="ico">${x.ico}</span><span>${esc(x.rot)}</span>${ic('right',18)}</button>`).join('')}</div>`,
+      <span class="ico">${x.ico}</span><span>${esc(x.rot)}</span>${x.cad?`<span class="cad">${esc(x.cad)}</span>`:''}${ic('right',18)}</button>`).join('')}</div>`,
     fechar=>document.querySelectorAll('.sheet [data-gi]').forEach(b=>b.onclick=()=>{ fechar(); setTimeout(()=>vai(g.itens[+b.dataset.gi]),180) }));
 }
 const _marcaB=marcaMenu;
@@ -4918,7 +4932,7 @@ T.hoje=function(el){
 /* ══════════ PLANO DE TRATAMENTO E ODONTOGRAMA ══════════
    Plano: etapas em ordem, cada uma com dente/região, valor e situação (a fazer, agendada, feita).
    Odontograma: situação de cada dente; tocar no dente já põe o procedimento no plano. */
-const temPlano=()=>area()==='odonto'||area()==='estetica';
+const temPlano=()=>(area()==='odonto'||area()==='estetica')&&(typeof temRecurso!=='function'||temRecurso('prontuario'));
 const planosDe=cid=>(S.planos||[]).filter(p=>p.clienteId===cid);
 const ETAPA_ST={pendente:['A fazer',''],agendado:['Agendada','ac'],feito:['Feita','ok']};
 function arrumaEtapas(p){   /* agendamento apagado, cancelado ou falta: a etapa volta para "a fazer" */
@@ -5303,7 +5317,7 @@ const TIPOS_DOC={
   laudo:{n:'Laudo psicológico',areas:['psico'],modelo:1},
   parecer:{n:'Parecer psicológico',areas:['psico'],modelo:1}};
 const ASSINA=['termo','contrato'];
-const tiposDoc=()=>Object.keys(TIPOS_DOC).filter(k=>TIPOS_DOC[k].areas.includes(area()));
+const tiposDoc=()=>typeof temRecurso==='function'&&!temRecurso('documentos')?[]:Object.keys(TIPOS_DOC).filter(k=>TIPOS_DOC[k].areas.includes(area()));
 const docsDe=cid=>(S.documentos||[]).filter(d=>d.clienteId===cid).sort((a,b)=>b.data.localeCompare(a.data)||String(b.id).localeCompare(String(a.id)));
 const TERMO_PAD='Eu, {paciente}{cpf}, declaro que fui informado(a) de forma clara sobre o procedimento {procedimento}: seus objetivos, benefícios, riscos, cuidados antes e depois, e as alternativas de tratamento.\n\nTive a oportunidade de fazer perguntas e todas foram respondidas. Estou ciente de que o resultado pode variar de pessoa para pessoa e de que devo seguir as orientações recebidas.\n\nAutorizo a realização do procedimento e o registro de fotos para acompanhamento clínico, que não serão divulgadas sem a minha autorização. Sei que posso retirar este consentimento a qualquer momento.';
 const modelosDoc=t=>(S.modelosDoc||[]).filter(m=>m.tipo===t);
@@ -6433,7 +6447,7 @@ function perioHTML(p,ant){ const c=cli(p.clienteId), r=resumoPerio(p), pf=S.perf
     <div class="rc-ass">${assProfImg()}<span></span><small>${esc(pf.nome||'Profissional')}${pf.registro?' · CRO '+esc(pf.registro):''}</small></div></div>` }
 /* na ficha, junto do odontograma */
 const _topoPr=topoHist, _ligaPr=ligarTopoHist;
-topoHist=c=>{ let h=_topoPr(c); if(area()!=='odonto'||!podeClinico())return h; const ps=periosDe(c.id), u=ps[ps.length-1], r=u&&resumoPerio(u);
+topoHist=c=>{ let h=_topoPr(c); if(area()!=='odonto'||!podeClinico()||!temRecurso('prontuario'))return h; const ps=periosDe(c.id), u=ps[ps.length-1], r=u&&resumoPerio(u);
   return h+`<div class="sec"><div class="sec-top"><h2>Periograma</h2>${u?`<span class="pill ${r.sang>=30||r.b6?'bad':r.b4?'war':'ok'}">${r.sang.toFixed(0)}% sangra</span>`:''}</div><div class="card">
     ${ps.slice(-3).reverse().map(p=>{ const x=resumoPerio(p); return `<button type="button" class="item pr-it" data-pr-ex="${p.id}"><div class="mn"><b>${dataBR(p.data)}</b><small>${x.dentes} dentes · sangramento ${x.sang.toFixed(0)}% · ${x.b4} bolsa(s) ≥ 4 mm</small></div>${ic('right',18)}</button>` }).join('')}
     <button class="btn sm ${u?'soft':'pri'}" id="h-pr" style="margin-top:${u?8:0}px">${ic('plus',16)}Novo periograma</button></div></div>` };
@@ -6565,6 +6579,63 @@ ativar=function(conta,op){
   render() };
 const _aplParteP=aplicaParte;
 aplicaParte=function(p,est){ _aplParteP(p,est); if(p==='dados'&&S.mods&&typeof S.mods==='object'&&Object.keys(S.mods).length&&!igual(UI.mod,S.mods)){ UI.mod=Object.assign({},S.mods); _salvarUIP() } };
+/* ══════════ PLANOS: Básico, Médio e Premium ══════════
+   O plano vem da clínica no servidor (só o administrador muda). Sem login, ou antes de rodar planos.sql,
+   tudo fica liberado. Para ver como fica cada plano: ?plano=basico, ?plano=medio ou ?plano=premium no endereço. */
+const PLANOS={
+  basico:{n:'Básico',preco:'R$ 39,90',depois:'R$ 59,90',itens:['Agenda, retornos e pacientes','Valor do atendimento com o lucro real','Saídas, caixa do dia, painel e lucro','Recibo e informe para o IR','Só você (sem equipe)']},
+  medio:{n:'Médio',preco:'R$ 79,90',depois:'R$ 99,90',itens:['Tudo do Básico','Pacotes de sessões','Lembretes e cobranças pelo WhatsApp','Agenda online por link','Documentos com assinatura e modelos','Prontuário, anamnese, odontograma e plano de tratamento','Orçamentos, convênios, laboratório e estoque','Equipe com até 3 pessoas e comissões']},
+  premium:{n:'Premium',preco:'a definir',depois:'',itens:['Tudo do Médio','Equipe sem limite','Várias unidades','Inteligência artificial (em breve)']}};
+const ORDEM_PL=['basico','medio','premium'];
+const RECURSO_PL={orcamentos:'medio',sim:'medio',ocupacao:'medio',lab:'medio',convenios:'medio',online:'medio',fechamento:'medio',usuarios:'medio',
+  documentos:'medio',prontuario:'medio',pacotes:'medio',whatsapp:'medio',equipe:'medio',estoque:'medio',unidades:'premium',ia:'premium'};
+const NOME_REC={orcamentos:'Orçamentos',sim:'Simulador e orçamentos',ocupacao:'Ocupação da agenda',lab:'Laboratório',convenios:'Convênios',online:'Agenda online',fechamento:'Fechamento do mês',usuarios:'Equipe',
+  documentos:'Documentos com assinatura',prontuario:'Prontuário e ficha clínica',pacotes:'Pacotes de sessões',whatsapp:'Mensagens pelo WhatsApp',equipe:'Equipe',estoque:'Estoque',unidades:'Várias unidades',ia:'Inteligência artificial'};
+function planoAtual(){ let q=''; try{ q=new URLSearchParams(location.search).get('plano')||'' }catch(e){}
+  if(ORDEM_PL.includes(q))return q;
+  return typeof CONTA!=='undefined'&&CONTA&&ORDEM_PL.includes(CONTA.plano)?CONTA.plano:'premium' }
+function temRecurso(k){ const min=RECURSO_PL[k]; return !min||ORDEM_PL.indexOf(planoAtual())>=ORDEM_PL.indexOf(min) }
+const limiteEquipe=()=>({basico:1,medio:3,premium:1000})[planoAtual()];
+function planoSheet(k){ const min=RECURSO_PL[k]||'medio', p=PLANOS[min];
+  abrirSheet(`${NOME_REC[k]||'Este recurso'} · plano ${p.n}`,`Você está no plano ${PLANOS[planoAtual()].n}`,
+    `<p class="conf-tx">Isso faz parte do plano <b>${p.n}</b>${p.preco!=='a definir'?` (${p.preco} por mês nos 3 primeiros meses, depois ${p.depois})`:''}.</p>
+     <ul class="pl-lista">${p.itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>
+     <button class="btn pri full" id="pl-ver" style="margin-top:14px">Ver os planos</button>`,fechar=>{ $('#pl-ver').onclick=()=>{ fechar(); setTimeout(()=>{ ir('ajustes'); setTimeout(()=>{ const e=$('#sec-plano'); if(e)e.scrollIntoView({block:'start'}) },150) },220) } }) }
+
+/* telas: aparecem com um cadeado; ao tocar, mostra o plano */
+const _irPn=ir;
+ir=function(t){ if(RECURSO_PL[t]&&!temRecurso(t))return planoSheet(t); return _irPn.apply(this,arguments) };
+const _aplNavPn=aplicaNav;
+aplicaNav=function(){ _aplNavPn(); document.querySelectorAll('#menu button[data-t]').forEach(b=>{ const t=b.dataset.t, bl=RECURSO_PL[t]&&!temRecurso(t);
+  b.classList.toggle('bloq',!!bl); let c=b.querySelector('.cad'); if(bl&&!c)b.insertAdjacentHTML('beforeend',`<span class="cad" aria-label="plano ${PLANOS[RECURSO_PL[t]].n}">${PLANOS[RECURSO_PL[t]].n}</span>`); if(!bl&&c)c.remove() });
+  if(typeof pintaBarra==='function')pintaBarra() };
+/* WhatsApp, pacotes, documentos, prontuário */
+const _zapAbrirPn=zapAbrir;
+zapAbrir=function(u){ if(!temRecurso('whatsapp'))return planoSheet('whatsapp'); return _zapAbrirPn(u) };
+const _secPsiPn=secPsiFicha;
+secPsiFicha=function(cid){ return temRecurso('prontuario')?_secPsiPn(cid):'' };
+const _topoPn=topoHist;
+topoHist=c=>{ const h=_topoPn(c); if(temRecurso('prontuario')&&temRecurso('documentos'))return h;
+  return h+`<div class="sec"><button type="button" class="card pl-trava" id="h-pl-trava">${ic('file',18)}<span><b>Prontuário, documentos e mais</b><small>Disponível no plano Médio</small></span>${ic('right',18)}</button></div>` };
+const _ligaPn=ligarTopoHist;
+ligarTopoHist=function(id,fechar){ _ligaPn(id,fechar); if($("#h-pl-trava"))$("#h-pl-trava").onclick=()=>{ fechar(); setTimeout(()=>planoSheet('prontuario'),260) } };
+/* pacote: no Básico, o atendimento é sempre avulso */
+const _posRenderPn=posRender;
+posRender=function(el){ _posRenderPn(el);
+  if(!temRecurso('pacotes')){ const s=$('#f-sess'); if(s){ s.value='1'; const f=s.closest('.field'); if(f)f.hidden=true }
+    const b=$('#a-pac-box'); if(b){ b.remove() } }
+  if(tela==='ajustes'&&!$('#sec-plano')&&typeof CONTA!=='undefined'&&CONTA&&ehDono()){ const pa=planoAtual();
+    const html=`<div class="sec" id="sec-plano"><div class="card"><div class="row" style="justify-content:space-between;gap:8px"><h2>Seu plano</h2><span class="pill ok">${PLANOS[pa].n}</span></div>
+      <div class="pl-grid">${ORDEM_PL.map(k=>`<div class="pl-c ${k===pa?'atual':''}"><b>${PLANOS[k].n}</b><span class="pl-p">${PLANOS[k].preco}${PLANOS[k].preco!=='a definir'?'<small>/mês</small>':''}</span>
+        ${PLANOS[k].depois?`<small class="sub">nos 3 primeiros meses, depois ${PLANOS[k].depois}</small>`:''}<ul class="pl-lista">${PLANOS[k].itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')}</div>
+      <p class="sub" style="margin-top:10px">Para mudar de plano, fale com o suporte do Lucra.</p></div></div>`;
+    const ref=$('#sec-conta')||el.querySelector('h1'); if(ref)ref.insertAdjacentHTML('afterend',html) } };
+/* equipe: limite do plano */
+document.addEventListener('click',e=>{ const b=e.target.closest('#us-conv'); if(!b)return;
+  const n=document.querySelectorAll('#us-corpo [data-us-x]').length+1+document.querySelectorAll('#us-corpo [data-cv-x],#us-corpo [data-conv-x]').length;
+  if(n>=limiteEquipe()){ e.stopImmediatePropagation(); e.preventDefault(); planoSheet(planoAtual()==='medio'?'unidades':'equipe') } },true);
+/* unidades: só no Premium */
+document.addEventListener('click',e=>{ const b=e.target.closest('#tu-nova'); if(!b||temRecurso('unidades'))return; e.stopImmediatePropagation(); e.preventDefault(); planoSheet('unidades') },true);
 
 /* transferência não tem taxa; entrada sem procedimento (parcela, convênio) mostra a descrição.
    As contas originais ficam intactas: só embrulhamos. */

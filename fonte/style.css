@@ -1083,3 +1083,14 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .pt-links .lnk{margin:0}
 .pt-links .lnk:only-child{margin:0 auto}
 .a-pac{margin:4px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--ac-soft)}
+/* planos */
+#menu button.bloq .rot{opacity:.65}
+#menu .cad,.grupo-l .cad{margin-left:auto;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--ac-soft);color:var(--ac);white-space:nowrap}
+.pl-lista{margin:8px 0 0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.pl-grid{display:grid;gap:10px;margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.pl-c{border:1px solid var(--line);border-radius:var(--r-s);padding:12px;display:grid;gap:4px;align-content:start}
+.pl-c.atual{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac) inset}
+.pl-p{font-size:20px;font-weight:700}.pl-p small{font-size:12px;font-weight:500;color:var(--tx3)}
+.pl-trava{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.pl-trava span{flex:1;display:grid}.pl-trava small{color:var(--tx3)}
+.grupo-l .cad{margin-left:auto}

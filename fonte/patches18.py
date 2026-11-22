@@ -1,5 +1,5 @@
 # ── décima oitava leva: documentos, laboratório, parcelas, convênios, orçamentos, agenda online e satisfação ──
-js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + rd('psi.js') + rd('pacote.js') + rd('perio.js') + rd('lgpd.js') + rd('voltar.js') + rd('persistir.js') + """
+js = js.replace('/* ══════════ BOAS-VINDAS', rd('docs.js') + rd('lab.js') + rd('parcelas.js') + rd('convenios.js') + rd('funil.js') + rd('online.js') + rd('psi.js') + rd('pacote.js') + rd('perio.js') + rd('lgpd.js') + rd('voltar.js') + rd('persistir.js') + rd('planos.js') + """
 /* transferência não tem taxa; entrada sem procedimento (parcela, convênio) mostra a descrição.
    As contas originais ficam intactas: só embrulhamos. */
 const _taxaDeT=taxaDe; taxaDe=function(f,p){ return f==='transf'?0:_taxaDeT(f,p) };
@@ -30,3 +30,5 @@ rep("const iniciar=()=>{ if(NUVEM)return nuvemIniciar(iniciarLocal); iniciarLoca
 # o nome da tela agora é "Valor do atendimento"
 rep("${edV?'Editar atendimento':'Registrar atendimento'}</h2>", "${edV?'Editar atendimento':'Valor do atendimento'}</h2>")
 rep("${edV?'Salvar alterações':'Registrar atendimento'}</button>", "${edV?'Salvar alterações':'Registrar valor'}</button>")
+# planos: estoque e equipe só a partir do Médio
+rep("const modOn=k=>k==='estoque'&&area()==='psico'?false:UI.mod[k]!=null?!!UI.mod[k]:MODS[k][2]();", "const modOn=k=>k==='estoque'&&area()==='psico'?false:(k==='estoque'||k==='equipe')&&typeof temRecurso==='function'&&!temRecurso(k)?false:UI.mod[k]!=null?!!UI.mod[k]:MODS[k][2]();")

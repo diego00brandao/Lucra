@@ -1,7 +1,7 @@
 IC.alert='<path d="M12 4 2.8 19.5h18.4Z"/><path d="M12 10v4.200M12 16.900h.010"/>';
 /* ══════════ PRONTUÁRIO E ANAMNESE (odontologia e estética) ══════════
    Psicologia continua com as anotações de sessão próprias. */
-const temPront=()=>(area()==='odonto'||area()==='estetica')&&podeClinico();
+const temPront=()=>(area()==='odonto'||area()==='estetica')&&podeClinico()&&(typeof temRecurso!=='function'||temRecurso('prontuario'));
 /* perguntas de saúde; "al" = vira alerta quando a resposta é sim */
 const ANAM={
   odonto:[
