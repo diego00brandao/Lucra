@@ -12,7 +12,12 @@ const NOME_REC={orcamentos:'Orçamentos',sim:'Simulador e orçamentos',ocupacao:
   documentos:'Documentos com assinatura',prontuario:'Prontuário e ficha clínica',pacotes:'Pacotes de sessões',whatsapp:'Mensagens pelo WhatsApp',equipe:'Equipe',estoque:'Estoque',unidades:'Várias unidades',ia:'Inteligência artificial'};
 function planoAtual(){ let q=''; try{ q=new URLSearchParams(location.search).get('plano')||'' }catch(e){}
   if(ORDEM_PL.includes(q))return q;
+  if(emTeste())return 'premium';
   return typeof CONTA!=='undefined'&&CONTA&&ORDEM_PL.includes(CONTA.plano)?CONTA.plano:'premium' }
+/* 7 dias de teste grátis com tudo liberado */
+function emTeste(){ return typeof CONTA!=='undefined'&&!!CONTA&&!!CONTA.teste&&Date.now()<Date.parse(CONTA.teste) }
+const diasTeste=()=>emTeste()?Math.max(1,Math.ceil((Date.parse(CONTA.teste)-Date.now())/864e5)):0;
+const planoDepois=()=>typeof CONTA!=='undefined'&&CONTA&&ORDEM_PL.includes(CONTA.plano)?CONTA.plano:'basico';
 function temRecurso(k){ const min=RECURSO_PL[k]; return !min||ORDEM_PL.indexOf(planoAtual())>=ORDEM_PL.indexOf(min) }
 const limiteEquipe=()=>({basico:1,medio:3,premium:1000})[planoAtual()];
 function planoSheet(k){ const min=RECURSO_PL[k]||'medio', p=PLANOS[min];
@@ -44,8 +49,9 @@ posRender=function(el){ _posRenderPn(el);
   if(!temRecurso('pacotes')){ const s=$('#f-sess'); if(s){ s.value='1'; const f=s.closest('.field'); if(f)f.hidden=true }
     const b=$('#a-pac-box'); if(b){ b.remove() } }
   if(tela==='ajustes'&&!$('#sec-plano')&&typeof CONTA!=='undefined'&&CONTA&&ehDono()){ const pa=planoAtual();
-    const html=`<div class="sec" id="sec-plano"><div class="card"><div class="row" style="justify-content:space-between;gap:8px"><h2>Seu plano</h2><span class="pill ok">${PLANOS[pa].n}</span></div>
-      <div class="pl-grid">${ORDEM_PL.map(k=>`<div class="pl-c ${k===pa?'atual':''}"><b>${PLANOS[k].n}</b><span class="pl-p">${PLANOS[k].preco}${PLANOS[k].preco!=='a definir'?'<small>/mês</small>':''}</span>
+    const html=`<div class="sec" id="sec-plano"><div class="card"><div class="row" style="justify-content:space-between;gap:8px"><h2>Seu plano</h2><span class="pill ok">${emTeste()?'Teste grátis':PLANOS[pa].n}</span></div>
+      ${emTeste()?`<div class="nota" style="margin-top:10px">Teste grátis até <b>${dataBR(String(CONTA.teste).slice(0,10))}</b>, com tudo liberado. Depois, a conta segue no plano <b>${PLANOS[planoDepois()].n}</b>, a não ser que você escolha outro.</div>`:''}
+      <div class="pl-grid">${ORDEM_PL.map(k=>`<div class="pl-c ${k===(emTeste()?planoDepois():pa)?'atual':''}"><b>${PLANOS[k].n}</b><span class="pl-p">${PLANOS[k].preco}${PLANOS[k].preco!=='a definir'?'<small>/mês</small>':''}</span>
         ${PLANOS[k].depois?`<small class="sub">nos 3 primeiros meses, depois ${PLANOS[k].depois}</small>`:''}<ul class="pl-lista">${PLANOS[k].itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')}</div>
       <p class="sub" style="margin-top:10px">Para mudar de plano, fale com o suporte do Lucra.</p></div></div>`;
     const ref=$('#sec-conta')||el.querySelector('h1'); if(ref)ref.insertAdjacentHTML('afterend',html) } };
@@ -55,3 +61,9 @@ document.addEventListener('click',e=>{ const b=e.target.closest('#us-conv'); if(
   if(n>=limiteEquipe()){ e.stopImmediatePropagation(); e.preventDefault(); planoSheet(planoAtual()==='medio'?'unidades':'equipe') } },true);
 /* unidades: só no Premium */
 document.addEventListener('click',e=>{ const b=e.target.closest('#tu-nova'); if(!b||temRecurso('unidades'))return; e.stopImmediatePropagation(); e.preventDefault(); planoSheet('unidades') },true);
+
+/* aviso do teste no Hoje (só o dono) */
+const _hojePl=T.hoje;
+T.hoje=function(el){ _hojePl(el); if(!emTeste()||!ehDono())return; const n=diasTeste();
+  el.querySelector('h1')&&el.querySelector('h1').insertAdjacentHTML('afterend',`<button type="button" class="card teste-b" id="teste-b"><span><b>Teste grátis: ${n===1?'último dia':`faltam ${n} dias`}</b><small>Tudo liberado até ${dataBR(String(CONTA.teste).slice(0,10))}. Toque para ver os planos.</small></span>${ic('right',18)}</button>`);
+  $('#teste-b').onclick=()=>{ ir('ajustes'); setTimeout(()=>{ const e=$('#sec-plano'); if(e)e.scrollIntoView({block:'start'}) },150) } };

@@ -56,7 +56,7 @@ def responder(metodo,url,h,corpo):
             DB['convites']=[x for x in DB['convites'] if x['email']!=me['email'].lower()]; return ok(c['clinica_id'])
         if f=='criar_clinica':
             if any(m['user_id']==me['id'] for m in DB['membros']):return err('ja_tem_clinica')
-            cid=str(uuid.uuid4()); DB['clinicas'][cid]={'id':cid,'nome':b['p_nome'],'area':b['p_area']}
+            cid=str(uuid.uuid4()); DB['clinicas'][cid]={'id':cid,'nome':b['p_nome'],'area':b['p_area'],'plano':'basico','teste_ate':(__import__('datetime').datetime.utcnow()+__import__('datetime').timedelta(days=7)).isoformat()+'Z'}
             DB['membros'].append({'clinica_id':cid,'user_id':me['id'],'papel':'dono','nome':b['p_pessoa'],'email':me['email']})
             DB['dados'][cid]={'estado':{},'versao':0}; DB['clinico'][cid]={'estado':{},'versao':0}; return ok(cid)
         if f=='criar_unidade':

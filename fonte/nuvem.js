@@ -178,14 +178,14 @@ async function entrar(op){
     await rpc('aceitar_convites');
     const ms=(await api(`/rest/v1/membros?select=clinica_id,papel,nome,email&user_id=eq.${SES.user.id}`))||[];
     if(!ms.length)return criarClinica();
-    const busca=id=>api(`/rest/v1/clinicas?select=id,nome,area,plano&id=eq.${id}`).catch(()=>api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${id}`)).then(r=>(r||[])[0]).catch(()=>null);
+    const busca=id=>api(`/rest/v1/clinicas?select=id,nome,area,plano,teste_ate&id=eq.${id}`).catch(()=>api(`/rest/v1/clinicas?select=id,nome,area,plano&id=eq.${id}`)).catch(()=>api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${id}`)).then(r=>(r||[])[0]).catch(()=>null);
     const cs=(await Promise.all(ms.map(x=>busca(x.clinica_id)))).filter(Boolean);
-    const uns=ms.map(x=>{ const c=cs.find(z=>z.id===x.clinica_id); return c&&{cid:c.id,nome:c.nome,area:c.area,plano:c.plano||'premium',papel:x.papel} }).filter(Boolean);
+    const uns=ms.map(x=>{ const c=cs.find(z=>z.id===x.clinica_id); return c&&{cid:c.id,nome:c.nome,area:c.area,plano:c.plano||'premium',teste:c.teste_ate||'',papel:x.papel} }).filter(Boolean);
     if(!uns.length)return criarClinica();
     const pref=op.cid||lerJ('lucra:unidade:'+SES.user.id);
     if(uns.length>1&&!uns.some(u=>u.cid===pref))return escolherUnidade(uns);
     const u=uns.find(z=>z.cid===pref)||uns[0], m=ms.find(x=>x.clinica_id===u.cid);
-    conta={cid:u.cid,area:u.area,clinica:u.nome,plano:u.plano,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id,unidades:uns};
+    conta={cid:u.cid,area:u.area,clinica:u.nome,plano:u.plano,teste:u.teste,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id,unidades:uns};
     gravarJ(K_CONTA,conta); gravarJ('lucra:unidade:'+SES.user.id,u.cid);
   }catch(e){
     if(e.status===401){ sairDaConta(true,'A sessão expirou. Entre de novo.'); return }

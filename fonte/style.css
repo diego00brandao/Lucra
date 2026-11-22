@@ -1094,3 +1094,5 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .pl-trava{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}
 .pl-trava span{flex:1;display:grid}.pl-trava small{color:var(--tx3)}
 .grupo-l .cad{margin-left:auto}
+.teste-b{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;margin:12px 0 4px;border-color:var(--ac);background:var(--ac-soft)}
+.teste-b span{flex:1;display:grid}.teste-b small{color:var(--tx3)}

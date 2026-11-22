@@ -1113,6 +1113,8 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .pl-trava{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}
 .pl-trava span{flex:1;display:grid}.pl-trava small{color:var(--tx3)}
 .grupo-l .cad{margin-left:auto}
+.teste-b{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;margin:12px 0 4px;border-color:var(--ac);background:var(--ac-soft)}
+.teste-b span{flex:1;display:grid}.teste-b small{color:var(--tx3)}
 </style>
 </head>
 <body>
@@ -4473,14 +4475,14 @@ async function entrar(op){
     await rpc('aceitar_convites');
     const ms=(await api(`/rest/v1/membros?select=clinica_id,papel,nome,email&user_id=eq.${SES.user.id}`))||[];
     if(!ms.length)return criarClinica();
-    const busca=id=>api(`/rest/v1/clinicas?select=id,nome,area,plano&id=eq.${id}`).catch(()=>api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${id}`)).then(r=>(r||[])[0]).catch(()=>null);
+    const busca=id=>api(`/rest/v1/clinicas?select=id,nome,area,plano,teste_ate&id=eq.${id}`).catch(()=>api(`/rest/v1/clinicas?select=id,nome,area,plano&id=eq.${id}`)).catch(()=>api(`/rest/v1/clinicas?select=id,nome,area&id=eq.${id}`)).then(r=>(r||[])[0]).catch(()=>null);
     const cs=(await Promise.all(ms.map(x=>busca(x.clinica_id)))).filter(Boolean);
-    const uns=ms.map(x=>{ const c=cs.find(z=>z.id===x.clinica_id); return c&&{cid:c.id,nome:c.nome,area:c.area,plano:c.plano||'premium',papel:x.papel} }).filter(Boolean);
+    const uns=ms.map(x=>{ const c=cs.find(z=>z.id===x.clinica_id); return c&&{cid:c.id,nome:c.nome,area:c.area,plano:c.plano||'premium',teste:c.teste_ate||'',papel:x.papel} }).filter(Boolean);
     if(!uns.length)return criarClinica();
     const pref=op.cid||lerJ('lucra:unidade:'+SES.user.id);
     if(uns.length>1&&!uns.some(u=>u.cid===pref))return escolherUnidade(uns);
     const u=uns.find(z=>z.cid===pref)||uns[0], m=ms.find(x=>x.clinica_id===u.cid);
-    conta={cid:u.cid,area:u.area,clinica:u.nome,plano:u.plano,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id,unidades:uns};
+    conta={cid:u.cid,area:u.area,clinica:u.nome,plano:u.plano,teste:u.teste,papel:m.papel,nome:m.nome,email:SES.user.email,uid:SES.user.id,unidades:uns};
     gravarJ(K_CONTA,conta); gravarJ('lucra:unidade:'+SES.user.id,u.cid);
   }catch(e){
     if(e.status===401){ sairDaConta(true,'A sessão expirou. Entre de novo.'); return }
@@ -6593,7 +6595,12 @@ const NOME_REC={orcamentos:'Orçamentos',sim:'Simulador e orçamentos',ocupacao:
   documentos:'Documentos com assinatura',prontuario:'Prontuário e ficha clínica',pacotes:'Pacotes de sessões',whatsapp:'Mensagens pelo WhatsApp',equipe:'Equipe',estoque:'Estoque',unidades:'Várias unidades',ia:'Inteligência artificial'};
 function planoAtual(){ let q=''; try{ q=new URLSearchParams(location.search).get('plano')||'' }catch(e){}
   if(ORDEM_PL.includes(q))return q;
+  if(emTeste())return 'premium';
   return typeof CONTA!=='undefined'&&CONTA&&ORDEM_PL.includes(CONTA.plano)?CONTA.plano:'premium' }
+/* 7 dias de teste grátis com tudo liberado */
+function emTeste(){ return typeof CONTA!=='undefined'&&!!CONTA&&!!CONTA.teste&&Date.now()<Date.parse(CONTA.teste) }
+const diasTeste=()=>emTeste()?Math.max(1,Math.ceil((Date.parse(CONTA.teste)-Date.now())/864e5)):0;
+const planoDepois=()=>typeof CONTA!=='undefined'&&CONTA&&ORDEM_PL.includes(CONTA.plano)?CONTA.plano:'basico';
 function temRecurso(k){ const min=RECURSO_PL[k]; return !min||ORDEM_PL.indexOf(planoAtual())>=ORDEM_PL.indexOf(min) }
 const limiteEquipe=()=>({basico:1,medio:3,premium:1000})[planoAtual()];
 function planoSheet(k){ const min=RECURSO_PL[k]||'medio', p=PLANOS[min];
@@ -6625,8 +6632,9 @@ posRender=function(el){ _posRenderPn(el);
   if(!temRecurso('pacotes')){ const s=$('#f-sess'); if(s){ s.value='1'; const f=s.closest('.field'); if(f)f.hidden=true }
     const b=$('#a-pac-box'); if(b){ b.remove() } }
   if(tela==='ajustes'&&!$('#sec-plano')&&typeof CONTA!=='undefined'&&CONTA&&ehDono()){ const pa=planoAtual();
-    const html=`<div class="sec" id="sec-plano"><div class="card"><div class="row" style="justify-content:space-between;gap:8px"><h2>Seu plano</h2><span class="pill ok">${PLANOS[pa].n}</span></div>
-      <div class="pl-grid">${ORDEM_PL.map(k=>`<div class="pl-c ${k===pa?'atual':''}"><b>${PLANOS[k].n}</b><span class="pl-p">${PLANOS[k].preco}${PLANOS[k].preco!=='a definir'?'<small>/mês</small>':''}</span>
+    const html=`<div class="sec" id="sec-plano"><div class="card"><div class="row" style="justify-content:space-between;gap:8px"><h2>Seu plano</h2><span class="pill ok">${emTeste()?'Teste grátis':PLANOS[pa].n}</span></div>
+      ${emTeste()?`<div class="nota" style="margin-top:10px">Teste grátis até <b>${dataBR(String(CONTA.teste).slice(0,10))}</b>, com tudo liberado. Depois, a conta segue no plano <b>${PLANOS[planoDepois()].n}</b>, a não ser que você escolha outro.</div>`:''}
+      <div class="pl-grid">${ORDEM_PL.map(k=>`<div class="pl-c ${k===(emTeste()?planoDepois():pa)?'atual':''}"><b>${PLANOS[k].n}</b><span class="pl-p">${PLANOS[k].preco}${PLANOS[k].preco!=='a definir'?'<small>/mês</small>':''}</span>
         ${PLANOS[k].depois?`<small class="sub">nos 3 primeiros meses, depois ${PLANOS[k].depois}</small>`:''}<ul class="pl-lista">${PLANOS[k].itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')}</div>
       <p class="sub" style="margin-top:10px">Para mudar de plano, fale com o suporte do Lucra.</p></div></div>`;
     const ref=$('#sec-conta')||el.querySelector('h1'); if(ref)ref.insertAdjacentHTML('afterend',html) } };
@@ -6636,6 +6644,12 @@ document.addEventListener('click',e=>{ const b=e.target.closest('#us-conv'); if(
   if(n>=limiteEquipe()){ e.stopImmediatePropagation(); e.preventDefault(); planoSheet(planoAtual()==='medio'?'unidades':'equipe') } },true);
 /* unidades: só no Premium */
 document.addEventListener('click',e=>{ const b=e.target.closest('#tu-nova'); if(!b||temRecurso('unidades'))return; e.stopImmediatePropagation(); e.preventDefault(); planoSheet('unidades') },true);
+
+/* aviso do teste no Hoje (só o dono) */
+const _hojePl=T.hoje;
+T.hoje=function(el){ _hojePl(el); if(!emTeste()||!ehDono())return; const n=diasTeste();
+  el.querySelector('h1')&&el.querySelector('h1').insertAdjacentHTML('afterend',`<button type="button" class="card teste-b" id="teste-b"><span><b>Teste grátis: ${n===1?'último dia':`faltam ${n} dias`}</b><small>Tudo liberado até ${dataBR(String(CONTA.teste).slice(0,10))}. Toque para ver os planos.</small></span>${ic('right',18)}</button>`);
+  $('#teste-b').onclick=()=>{ ir('ajustes'); setTimeout(()=>{ const e=$('#sec-plano'); if(e)e.scrollIntoView({block:'start'}) },150) } };
 
 /* transferência não tem taxa; entrada sem procedimento (parcela, convênio) mostra a descrição.
    As contas originais ficam intactas: só embrulhamos. */
