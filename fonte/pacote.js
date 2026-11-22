@@ -71,3 +71,14 @@ T.novoag=function(el){ _novoagPac(el); const vb=$('#a-vezes-box'), rep=$('#a-rep
       S.vendas.push({id:uid(),data:hojeISO(),servicoId:sid,valor:val,forma,parcelas:1,sessoes:n,usadas:[],desloc:0,clienteId:cid,cliente:c?c.nome:'',pagoConf:1,pacTotal:val});
       mesSel=mesAtual(); salvar(); toast(`Agendado · pacote de ${n} sessões no caixa (${brl(val)})`) } };
 };
+
+/* ── "Atendeu" de quem tem pacote: desconta a sessão do pacote, sem pedir pagamento ── */
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-acao="concluir"][data-ag]'); if(!b)return;
+  const a=S.agenda.find(z=>z.id===b.dataset.ag); if(!a||!a.clienteId)return;
+  const p=pacotesAbertos().filter(z=>z.venda.clienteId===a.clienteId).sort((x,y)=>(y.venda.servicoId===a.servicoId)-(x.venda.servicoId===a.servicoId))[0];
+  if(!p)return;
+  e.stopImmediatePropagation(); e.preventDefault();
+  const v=p.venda; if(!Array.isArray(v.usadas))v.usadas=[]; v.usadas.push(a.data);
+  a.status='concluido'; a.pacUsado=v.id; salvar(); render();
+  const r=p.c.restam-1; toast(r>0?`Sessão do pacote · ${r} ${r>1?'restam':'resta'}`:'Última sessão do pacote');
+  posAtender(a) },true);

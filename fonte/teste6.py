@@ -97,8 +97,8 @@ async def main():
         pac=await pg.evaluate("(()=>{const p=pacotesAbertos()[0];if(!p)return null;const a=S.agenda.find(a=>a.status==='marcado'&&a.clienteId===p.venda.clienteId);agDia=a.data;render();return [a.id,p.venda.id,p.c.usadas]})()")
         if pac:
             await pg.wait_for_timeout(300); await pg.click(f'[data-ag="{pac[0]}"][data-acao=concluir]'); await pg.wait_for_timeout(400)
-            await pg.click('#k-pac'); await pg.wait_for_timeout(500); await pg.click('#ps-ok'); await pg.wait_for_timeout(800)
-            assert await pg.evaluate(f"conta(S.vendas.find(v=>v.id==='{pac[1]}')).usadas")==pac[2]+1
+            await pg.wait_for_timeout(400); assert await pg.locator('#k-valor').count()==0
+            assert await pg.evaluate(f"S.agenda.find(a=>a.id==='{pac[0]}').pacUsado")
             assert await pg.evaluate(f"S.agenda.find(a=>a.id==='{pac[0]}').status")=='concluido'
             assert await pg.locator('#ev-humor').count()==1; await pg.click('#ev-no'); await pg.wait_for_timeout(300)
         else: print('sem pacote aberto no exemplo hoje')

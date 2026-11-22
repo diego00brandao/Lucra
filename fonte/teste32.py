@@ -50,6 +50,15 @@ async def main():
         assert await pg.evaluate("S.agenda.length")==na+4 and await pg.evaluate("S.vendas.length")==nv+1
         v=await pg.evaluate("S.vendas.slice(-1)[0]"); assert v['valor']==450 and v['sessoes']==4 and v['forma']=='debito' and v['clienteId']=='pk', v
         assert await pg.locator('.sheet', has_text='Quanto já foi pago').count()==0; await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
+        # "Atendeu" de quem tem pacote não pede pagamento nem lança no caixa
+        await pg.evaluate("agDia=S.agenda.filter(a=>a.clienteId==='pk'&&a.status==='marcado').sort((x,y)=>x.data.localeCompare(y.data))[0].data;ir('agenda')"); await pg.wait_for_timeout(400)
+        aid=await pg.evaluate("S.agenda.filter(a=>a.clienteId==='pk'&&a.status==='marcado'&&a.data===agDia)[0].id")
+        nv=await pg.evaluate("S.vendas.length"); u0=await pg.evaluate("pacotesAbertos().filter(p=>p.venda.clienteId==='pk').reduce((a,p)=>a+p.c.usadas,0)")
+        await pg.click(f'[data-ag="{aid}"][data-acao="concluir"]'); await pg.wait_for_timeout(500)
+        assert await pg.locator('#k-valor').count()==0 and await pg.evaluate("S.vendas.length")==nv
+        assert await pg.evaluate(f"S.agenda.find(a=>a.id==='{aid}').status")=='concluido'
+        assert await pg.evaluate("S.vendas.filter(v=>v.clienteId==='pk'&&(parseInt(v.sessoes)||1)>1).reduce((a,v)=>a+(v.usadas||[]).length,0)")>=u0+1
+        await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
         # fechamento sem o botão Fatura
         await pg.evaluate("ir('fechamento')"); await pg.wait_for_timeout(400); assert await pg.locator('[data-fc-fat]').count()==0
         await br.close()
