@@ -1082,3 +1082,4 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .md-b{padding:12px 0;border-bottom:1px solid var(--line)}.md-b:last-child{border-bottom:none}
 .pt-links .lnk{margin:0}
 .pt-links .lnk:only-child{margin:0 auto}
+.a-pac{margin:4px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--ac-soft)}

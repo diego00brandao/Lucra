@@ -1101,6 +1101,7 @@ body.travada>*:not(#trava):not(.toast){visibility:hidden}
 .md-b{padding:12px 0;border-bottom:1px solid var(--line)}.md-b:last-child{border-bottom:none}
 .pt-links .lnk{margin:0}
 .pt-links .lnk:only-child{margin:0 auto}
+.a-pac{margin:4px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--ac-soft)}
 </style>
 </head>
 <body>
@@ -6331,6 +6332,30 @@ aposFalta=function(a){ const c=cli(a.clienteId), s=serv(a.servicoId);
     $('#fp-pac').onclick=()=>{ const v=p.venda; if(!Array.isArray(v.usadas))v.usadas=[]; v.usadas.push(a.data); a.pacFalta=v.id; salvar(); fechar(); toast(`Descontado do pacote · restam ${p.c.restam-1}`); render() };
     $('#fp-cob').onclick=()=>{ fechar(); setTimeout(()=>_aposFaltaP(a),260) };
     $('#fp-no').onclick=()=>{ fechar(); toast('Falta registrada, sem cobrança') } }) };
+
+/* ── no agendamento que se repete: "pacote de N sessões já pago" vai direto para o caixa ── */
+const _novoagPac=T.novoag;
+T.novoag=function(el){ _novoagPac(el); const vb=$('#a-vezes-box'), rep=$('#a-rep'), add=$('#a-add'); if(!vb||!rep||!add||emEdicao('ag'))return;
+  const linha=vb.closest('.grid2')||vb;
+  linha.insertAdjacentHTML('afterend',`<div id="a-pac-box" class="a-pac" hidden><label class="sw"><input type="checkbox" id="a-pac"><span>Pacote de <b id="a-pac-n"></b> sessões já pago</span></label>
+    <div class="grid2" id="a-pac-det" hidden style="margin-top:8px"><div class="field"><label for="a-pac-v">Valor do pacote (R$)</label><input id="a-pac-v" inputmode="decimal"></div>
+      <div class="field"><label for="a-pac-f">Como pagou</label><select id="a-pac-f">${FORMAS.map(f=>`<option value="${f.k}" ${f.k==='pix'?'selected':''}>${f.n}</option>`).join('')}</select></div></div>
+    <small class="sub" id="a-pac-tx">Entra no caixa hoje e cada sessão atendida desconta do pacote.</small></div>`);
+  let mexeuValor=false;
+  const atual=()=>{ const n=parseInt($('#a-vezes').value)||0, on=!!rep.value&&n>1, s=serv($('#a-serv').value);
+    $('#a-pac-box').hidden=!on; $('#a-pac-n').textContent=n; $('#a-pac-det').hidden=!$('#a-pac').checked;
+    if(!mexeuValor&&s)$('#a-pac-v').value=String(Math.round(num(s.preco)*n*100)/100).replace('.',',') };
+  rep.addEventListener('change',atual); $('#a-vezes').addEventListener('change',atual); $('#a-serv').addEventListener('change',atual);
+  $('#a-pac').addEventListener('change',atual); $('#a-pac-v').addEventListener('input',()=>{ mexeuValor=true }); atual();
+  const orig=add.onclick;
+  add.onclick=()=>{ const on=!$('#a-pac-box').hidden&&$('#a-pac').checked, n=parseInt($('#a-vezes').value)||0, val=num($('#a-pac-v').value), forma=$('#a-pac-f').value,
+      cid=$('#a-cli').value, sid=$('#a-serv').value, antes=S.agenda.length;
+    if(on&&val<=0){ toast('Informe o valor do pacote'); $('#a-pac-v').focus(); return }
+    orig();
+    if(on&&S.agenda.length>antes){ const c=cli(cid);
+      S.vendas.push({id:uid(),data:hojeISO(),servicoId:sid,valor:val,forma,parcelas:1,sessoes:n,usadas:[],desloc:0,clienteId:cid,cliente:c?c.nome:'',pagoConf:1,pacTotal:val});
+      mesSel=mesAtual(); salvar(); toast(`Agendado · pacote de ${n} sessões no caixa (${brl(val)})`) } };
+};
 /* ══════════ PERIOGRAMA (odontologia) ══════════
    Por dente: profundidade de sondagem e recessão em 6 pontos (3 por vestibular, 3 por lingual/palatina),
    sangramento, mobilidade e furca. Mostra % de sangramento e bolsas, e compara com o exame anterior. */

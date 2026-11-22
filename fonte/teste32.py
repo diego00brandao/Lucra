@@ -36,6 +36,20 @@ async def main():
         await pg.click('[data-ag="fx"][data-acao="faltou"]'); await pg.wait_for_timeout(500)
         assert 'tem um pacote' in await pg.inner_text('.sheet'); await pg.click('#fp-pac'); await pg.wait_for_timeout(300)
         assert await pg.evaluate("S.receber.length")==nr and await pg.evaluate("pacotesAbertos().filter(p=>p.venda.clienteId==='pk')[0].c.usadas")==us+1
+        # agendamento que repete: "pacote de 4 sessões já pago" vai para o caixa
+        await pg.evaluate("ir('novoag')"); await pg.wait_for_timeout(400)
+        assert await pg.locator('#a-pac-box[hidden]').count()==1
+        await pg.select_option('#a-cli','pk'); await pg.select_option('#a-serv',sid)
+        await pg.evaluate("document.querySelector('#a-hora').value='10:00'")
+        await pg.select_option('#a-rep','7'); await pg.select_option('#a-vezes','4'); await pg.wait_for_timeout(100)
+        assert await pg.locator('#a-pac-box:not([hidden])').count()==1 and await pg.inner_text('#a-pac-n')=='4'
+        await pg.check('#a-pac'); assert await pg.input_value('#a-pac-v')=='480'
+        await pg.fill('#a-pac-v','450'); await pg.select_option('#a-pac-f','debito')
+        nv=await pg.evaluate("S.vendas.length"); na=await pg.evaluate("S.agenda.length")
+        await pg.click('#a-add'); await pg.wait_for_timeout(600)
+        assert await pg.evaluate("S.agenda.length")==na+4 and await pg.evaluate("S.vendas.length")==nv+1
+        v=await pg.evaluate("S.vendas.slice(-1)[0]"); assert v['valor']==450 and v['sessoes']==4 and v['forma']=='debito' and v['clienteId']=='pk', v
+        assert await pg.locator('.sheet', has_text='Quanto já foi pago').count()==0; await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
         # fechamento sem o botão Fatura
         await pg.evaluate("ir('fechamento')"); await pg.wait_for_timeout(400); assert await pg.locator('[data-fc-fat]').count()==0
         await br.close()
