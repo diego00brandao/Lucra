@@ -856,7 +856,7 @@ body.porta-on{padding-left:0!important}
 .pn-graf{display:grid;gap:0}
 @media (min-width:1100px){ .pn-graf{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:20px;align-items:start} .pn-so{max-width:none!important} .pn-so .tiles{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))} }
 @media (max-width:520px){ .grid2:has(#x-serv){grid-template-columns:1fr} }
-@media (min-width:1100px){ .sheet{max-width:min(860px,90vw)} }
+@media (min-width:1100px){ .sheet{max-width:600px} .sheet:has(textarea,.item,.recibo,.kpi,.grid2,.grid3){max-width:min(860px,90vw)} }
 @media (min-width:1100px){
   [data-parte=novo] .card{max-width:none!important}
   .pk-campos{grid-template-columns:1fr 1fr;column-gap:20px}
