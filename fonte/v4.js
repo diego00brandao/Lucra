@@ -21,7 +21,20 @@ const _ir=ir;
 ir=function(t){ voltaEd=''; reabreFicha=''; if(t!=='novoag')pkPendente=''; _ir(t) };
 
 /* ── Analítico ── */
-T.painel=function(el){ _T.painel(el); el.querySelectorAll(':scope > [data-pn=esq]').forEach(s=>s.remove()) };
+T.painel=function(el){ _T.painel(el);
+  /* o Painel mostra um resumo visual: lucro por dia e os 5 procedimentos que mais deixam; o resto fica na tela Lucro */
+  const graf=[]; el.querySelectorAll(':scope > [data-pn=esq]').forEach(s=>{ const h=s.querySelector('h2'), t=h?h.textContent.trim():'';
+    if(t==='Lucro por dia'||t==='Lucro por procedimento'){ s.setAttribute('data-pn','graf'); graf.push(s) } else s.remove() });
+  const pr=graf.find(s=>s.querySelector('h2').textContent.trim()==='Lucro por procedimento');
+  if(pr){ const c=pr.querySelector('.card'), its=[...c.children].filter(d=>!d.classList.contains('vazio'));
+    if(its.length){ pr.querySelector('h2').textContent='Procedimentos que mais deixam';
+      its.slice(5).forEach(d=>d.remove()); const u=its[Math.min(5,its.length)-1]; if(u)u.style.borderBottom='none';
+      pr.querySelector('.sec-top').insertAdjacentHTML('beforeend','<button class="lnk" data-ir-lucro>Ver tudo</button>') }
+    else pr.remove() }
+  const vivos=graf.filter(s=>s.isConnected);
+  if(vivos.length){ const w=document.createElement('div'); w.className='pn-graf'; vivos[0].before(w); vivos.sort((a,b)=>a.querySelector('.dias')?-1:1).forEach(s=>w.appendChild(s));
+    w.querySelectorAll('[data-ir-lucro]').forEach(b=>b.onclick=()=>ir('lucro')) }
+};
 T.lucro=function(el){ _T.painel(el);
   el.querySelectorAll(':scope > [data-pn=kpis], :scope > [data-pn=dir]').forEach(s=>s.remove());
   /* pacotes e comissões vão para o fim: o lucro vem primeiro */
