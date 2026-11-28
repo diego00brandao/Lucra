@@ -872,6 +872,7 @@ button.item.pr-it{width:100%;text-align:left;font:inherit;color:inherit;backgrou
 /* ══ conta na nuvem ══ */
 body.porta-on>*:not(#porta):not(.toast):not(.sheet-bg){display:none!important}
 body.porta-on{padding-left:0!important}
+@media (max-width:520px){ .grid2:has(#x-serv){grid-template-columns:1fr} }
 @media (min-width:1100px){ .sheet{max-width:min(860px,90vw)} }
 @media (min-width:1100px){
   [data-parte=novo] .card{max-width:none!important}
@@ -2425,8 +2426,8 @@ T.ajustes=function(el){
     <div class="field"><label for="a-nome">Nome da clínica ou do seu espaço</label>
       <input id="a-nome" placeholder="Ex.: Studio Bela Pele" value="${esc(UI.clinica)}" maxlength="40"></div>
     <div class="row">
-      <button class="btn pri" id="a-nome-ok" style="flex:1">${ic('check')}Salvar nome</button>
-      <button class="btn soft" id="a-ob">Rever as boas-vindas</button></div>
+      <button class="btn pri" id="a-nome-ok" style="flex:1 1 auto;white-space:nowrap">${ic('check')}Salvar nome</button>
+      <button class="btn soft" id="a-ob" style="flex:1 1 auto;white-space:nowrap">Rever as boas-vindas</button></div>
   </div></div>
   ${secArea()}
   ${secInstalar()}

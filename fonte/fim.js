@@ -6,8 +6,8 @@ T.ajustes=function(el){
     <div class="field"><label for="a-nome">Nome da clínica ou do seu espaço</label>
       <input id="a-nome" placeholder="Ex.: Studio Bela Pele" value="${esc(UI.clinica)}" maxlength="40"></div>
     <div class="row">
-      <button class="btn pri" id="a-nome-ok" style="flex:1">${ic('check')}Salvar nome</button>
-      <button class="btn soft" id="a-ob">Rever as boas-vindas</button></div>
+      <button class="btn pri" id="a-nome-ok" style="flex:1 1 auto;white-space:nowrap">${ic('check')}Salvar nome</button>
+      <button class="btn soft" id="a-ob" style="flex:1 1 auto;white-space:nowrap">Rever as boas-vindas</button></div>
   </div></div>
   <div class="sec"><div class="card">
     <h2 style="margin-bottom:10px">Backup</h2>
